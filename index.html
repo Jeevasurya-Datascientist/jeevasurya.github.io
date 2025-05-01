@@ -3,605 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Science Portfolio</title>
+    <title>Jeevasurya - Data Science Portfolio</title>
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            color: #fff; /* Change default text color to white */
-            background-color: #111827; /* Dark background color */
-        }
-        /* Custom styles for animations */
-        .slide-in-left {
-            animation: slideInLeft 1s ease-out;
-        }
-        @keyframes slideInLeft {
-            from {
-                transform: translateX(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        .slide-in-right {
-            animation: slideInRight 1s ease-out;
-        }
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        .fade-in {
-            animation: fadeIn 1s ease-out;
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-        .scale-up {
-            animation: scaleUp 0.5s ease-out;
-        }
-        @keyframes scaleUp {
-            from {
-                transform: scale(0.9);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-        .tilt-card {
-            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
-        }
-        .tilt-card:hover {
-            transform: perspective(1000px) rotateY(10deg) rotateX(-10deg) scale(1.05);
-            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.2);
-        }
-        #chart-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none; /* Allows clicks to pass through */
-        }
-        .chart-canvas {
-            width: 100%;
-            height: 100%;
-        }
-        /* New styles for certificates section */
-        .certificate-card {
-            background-color: rgba(255, 255, 255, 0.05); /* Slightly transparent white */
-            backdrop-filter: blur(10px); /* Add blur effect */
-            border-radius: 1rem; /* Rounded corners */
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); /* Shadow for depth */
-            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
-            overflow: hidden;  /* hide the extra part of image */
-        }
 
-        .certificate-card:hover {
-            transform: translateY(-0.5rem) scale(1.02); /* Slight lift and scale on hover */
-            box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.15); /* Increased shadow on hover */
+    <!-- Tailwind CSS (via CDN - for simplicity here, ideally use npm) -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script>
+        // Optional: Configure Tailwind defaults if needed
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                 cyan: { // Extend or override cyan shades if desired
+                    '50': '#ecfeff', '100': '#cffafe', '200': '#a5f3fc',
+                    '300': '#67e8f9', '400': '#22d3ee', '500': '#06b6d4',
+                    '600': '#0891b2', '700': '#0e7490', '800': '#155e75',
+                    '900': '#164e63', '950': '#083344'
+                 },
+                 gray: { // Extend or override gray shades
+                    '50': '#f9fafb', '100': '#f3f4f6', '200': '#e5e7eb',
+                    '300': '#d1d5db', '400': '#9ca3af', '500': '#6b7280',
+                    '600': '#4b5563', '700': '#374151', '800': '#1f2937',
+                    '900': '#111827', '950': '#030712'
+                }
+              }
+            }
+          }
         }
+      </script>
 
-        .certificate-card img {
-            width: 100%; /* Ensure image fills the card width */
-            height: auto; /* Maintain aspect ratio */
-            border-top-left-radius: 1rem; /* Rounded corners for the image */
-            border-top-right-radius: 1rem;
-            display: block; /*removes extra space below image*/
-        }
+    <!-- Your Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
 
-        .certificate-card-body {
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .certificate-title {
-            font-size: 1.25rem;
-            font-weight: 500;
-            color: #fff; /* White text for certificate title */
-            margin-bottom: 0.5rem;
-        }
-
-        .certificate-description {
-            font-size: 0.9rem;
-            color: #ddd; /* Lighter text for description */
-        }
-
-        .view-certificate-btn {
-            margin-top: 1rem;
-        }
-        .navbar-light .navbar-nav .nav-link {
-            color: #fff;
-        }
-        .navbar-light .navbar-brand{
-            color: #fff;
-        }
-    </style>
 </head>
-<body class="bg-gray-900 text-white">
+<body class="bg-gray-950 text-gray-200"> <!-- Slightly darker bg -->
+    <!-- Background Chart Canvas -->
     <div id="chart-container">
-        <canvas id="myChart" class="chart-canvas"></canvas>
+        <canvas id="backgroundChart" class="chart-canvas"></canvas>
     </div>
-    <header class="py-6 px-4 sm:px-6 lg:px-8">
-        <div class="container-fluid">
-            <nav class="navbar navbar-expand-md navbar-light bg-transparent">
-                <div class="container">
-                    <a href="#" class="navbar-brand text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
-                        Data Science Portfolio
+
+    <!-- Header -->
+    <header class="sticky-top backdrop-blur-md bg-gray-950/80 z-50 shadow-md">
+        <nav class="navbar navbar-expand-lg navbar-dark py-3">
+            <div class="container">
+                <a href="#" class="navbar-brand text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 transition duration-300">
+                    Jeevasurya | Portfolio
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto gap-x-2">
+                        <li class="nav-item">
+                            <a class="nav-link px-3 py-2 rounded-md hover:bg-gray-800 hover:text-cyan-300 transition duration-300" href="#about">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 py-2 rounded-md hover:bg-gray-800 hover:text-cyan-300 transition duration-300" href="#projects">Projects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 py-2 rounded-md hover:bg-gray-800 hover:text-cyan-300 transition duration-300" href="#skills">Skills</a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link px-3 py-2 rounded-md hover:bg-gray-800 hover:text-cyan-300 transition duration-300" href="#certificates">Certificates</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 py-2 rounded-md hover:bg-gray-800 hover:text-cyan-300 transition duration-300" href="#contact">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container py-5 mt-4">
+
+        <!-- About Section -->
+        <section id="about" class="py-16 px-3">
+            <div class="row align-items-center justify-content-center g-5">
+                <!-- Text Content -->
+                <div class="col-lg-6 col-md-12 slide-in-left order-lg-1 order-2 text-center text-lg-start">
+                     <h1 class="text-4xl sm:text-5xl font-bold mb-3">
+                        Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Jeevasurya</span>
+                    </h1>
+                    <h2 class="text-2xl sm:text-3xl font-semibold text-cyan-400 mb-4">Aspiring Data Scientist</h2>
+                    <p class="text-gray-400 text-lg mb-6 leading-relaxed">
+                        A dedicated student pursuing a Diploma in Computer Science, passionate about exploring the world of data science and machine learning. Eager to develop skills, contribute to impactful projects, and continuously learn in this exciting field.
+                    </p>
+                    <a href="#contact" class="inline-block bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold py-3 px-8 rounded-full transition duration-300 shadow-lg hover:shadow-cyan-500/50 transform hover:scale-105">
+                        Get In Touch
                     </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav ms-auto">
-                            <li class="nav-item">
-                                <a class="nav-link hover:text-cyan-300 transition duration-300" href="#about">About</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link hover:text-cyan-300 transition duration-300" href="#projects">Projects</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link hover:text-cyan-300 transition duration-300" href="#skills">Skills</a>
-                            </li>
-                             <li class="nav-item">
-                                <a class="nav-link hover:text-cyan-300 transition duration-300" href="#certificates">Certificates</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link hover:text-cyan-300 transition duration-300" href="#contact">Contact</a>
-                            </li>
+                </div>
+                <!-- Profile Picture -->
+                <div class="col-lg-5 col-md-8 col-sm-10 slide-in-right order-lg-2 order-1">
+                    <div class="profile-image-wrapper mx-auto">
+                         <!-- ==>> CRITICAL FIX: Use the relative path here <<== -->
+                        <img src="images/jeevasurya-profile.png"
+                             alt="Jeevasurya Profile Picture"
+                             class="rounded-full border-4 border-cyan-600/50 shadow-xl w-full h-auto object-cover aspect-square">
+                             <!-- Tailwind classes for styling -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-16 px-3">
+            <h2 class="section-title fade-in">Projects</h2>
+            <div class="row g-4 justify-content-center">
+                <!-- Project Card 1 -->
+                <div class="col-md-6 col-lg-4 scale-up">
+                    <div class="data-card tilt-card">
+                        <h3 class="card-title">Customer Churn Prediction</h3>
+                        <p class="card-description">
+                            Developed a ML model to predict customer churn for a telecom company using Python, Pandas, Scikit-learn. Visualized results with Matplotlib.
+                        </p>
+                        <a href="#" class="card-link">View Details <span aria-hidden="true">→</span></a>
+                    </div>
+                </div>
+                <!-- Project Card 2 -->
+                <div class="col-md-6 col-lg-4 scale-up">
+                    <div class="data-card tilt-card">
+                        <h3 class="card-title">Sales Forecasting</h3>
+                        <p class="card-description">
+                            Built a time series model (ARIMA) in R to predict future sales trends. Created interactive visualizations with Plotly.
+                        </p>
+                        <a href="#" class="card-link">View Details <span aria-hidden="true">→</span></a>
+                    </div>
+                </div>
+                 <!-- Project Card 3 -->
+                 <div class="col-md-6 col-lg-4 scale-up">
+                    <div class="data-card tilt-card">
+                        <h3 class="card-title">Sentiment Analysis</h3>
+                        <p class="card-description">
+                            Implemented sentiment analysis using Python & NLTK to classify customer reviews. Evaluated model performance with various metrics.
+                        </p>
+                        <a href="#" class="card-link">View Details <span aria-hidden="true">→</span></a>
+                    </div>
+                </div>
+                <!-- Add more project cards as needed -->
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-16 px-3">
+            <h2 class="section-title fade-in">Skills</h2>
+            <div class="row g-4 justify-content-center">
+                <!-- Technical Skills -->
+                <div class="col-lg-5 col-md-6 slide-in-left">
+                    <div class="data-card h-100">
+                        <h3 class="card-title text-2xl">Technical Skills</h3>
+                        <ul class="list-disc list-inside text-gray-400 space-y-2 mt-4">
+                            <li>Python (Pandas, Scikit-learn, TensorFlow, PyTorch)</li>
+                            <li>R (Tidyverse, ARIMA)</li>
+                            <li>SQL (PostgreSQL, MySQL)</li>
+                            <li>Data Visualization (Matplotlib, Plotly, Seaborn)</li>
+                            <li>Machine Learning (Regression, Classification, Clustering)</li>
+                            <li>Deep Learning (CNNs, RNNs)</li>
+                            <li>Statistical Modeling</li>
+                            <li>Big Data Tools (Basic Hadoop, Spark)</li>
+                            <li>Cloud Platforms (Basic AWS, Azure)</li>
                         </ul>
                     </div>
                 </div>
-            </nav>
+                <!-- Soft Skills -->
+                <div class="col-lg-5 col-md-6 slide-in-right">
+                     <div class="data-card h-100">
+                        <h3 class="card-title text-2xl">Soft Skills</h3>
+                        <ul class="list-disc list-inside text-gray-400 space-y-2 mt-4">
+                            <li>Problem Solving & Analytical Thinking</li>
+                            <li>Communication (Written & Verbal)</li>
+                            <li>Teamwork & Collaboration</li>
+                            <li>Critical Thinking</li>
+                            <li>Time Management & Organization</li>
+                            <li>Data Storytelling</li>
+                            <li>Adaptability & Eagerness to Learn</li>
+                            <li>Attention to Detail</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+         <!-- Certificates Section -->
+        <section id="certificates" class="py-16 px-3">
+            <h2 class="section-title fade-in">Certificates</h2>
+            <div class="row g-4 justify-content-center">
+                <!-- Certificate Card Example (Repeat for others) -->
+                <div class="col-md-6 col-lg-4 scale-up">
+                    <div class="certificate-card">
+                        <img src="https://seeklogo.com/images/L/linkedin-learning-logo-4121289336-seeklogo.com.png" alt="LinkedIn Learning Logo" class="certificate-logo">
+                        <div class="certificate-card-body">
+                            <h3 class="certificate-title">Data Science Foundations</h3>
+                            <p class="certificate-description">LinkedIn Learning - Fundamentals</p>
+                            <a href="https://www.linkedin.com/learning/certificates/2a8e0d28508dc76b7de4777f482dd5c61666ec976179933d6139059248ed8f5d" target="_blank" rel="noopener noreferrer" class="certificate-link">View Certificate</a>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-md-6 col-lg-4 scale-up">
+                    <div class="certificate-card">
+                        <img src="https://seeklogo.com/images/L/linkedin-learning-logo-4121289336-seeklogo.com.png" alt="LinkedIn Learning Logo" class="certificate-logo">
+                        <div class="certificate-card-body">
+                            <h3 class="certificate-title">SQL Essential Training</h3>
+                            <p class="certificate-description">LinkedIn Learning - Completion & Exam</p>
+                            <a href="https://www.linkedin.com/learning/certificates/5df93c3487709d91644811b5936e0345e4b9bca63d121dc71cadfffb15bdad5c" target="_blank" rel="noopener noreferrer" class="certificate-link">View Certificate</a>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-md-6 col-lg-4 scale-up">
+                    <div class="certificate-card">
+                        <img src="https://seeklogo.com/images/L/linkedin-learning-logo-4121289336-seeklogo.com.png" alt="LinkedIn Learning Logo" class="certificate-logo">
+                        <div class="certificate-card-body">
+                            <h3 class="certificate-title">Hands-on Data Science</h3>
+                            <p class="certificate-description">LinkedIn Learning - SQL, Tableau, Python, Spark</p>
+                            <a href="https://www.linkedin.com/learning/certificates/bd4601d33a80152b024007eadf19ee2074e0b0ffec68c125e2398b847690538a" target="_blank" rel="noopener noreferrer" class="certificate-link">View Certificate</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add other certificate cards similarly... -->
+                 <div class="col-md-6 col-lg-4 scale-up">
+                    <div class="certificate-card">
+                         <img src="https://sisc.ro/wp-content/uploads/2022/08/SoloLearn_logo.svg.png" alt="SoloLearn Logo" class="certificate-logo">
+                         <div class="certificate-card-body">
+                             <h3 class="certificate-title">AI in Data Analysis</h3>
+                             <p class="certificate-description">SoloLearn - Completion</p>
+                             <a href="https://www.sololearn.com/certificates/CC-ZK8PISMW" target="_blank" rel="noopener noreferrer" class="certificate-link">View Certificate</a>
+                         </div>
+                    </div>
+                 </div>
+                 <div class="col-md-6 col-lg-4 scale-up">
+                    <div class="certificate-card">
+                         <img src="https://sisc.ro/wp-content/uploads/2022/08/SoloLearn_logo.svg.png" alt="SoloLearn Logo" class="certificate-logo">
+                         <div class="certificate-card-body">
+                             <h3 class="certificate-title">ML for Beginners</h3>
+                             <p class="certificate-description">SoloLearn - Completion</p>
+                             <a href="https://www.sololearn.com/certificates/CC-N2TWKSUP" target="_blank" rel="noopener noreferrer" class="certificate-link">View Certificate</a>
+                         </div>
+                    </div>
+                 </div>
+
+            </div>
+            <!-- Optional: View All Button -->
+            <!-- <div class="mt-8 text-center">
+                <a href="#" class="inline-block bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold py-3 px-8 rounded-full transition duration-300 shadow-lg hover:shadow-cyan-500/50 transform hover:scale-105" target="_blank" rel="noopener noreferrer">
+                    View All Certificates
+                </a>
+            </div> -->
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-16 px-3">
+            <h2 class="section-title fade-in">Get In Touch</h2>
+            <div class="data-card max-w-3xl mx-auto p-8 md:p-12 text-center">
+                <p class="text-gray-400 text-lg mb-8 leading-relaxed">
+                    I'm actively seeking opportunities and collaborations in Data Science. Feel free to reach out via email or connect with me on social media. Let's discuss how we can work together!
+                </p>
+                <div class="d-flex flex-column sm:flex-row justify-content-center align-items-center gap-4">
+                    <a href="mailto:jeevasurya.datascientist@gmail.com" class="contact-button btn-email">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 inline-block mr-2"> <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z"></path><path d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z"></path> </svg>
+                        Email Me
+                    </a>
+                    <a href="https://www.linkedin.com/in/jeeva-surya/" target="_blank" rel="noopener noreferrer" class="contact-button btn-linkedin">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-linkedin inline-block mr-2" viewBox="0 0 16 16"> <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/> </svg>
+                        LinkedIn
+                    </a>
+                     <a href="https://www.kaggle.com/jsdatapro/" target="_blank" rel="noopener noreferrer" class="contact-button btn-kaggle">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-kanban inline-block mr-2" viewBox="0 0 16 16"> <path d="M13.5 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm-11-1a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/> <path d="M6.5 3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm-4 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm8 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1z"/> </svg>
+                        Kaggle
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-5 mt-8 text-gray-500 text-center border-t border-gray-800">
+        <div class="container">
+            © <span id="current-year"></span> Jeevasurya Portfolio. All rights reserved. | Aspiring Data Scientist
         </div>
-    </header>
-    <main class="flex-grow">
-        <section id="about" class="py-16 px-4 sm:px-6 lg:px-8">
-            <div class="container">
-                <div class="row align-items-center gap-8">
-                    <div class="col-md-6 slide-in-left">
-                        <h2 class="text-3xl sm:text-4xl font-semibold text-cyan-400 mb-4">About Me</h2>
-                        <p class="text-gray-400 text-lg">
-                            Hello! I'm Jeevasurya, a dedicated student pursuing a Diploma in Computer Science. I am passionate
-                            about exploring the world of data science and machine learning. I am eager to develop my
-                            skills and contribute to this exciting field.
-                        </p>
-                        <a href="#contact" class="mt-6 inline-block bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold py-3 px-6 rounded-full transition duration-300">
-                            Contact Me
-                        </a>
-                    </div>
-                    <div class="col-md-6 slide-in-right">
-                        <img src="C:/Users/Jeeva surya/Pictures/JS Photos/Linkedin profile 1.png" alt="Profile Picture" class="rounded-lg shadow-lg w-100">
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="projects" class="py-16 px-4 sm:px-6 lg:px-8">
-            <div class="container">
-                <h2 class="text-3xl sm:text-4xl font-semibold text-cyan-400 mb-8 text-center fade-in">Projects</h2>
-                <div class="row g-4">
-                    <div class="col-md-6 col-lg-4 scale-up">
-                        <div class="bg-white/5 backdrop-blur-md rounded-xl shadow-md p-6 hover:shadow-lg transition duration-300 h-100 d-flex flex-column tilt-card">
-                            <h3 class="text-xl font-semibold text-cyan-300 mb-2">Project 1: Customer Churn Prediction</h3>
-                            <p class="text-gray-400 mb-4 flex-grow">
-                                Developed a machine learning model to predict customer churn for a telecom company.
-                                Utilized Python, Pandas, Scikit-learn, and visualized results with Matplotlib.
-                            </p>
-                            <a href="#" class="text-blue-500 hover:text-cyan-300 transition duration-300">View Details</a>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 scale-up">
-                        <div class="bg-white/5 backdrop-blur-md rounded-xl shadow-md p-6 hover:shadow-lg transition duration-300 h-100 d-flex flex-column tilt-card">
-                            <h3 class="text-xl font-semibold text-cyan-300 mb-2">Project 2: Sales Forecasting</h3>
-                            <p class="text-gray-400 mb-4 flex-grow">
-                                Built a time series forecasting model to predict future sales trends.
-                                Used R, ARIMA models, and created interactive visualizations with Plotly.
-                            </p>
-                            <a href="#" class="text-blue-500 hover:text-cyan-300 transition duration-300">View Details</a>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 scale-up">
-                        <div class="bg-white/5 backdrop-blur-md rounded-xl shadow-md p-6 hover:shadow-lg transition duration-300 h-100 d-flex flex-column tilt-card">
-                            <h3 class="text-xl font-semibold text-cyan-300 mb-2">Project 3: Sentiment Analysis</h3>
-                            <p class="text-gray-400 mb-4 flex-grow">
-                                Implemented a sentiment analysis model to classify customer reviews.
-                                Employed Python, NLTK, and evaluated model performance using various metrics.
-                            </p>
-                            <a href="#" class="text-blue-500 hover:text-cyan-300 transition duration-300">View Details</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="skills" class="py-16 px-4 sm:px-6 lg:px-8">
-            <div class="container">
-                <h2 class="text-3xl sm:text-4xl font-semibold text-cyan-400 mb-8 text-center fade-in">Skills</h2>
-                <div class="row g-4">
-                    <div class="col-md-6 slide-in-left">
-                        <div class="bg-white/5 backdrop-blur-md rounded-xl shadow-md p-6 space-y-4">
-                            <h3 class="text-2xl font-semibold text-cyan-300">Technical Skills</h3>
-                            <ul class="list-disc list-inside text-gray-400">
-                                <li>Python (Pandas, Scikit-learn, TensorFlow, PyTorch)</li>
-                                <li>R (Tidyverse, ARIMA)</li>
-                                <li>SQL (PostgreSQL, MySQL)</li>
-                                <li>Data Visualization (Matplotlib, Plotly, Seaborn)</li>
-                                <li>Machine Learning (Regression, Classification, Clustering)</li>
-                                <li>Deep Learning (CNNs, RNNs)</li>
-                                <li>Statistical Modeling</li>
-                                <li>Big Data (Hadoop, Spark)</li>
-                                <li>Cloud Computing (AWS, Azure)</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-6 slide-in-right">
-                        <div class="bg-white/5 backdrop-blur-md rounded-xl shadow-md p-6 space-y-4">
-                            <h3 class="text-2xl font-semibold text-cyan-300">Soft Skills</h3>
-                            <ul class="list-disc list-inside text-gray-400">
-                                <li>Problem Solving</li>
-                                <li>Communication (Written & Verbal)</li>
-                                <li>Teamwork & Collaboration</li>
-                                <li>Critical Thinking</li>
-                                <li>Time Management</li>
-                                <li>Data Storytelling</li>
-                                <li>Adaptability</li>
-                                <li>Continuous Learning</li>
-                                <li>Attention to Detail</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="certificates" class="py-16 px-4 sm:px-6 lg:px-8">
-            <div class="container">
-                <h2 class="text-3xl sm:text-4xl font-semibold text-cyan-400 mb-8 text-center fade-in">Certificates</h2>
-                <div class="row g-4">
-                    <div class="col-md-6 col-lg-4 scale-up">
-                        <div class="certificate-card">
-                            <img src="https://images.seeklogo.com/logo-png/41/2/linkedin-learning-logo-png_seeklogo-412128.png?v=1957190284266798632" alt="Certificate">
-                            <div class="certificate-card-body">
-                                <h3 class="certificate-title">Data Science Foundations: Foundamentals</h3>
-                                <p class="certificate-description">Completion</p>
-                                <a href="https://www.linkedin.com/learning/certificates/2a8e0d28508dc76b7de4777f482dd5c61666ec976179933d6139059248ed8f5d" target="_blank" class="btn btn-primary view-certificate-btn">View Certificate</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 scale-up">
-                        <div class="certificate-card">
-                            <img src="https://images.seeklogo.com/logo-png/41/2/linkedin-learning-logo-png_seeklogo-412128.png?v=1957190284266798632" alt="Certificate">
-                            <div class="certificate-card-body">
-                                <h3 class="certificate-title">SQL Essential Training</h3>
-                                <p class="certificate-description">Completion and Exam</p>
-                                <a href="https://www.linkedin.com/learning/certificates/5df93c3487709d91644811b5936e0345e4b9bca63d121dc71cadfffb15bdad5c" target="_blank" class="btn btn-primary view-certificate-btn">View Certificate</a>
-                            </div>
-                        </div>
-                    </div>
-                   
-                    <div class="col-md-6 col-lg-4 scale-up">
-                        <div class="certificate-card">
-                            <img src="https://images.seeklogo.com/logo-png/41/2/linkedin-learning-logo-png_seeklogo-412128.png?v=1957190284266798632" alt="Certificate">
-                            <div class="certificate-card-body">
-                                <h3 class="certificate-title">Hands-on-Data-science using SQL,Tableau,Python,Spark</h3>
-                                <p class="certificate-description">Completion Only</p>
-                                <a href="https://www.linkedin.com/learning/certificates/bd4601d33a80152b024007eadf19ee2074e0b0ffec68c125e2398b847690538a" target="_blank" class="btn btn-primary view-certificate-btn">View Certificate</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 scale-up">
-                        <div class="certificate-card">
-                            <img src="https://images.seeklogo.com/logo-png/41/2/linkedin-learning-logo-png_seeklogo-412128.png?v=1957190284266798632" alt="Certificate">
-                            <div class="certificate-card-body">
-                                <h3 class="certificate-title">Improving Insights in OpenAi</h3>
-                                <p class="certificate-description">Completion only</p>
-                                <a href="https://www.linkedin.com/learning/certificates/e637f8cff0e8a5adc5ce1b89c5953e6ce56a14bc080fd01aba3b41dbb03b69d9" target="_blank" class="btn btn-primary view-certificate-btn">View Certificate</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 scale-up">
-                        <div class="certificate-card">
-                            <img src="https://images.seeklogo.com/logo-png/41/2/linkedin-learning-logo-png_seeklogo-412128.png?v=1957190284266798632" alt="Certificate">
-                            <div class="certificate-card-body">
-                                <h3 class="certificate-title">Nano Tips for Use of Chatgpt</h3>
-                                <p class="certificate-description">Completion only</p>
-                                 <a href="https://www.linkedin.com/learning/certificates/e3ba929dfd4052bc64d1b9ee66684addd3f9503e2e7100ee2d422a62b32e2eee" target="_blank" class="btn btn-primary view-certificate-btn">View Certificate</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 scale-up">
-                        <div class="certificate-card">
-                            <img src="https://images.seeklogo.com/logo-png/41/2/linkedin-learning-logo-png_seeklogo-412128.png?v=1957190284266798632" alt="Certificate">
-                            <div class="certificate-card-body">
-                                <h3 class="certificate-title">Introduction to Career Skills in Data Analytics</h3>
-                                <p class="certificate-description">Completion only</p>
-                                <a href="https://www.linkedin.com/learning/certificates/cb0647b925b443c5fbb88edf65020369d1aa5b8c26fde9d71d27c0564dbe777" target="_blank" class="btn btn-primary view-certificate-btn">View Certificate</a>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="col-md-6 col-lg-4 scale-up">
-                        <div class="certificate-card">
-                            <img src="https://images.seeklogo.com/logo-png/41/2/linkedin-learning-logo-png_seeklogo-412128.png?v=1957190284266798632" alt="Certificate">
-                            <div class="certificate-card-body">
-                                <h3 class="certificate-title">Learning Data Analytics : Part 1</h3>
-                                <p class="certificate-description">Completion</p>
-                                 <a href="https://www.linkedin.com/learning/certificates/0a0073a450611d2ba9f1176d4fc6985f94b441da9a24e3db007f5de1eb0d0cb2" target="_blank" class="btn btn-primary view-certificate-btn">View Certificate</a>
-                            </div>
-                        </div>
-                    </div>
+    </footer>
 
-                    <div class="col-md-6 col-lg-4 scale-up">
-                        <div class="certificate-card">
-                            <img src="https://images.seeklogo.com/logo-png/41/2/linkedin-learning-logo-png_seeklogo-412128.png?v=1957190284266798632" alt="Certificate">
-                            <div class="certificate-card-body">
-                                <h3 class="certificate-title">Learning Data Analytics Part 2: Extending and Applying Core Knowledge</h3>
-                                <p class="certificate-description">Completion</p>
-                                <a href="https://www.linkedin.com/learning/certificates/1f4538acdf761f574aacee5f484f0dd1a9f30b236d2c778a0fd950dbacfa3ad3?trk=share_certificate" target="_blank" class="btn btn-primary view-certificate-btn">View Certificate</a>
-                            </div>
-                        </div>
-                    </div>
-
-                        <div class="col-md-6 col-lg-4 scale-up">
-                            <div class="certificate-card">
-                                <img src="https://images.seeklogo.com/logo-png/41/2/linkedin-learning-logo-png_seeklogo-412128.png?v=1957190284266798632" alt="Certificate">
-                                <div class="certificate-card-body">
-                                    <h3 class="certificate-title">Microsoft exam Certificate</h3>
-                                    <p class="certificate-description">Completion</p>
-                                    <a href="https://www.linkedin.com/learning/certificates/14f14850a34abbaa372907c447eb199718e2667d6dfb20f2cd91afcb6f093a85?trk=share_certificate" target="_blank" class="btn btn-primary view-certificate-btn">View Certificate</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4 scale-up">
-                            <div class="certificate-card">
-                                <img src="https://images.seeklogo.com/logo-png/41/2/linkedin-learning-logo-png_seeklogo-412128.png?v=1957190284266798632" alt="Certificate">
-                                <div class="certificate-card-body">
-                                    <h3 class="certificate-title">Interpersonal Communication</h3>
-                                    <p class="certificate-description">Completion</p>
-                                    <a href="https://www.linkedin.com/learning/certificates/f7ca45d1955a9ca10ea2e3a68c441f2673b4d86f0f99ab7aa52ac8defd6e290c?trk=share_certificate" target="_blank" class="btn btn-primary view-certificate-btn">View Certificate</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-lg-4 scale-up">
-                            <div class="certificate-card">
-                                <img src="https://images.seeklogo.com/logo-png/41/2/linkedin-learning-logo-png_seeklogo-412128.png?v=1957190284266798632" alt="Certificate">
-                                <div class="certificate-card-body">
-                                    <h3 class="certificate-title">Nano Tips to Enhance Your Communication with Shadé Zahrai</h3>
-                                    <p class="certificate-description">Completion Only</p>
-                                    <a href="https://www.linkedin.com/learning/certificates/8ff974fd88654cb39d5d302eebd8b9b12afe7f7da7a580ffc8ccf6ded33b2c16?trk=share_certificate" target="_blank" class="btn btn-primary view-certificate-btn">View Certificate</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4 scale-up">
-                            <div class="certificate-card">
-                                <img src="https://images.seeklogo.com/logo-png/41/2/linkedin-learning-logo-png_seeklogo-412128.png?v=1957190284266798632" alt="Certificate">
-                                <div class="certificate-card-body">
-                                    <h3 class="certificate-title">PostgreSQL Essential Training</h3>
-                                    <p class="certificate-description">Completion only</p>
-                                    <a href="https://www.linkedin.com/learning/certificates/b55bb7d07a2b420b90f256f38e13b8ee1ee55b66f85ac0592034c0b8a8ce955d?trk=share_certificate" target="_blank" class="btn btn-primary view-certificate-btn">View Certificate</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4 scale-up">
-                            <div class="certificate-card">
-                                <img src="https://images.seeklogo.com/logo-png/41/2/linkedin-learning-logo-png_seeklogo-412128.png?v=1957190284266798632" alt="Certificate">
-                                <div class="certificate-card-body">
-                                    <h3 class="certificate-title">Python for Data science and Machine Learning Part 1</h3>
-                                    <p class="certificate-description">Completion only</p>
-                                    <a href="https://www.linkedin.com/learning/certificates/caebde15f5f382c1f3bf8b0a39827cc97e69b9d5dad87c23f25609ba4a9d5ded?trk=share_certificate" target="_blank" class="btn btn-primary view-certificate-btn">View Certificate</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4 scale-up">
-                            <div class="certificate-card">
-                                <img src="https://sisc.ro/wp-content/uploads/2022/08/SoloLearn_logo.svg.png" alt="Certificate">
-                                <div class="certificate-card-body">
-                                    <h3 class="certificate-title">AI in Data Analysis</h3>
-                                    <p class="certificate-description">Completion only</p>
-                                    <a href="https://www.sololearn.com/certificates/CC-ZK8PISMW" target="_blank" class="btn btn-primary view-certificate-btn">View Certificate</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4 scale-up">
-                            <div class="certificate-card">
-                                <img src="https://sisc.ro/wp-content/uploads/2022/08/SoloLearn_logo.svg.png" alt="Certificate">
-                                <div class="certificate-card-body">
-                                    <h3 class="certificate-title">ML for Beginners</h3>
-                                    <p class="certificate-description">Completion only</p>
-                                    <a href="https://www.sololearn.com/certificates/CC-N2TWKSUP" target="_blank" class="btn btn-primary view-certificate-btn">View Certificate</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="mt-4 text-center">
-                        <a href="#" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-3 px-6 rounded-full transition duration-300" target="_blank" rel="noopener noreferrer">
-                            View All Certificates
-                        </a>
-                    </div>
-                </div>
-            </section>
-            <section id="contact" class="py-16 px-4 sm:px-6 lg:px-8">
-                <div class="container">
-                    <h2 class="text-3xl sm:text-4xl font-semibold text-cyan-400 mb-8 text-center fade-in">Contact</h2>
-                    <div class="bg-white/5 backdrop-blur-md rounded-xl shadow-md p-8 md:p-12">
-                        <p class="text-gray-400 text-lg text-center mb-6">
-                            Feel free to reach out to me via email or connect with me on social media.
-                            I'm always open to discussing new opportunities and collaborations.
-                        </p>
-                        <div class="d-flex flex-column sm:flex-row justify-content-center gap-4">
-                            <a href="mailto:jeevasurya.datascientist@gmail.com" class="btn btn-primary btn-lg text-white">
-                                Email: Jeevasurya
-                            </a>
-                            <a href="https://www.linkedin.com/in/jeeva-surya/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-lg text-white">
-                                LinkedIn: Jeeva-surya
-                            </a>
-                             <a href="https://www.kaggle.com/jsdatapro/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-dark btn-lg">
-                                Kaggle:jsdatapro
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-        <footer class="py-4 px-4 sm:px-6 lg:px-8 text-gray-400 text-center">
-            <div class="container">
-                &copy; 2025 Jeevasurya Portfolio. All rights reserved.
-            </div>
-        </footer>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-        <script>
-           // Smooth scrolling for all links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-    
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            });
-    
-            // Add active class to nav links on scroll
-            const navLinks = document.querySelectorAll('.nav-link');
-            const sections = document.querySelectorAll('section');
-    
-            function updateActiveNavLink() {
-                let currentSectionId = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionHeight = section.clientHeight;
-                    if (window.scrollY >= sectionTop - 100 && window.scrollY < sectionTop + sectionHeight - 100) {
-                        currentSectionId = section.getAttribute('id');
-                    }
-                });
-    
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href').slice(1) === currentSectionId) {
-                        link.classList.add('active');
-                    }
-                });
-            }
-    
-            window.addEventListener('scroll', updateActiveNavLink);
-    
-            // Chart.js implementation
-            const ctx = document.getElementById('myChart').getContext('2d');
-            const myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                    datasets: [{
-                        label: 'Data Analysis Projects',
-                        data: [10, 12, 15, 13, 16, 14, 18, 20, 19, 22, 21, 23],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.6)',
-                            'rgba(54, 162, 235, 0.6)',
-                            'rgba(255, 206, 86, 0.6)',
-                            'rgba(75, 192, 192, 0.6)',
-                            'rgba(153, 102, 255, 0.6)',
-                            'rgba(255, 159, 64, 0.6)',
-                            'rgba(255, 99, 132, 0.6)',
-                            'rgba(54, 162, 235, 0.6)',
-                            'rgba(255, 206, 86, 0.6)',
-                            'rgba(75, 192, 192, 0.6)',
-                            'rgba(153, 102, 255, 0.6)',
-                            'rgba(255, 159, 64, 0.6)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)',
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: {
-                        duration: 2000,
-                        easing: 'easeInOutQuad'
-                    },
-                    scales: {
-                        x: {
-                            display: true,
-                            title: {
-                                display: true,
-                                text: 'Month',
-                                color: '#6b7280'
-                            },
-                            ticks: {
-                                color: '#6b7280'
-                            },
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.1)'
-                            }
-                        },
-                        y: {
-                            display: true,
-                            title: {
-                                display: true,
-                                text: 'Number of Projects',
-                                color: '#6b7280'
-                            },
-                            ticks: {
-                                color: '#6b7280'
-                            },
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.1)'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                color: '#6b7280',
-                                font: {
-                                    size: 14
-                                }
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleColor: '#fff',
-                            bodyColor: '#fff',
-                            borderColor: '#ddd',
-                            borderWidth: 1,
-                            displayColors: true,
-                        }
-                    }
-                }
-            });
-        </script>
-    </body>
-    </html>
-    
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Your Custom JS -->
+    <script src="js/script.js"></script>
+</body>
+</html>
