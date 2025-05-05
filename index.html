@@ -13,25 +13,54 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-    <!-- Tailwind CSS (via CDN - for simplicity here, ideally use npm) -->
+    <!-- Tailwind CSS (via CDN) -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
     <script>
-        // Optional: Configure Tailwind defaults if needed
+        // Configure Tailwind theme
         tailwind.config = {
           theme: {
             extend: {
               colors: {
-                 cyan: { // Extend or override cyan shades if desired
+                 cyan: {
                     '50': '#ecfeff', '100': '#cffafe', '200': '#a5f3fc',
                     '300': '#67e8f9', '400': '#22d3ee', '500': '#06b6d4',
                     '600': '#0891b2', '700': '#0e7490', '800': '#155e75',
                     '900': '#164e63', '950': '#083344'
                  },
-                 gray: { // Extend or override gray shades
+                 gray: {
                     '50': '#f9fafb', '100': '#f3f4f6', '200': '#e5e7eb',
                     '300': '#d1d5db', '400': '#9ca3af', '500': '#6b7280',
                     '600': '#4b5563', '700': '#374151', '800': '#1f2937',
                     '900': '#111827', '950': '#030712'
+                }
+              },
+              animation: {
+                'floating': 'floating 4s ease-in-out infinite',
+                'slide-in-left': 'slideInLeft 1s ease-out forwards',
+                'slide-in-right': 'slideInRight 1s ease-out forwards',
+                'fade-in': 'fadeIn 1.2s ease-out forwards',
+                'scale-up': 'scaleUp 0.6s ease-out forwards'
+              },
+              keyframes: {
+                floating: {
+                  '0%, 100%': { transform: 'translateY(0)' },
+                  '50%': { transform: 'translateY(-10px)' }
+                },
+                slideInLeft: {
+                  'from': { transform: 'translateX(-80px)', opacity: '0' },
+                  'to': { transform: 'translateX(0)', opacity: '1' }
+                },
+                slideInRight: {
+                  'from': { transform: 'translateX(80px)', opacity: '0' },
+                  'to': { transform: 'translateX(0)', opacity: '1' }
+                },
+                fadeIn: {
+                  'from': { opacity: '0' },
+                  'to': { opacity: '1' }
+                },
+                scaleUp: {
+                  'from': { transform: 'scale(0.95)', opacity: '0' },
+                  'to': { transform: 'scale(1)', opacity: '1' }
                 }
               }
             }
@@ -39,18 +68,67 @@
         }
       </script>
 
-    <!-- Your Custom CSS -->
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 
+    <!-- Inline critical CSS for immediate display -->
+    <style>
+        /* Critical path CSS */
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-color: #030712;
+            color: #e5e7eb;
+        }
+        
+        /* Animation classes (fallback if JS loads slowly) */
+        .slide-in-left { animation: slideInLeft 1s ease-out forwards; opacity: 0; }
+        .slide-in-right { animation: slideInRight 1s ease-out forwards; opacity: 0; }
+        .fade-in { animation: fadeIn 1.2s ease-out forwards; opacity: 0; }
+        .scale-up { animation: scaleUp 0.6s ease-out forwards; opacity: 0; }
+        
+        /* Loading spinner */
+        .loading-spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #030712;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #1f2937;
+            border-top: 5px solid #06b6d4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
-<body class="bg-gray-950 text-gray-200"> <!-- Slightly darker bg -->
+<body class="bg-gray-950 text-gray-200">
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+
     <!-- Background Chart Canvas -->
     <div id="chart-container">
         <canvas id="backgroundChart" class="chart-canvas"></canvas>
     </div>
 
     <!-- Header -->
-    <header class="sticky-top backdrop-blur-md bg-gray-950/80 z-50 shadow-md">
+    <header class="sticky-top backdrop-blur-md bg-gray-950/80 z-50 shadow-lg">
         <nav class="navbar navbar-expand-lg navbar-dark py-3">
             <div class="container">
                 <a href="#" class="navbar-brand text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 transition duration-300">
@@ -101,14 +179,19 @@
                         Get In Touch
                     </a>
                 </div>
-                <!-- Profile Picture -->
-                <div class="col-lg-5 col-md-8 col-sm-10 slide-in-right order-lg-2 order-1">
+                
+                <!-- Profile Picture - Direct Base64 Embed -->
+                <div class="col-lg-5 col-md-8 col-sm-10 slide-in-right order-lg-2 order-1 animate-floating">
                     <div class="profile-image-wrapper mx-auto">
-                         <!-- ==>> CRITICAL FIX: Use the relative path here <<== -->
-                        <img src="images/jeevasurya-profile.png"
-                             alt="Jeevasurya Profile Picture"
-                             class="rounded-full border-4 border-cyan-600/50 shadow-xl w-full h-auto object-cover aspect-square">
-                             <!-- Tailwind classes for styling -->
+                        <!-- Using both inline style and classes for maximum compatibility -->
+                        <div class="relative overflow-hidden rounded-full border-4 border-cyan-600/50 shadow-xl w-full aspect-square">
+                            <!-- Fallback image path for normal hosting + data attribute for JS loading -->
+                            <img id="profile-image" src="./images/profile.jpg" 
+                                 alt="Jeevasurya Profile Picture"
+                                 data-src="./images/profile.jpg"
+                                 class="w-full h-full object-cover transform transition-transform hover:scale-105 duration-700"
+                                 loading="lazy">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -129,7 +212,7 @@
                     </div>
                 </div>
                 <!-- Project Card 2 -->
-                <div class="col-md-6 col-lg-4 scale-up">
+                <div class="col-md-6 col-lg-4 scale-up" style="animation-delay: 200ms;">
                     <div class="data-card tilt-card">
                         <h3 class="card-title">Sales Forecasting</h3>
                         <p class="card-description">
@@ -138,8 +221,8 @@
                         <a href="#" class="card-link">View Details <span aria-hidden="true">→</span></a>
                     </div>
                 </div>
-                 <!-- Project Card 3 -->
-                 <div class="col-md-6 col-lg-4 scale-up">
+                <!-- Project Card 3 -->
+                <div class="col-md-6 col-lg-4 scale-up" style="animation-delay: 400ms;">
                     <div class="data-card tilt-card">
                         <h3 class="card-title">Sentiment Analysis</h3>
                         <p class="card-description">
@@ -148,7 +231,6 @@
                         <a href="#" class="card-link">View Details <span aria-hidden="true">→</span></a>
                     </div>
                 </div>
-                <!-- Add more project cards as needed -->
             </div>
         </section>
 
@@ -196,7 +278,7 @@
         <section id="certificates" class="py-16 px-3">
             <h2 class="section-title fade-in">Certificates</h2>
             <div class="row g-4 justify-content-center">
-                <!-- Certificate Card Example (Repeat for others) -->
+                <!-- Certificate Card 1 -->
                 <div class="col-md-6 col-lg-4 scale-up">
                     <div class="certificate-card">
                         <img src="https://seeklogo.com/images/L/linkedin-learning-logo-4121289336-seeklogo.com.png" alt="LinkedIn Learning Logo" class="certificate-logo">
@@ -207,7 +289,8 @@
                         </div>
                     </div>
                 </div>
-                 <div class="col-md-6 col-lg-4 scale-up">
+                <!-- Certificate Card 2 -->
+                <div class="col-md-6 col-lg-4 scale-up" style="animation-delay: 200ms;">
                     <div class="certificate-card">
                         <img src="https://seeklogo.com/images/L/linkedin-learning-logo-4121289336-seeklogo.com.png" alt="LinkedIn Learning Logo" class="certificate-logo">
                         <div class="certificate-card-body">
@@ -217,7 +300,8 @@
                         </div>
                     </div>
                 </div>
-                 <div class="col-md-6 col-lg-4 scale-up">
+                <!-- Certificate Card 3 -->
+                <div class="col-md-6 col-lg-4 scale-up" style="animation-delay: 400ms;">
                     <div class="certificate-card">
                         <img src="https://seeklogo.com/images/L/linkedin-learning-logo-4121289336-seeklogo.com.png" alt="LinkedIn Learning Logo" class="certificate-logo">
                         <div class="certificate-card-body">
@@ -227,8 +311,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- Add other certificate cards similarly... -->
-                 <div class="col-md-6 col-lg-4 scale-up">
+                <!-- Certificate Card 4 -->
+                <div class="col-md-6 col-lg-4 scale-up" style="animation-delay: 600ms;">
                     <div class="certificate-card">
                          <img src="https://sisc.ro/wp-content/uploads/2022/08/SoloLearn_logo.svg.png" alt="SoloLearn Logo" class="certificate-logo">
                          <div class="certificate-card-body">
@@ -237,8 +321,9 @@
                              <a href="https://www.sololearn.com/certificates/CC-ZK8PISMW" target="_blank" rel="noopener noreferrer" class="certificate-link">View Certificate</a>
                          </div>
                     </div>
-                 </div>
-                 <div class="col-md-6 col-lg-4 scale-up">
+                </div>
+                <!-- Certificate Card 5 -->
+                <div class="col-md-6 col-lg-4 scale-up" style="animation-delay: 800ms;">
                     <div class="certificate-card">
                          <img src="https://sisc.ro/wp-content/uploads/2022/08/SoloLearn_logo.svg.png" alt="SoloLearn Logo" class="certificate-logo">
                          <div class="certificate-card-body">
@@ -247,15 +332,8 @@
                              <a href="https://www.sololearn.com/certificates/CC-N2TWKSUP" target="_blank" rel="noopener noreferrer" class="certificate-link">View Certificate</a>
                          </div>
                     </div>
-                 </div>
-
+                </div>
             </div>
-            <!-- Optional: View All Button -->
-            <!-- <div class="mt-8 text-center">
-                <a href="#" class="inline-block bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold py-3 px-8 rounded-full transition duration-300 shadow-lg hover:shadow-cyan-500/50 transform hover:scale-105" target="_blank" rel="noopener noreferrer">
-                    View All Certificates
-                </a>
-            </div> -->
         </section>
 
         <!-- Contact Section -->
@@ -265,7 +343,7 @@
                 <p class="text-gray-400 text-lg mb-8 leading-relaxed">
                     I'm actively seeking opportunities and collaborations in Data Science. Feel free to reach out via email or connect with me on social media. Let's discuss how we can work together!
                 </p>
-                <div class="d-flex flex-column sm:flex-row justify-content-center align-items-center gap-4">
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
                     <a href="mailto:jeevasurya.datascientist@gmail.com" class="contact-button btn-email">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 inline-block mr-2"> <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z"></path><path d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z"></path> </svg>
                         Email Me
@@ -274,8 +352,8 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-linkedin inline-block mr-2" viewBox="0 0 16 16"> <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/> </svg>
                         LinkedIn
                     </a>
-                     <a href="https://www.kaggle.com/jsdatapro/" target="_blank" rel="noopener noreferrer" class="contact-button btn-kaggle">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-kanban inline-block mr-2" viewBox="0 0 16 16"> <path d="M13.5 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm-11-1a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/> <path d="M6.5 3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm-4 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm8 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1z"/> </svg>
+                    <a href="https://www.kaggle.com/jsdatapro/" target="_blank" rel="noopener noreferrer" class="contact-button btn-kaggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-kanban inline-block mr-2" viewBox="0 0 16 16"> <path d="M13.5 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm-11-1a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/> <path d="M6.5 3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm-4 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm8 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1z"/> </svg>
                         Kaggle
                     </a>
                 </div>
@@ -292,9 +370,72 @@
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <!-- Your Custom JS -->
     <script src="js/script.js"></script>
+    
+    <!-- Additional Script for Image Handling and Loading -->
+    <script>
+        // Image handling script
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fade out loading spinner
+            setTimeout(() => {
+                const spinner = document.getElementById('loading-spinner');
+                if (spinner) {
+                    spinner.style.opacity = '0';
+                    setTimeout(() => {
+                        spinner.style.display = 'none';
+                    }, 500);
+                }
+            }, 800);
+            
+            // Profile image fallback mechanism
+            const profileImage = document.getElementById('profile-image');
+            if (profileImage) {
+                // Try multiple path variants
+                const imagePaths = [
+                    './images/profile.jpg',
+                    './images/jeevasurya-profile.png',
+                    './images/jeevasurya-profile.jpg',
+                    '/images/profile.jpg',
+                    '../images/profile.jpg',
+                    'images/profile.jpg'
+                ];
+                
+                // Test image loading function
+                function testImagePath(path, callback) {
+                    const tempImg = new Image();
+                    tempImg.onload = function() { callback(path, true); };
+                    tempImg.onerror = function() { callback(path, false); };
+                    tempImg.src = path;
+                }
+                
+                // Try each path until one works
+                let pathIndex = 0;
+                function tryNextPath() {
+                    if (pathIndex >= imagePaths.length) {
+                        console.log('Could not load profile image from any paths');
+                        return;
+                    }
+                    
+                    testImagePath(imagePaths[pathIndex], function(path, success) {
+                        if (success) {
+                            profileImage.src = path;
+                            console.log('Loaded profile image from:', path);
+                        } else {
+                            pathIndex++;
+                            tryNextPath();
+                        }
+                    });
+                }
+                
+                // Start trying paths
+                tryNextPath();
+            }
+        });
+    </script>
 </body>
 </html>
