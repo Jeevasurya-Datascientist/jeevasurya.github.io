@@ -1,243 +1,77 @@
-/* Import Google Font (already linked in HTML, but good practice) */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-body {
-    font-family: 'Inter', sans-serif;
-    /* Base colors are set via Tailwind in the HTML body tag */
-    /* background-color: #030712; Slightly darker than gray-950 if needed */
-    /* color: #e5e7eb; */
-    overflow-x: hidden; /* Prevent horizontal scroll */
+/* === Base Styles === */
+html, body {
+    scroll-behavior: smooth;
 }
 
-/* --- Navbar --- */
-.navbar .nav-link.active {
-    /* Style for active link - can use Tailwind classes in JS or simple CSS */
-    color: #22d3ee; /* cyan-400 */
-    font-weight: 600;
-    background-color: rgba(31, 41, 55, 0.5); /* gray-800 with opacity */
-}
-
-/* --- Section Title --- */
-.section-title {
-    text-align: center;
-    font-size: 2.25rem; /* text-3xl */
-    line-height: 2.5rem; /* leading-10 */
-    font-weight: 700; /* font-bold */
-    color: #67e8f9; /* cyan-300 */
-    margin-bottom: 3rem; /* mb-12 */
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-/* --- Profile Image --- */
-.profile-image-wrapper {
-    max-width: 350px; /* Adjust as needed */
-    /* Centering is handled by mx-auto in Tailwind */
-}
-/* The image itself gets Tailwind classes */
-
-
-/* --- General Data Card Styling --- */
-.data-card {
-    background-color: rgba(31, 41, 55, 0.5); /* bg-gray-800 with alpha */
-    backdrop-filter: blur(12px);
-    border-radius: 0.75rem; /* rounded-xl */
-    border: 1px solid rgba(75, 85, 99, 0.6); /* border-gray-700 with alpha */
-    padding: 1.75rem; /* p-7 */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    height: 100%; /* Make cards in a row equal height */
-    display: flex;
-    flex-direction: column;
-}
-
-.data-card:hover {
-   box-shadow: 0 10px 15px -3px rgba(6, 182, 212, 0.2), 0 4px 6px -2px rgba(6, 182, 212, 0.1); /* shadow-lg with cyan tint */
-   border-color: rgba(103, 232, 249, 0.5); /* cyan-300 border */
-   transform: translateY(-5px);
-}
-
-.card-title {
-    font-size: 1.25rem; /* text-xl */
-    font-weight: 600; /* font-semibold */
-    color: #a5f3fc; /* cyan-200 */
-    margin-bottom: 0.75rem; /* mb-3 */
-}
-
-.card-description {
-    color: #d1d5db; /* text-gray-300 */
-    margin-bottom: 1rem; /* mb-4 */
-    flex-grow: 1; /* Allows description to push link down in flex column */
-    line-height: 1.6;
-}
-
-.card-link {
-    color: #67e8f9; /* cyan-300 */
-    font-weight: 500; /* font-medium */
-    transition: color 0.3s ease;
+a {
     text-decoration: none;
-    margin-top: auto; /* Pushes link to the bottom */
+    color: inherit;
 }
 
-.card-link:hover {
-    color: #22d3ee; /* cyan-400 */
+h1, h2, h3, h4 {
+    font-weight: 700;
 }
 
-/* --- Certificate Card Styling --- */
-.certificate-card {
-    background-color: rgba(31, 41, 55, 0.5); /* bg-gray-800 with alpha */
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(75, 85, 99, 0.6); /* border-gray-700 */
-    border-radius: 1rem; /* rounded-lg */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden; /* Hide overflow */
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+section {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
 }
 
-.certificate-card:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 10px 20px rgba(6, 182, 212, 0.15); /* Adjusted shadow */
-}
-
-.certificate-logo {
-    width: 100%;
-    height: 120px; /* Fixed height for logos */
-    object-fit: contain; /* Fit logo without stretching */
-    padding: 1rem; /* Add padding around logo */
-    background-color: rgba(55, 65, 81, 0.3); /* bg-gray-700 slightly transparent */
-    border-bottom: 1px solid rgba(75, 85, 99, 0.6);
-}
-
-.certificate-card-body {
-    padding: 1.5rem;
-    text-align: center;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.certificate-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #e5e7eb; /* gray-200 */
-    margin-bottom: 0.3rem;
-}
-
-.certificate-description {
-    font-size: 0.9rem;
-    color: #9ca3af; /* gray-400 */
-    flex-grow: 1;
-    margin-bottom: 1rem;
-}
-
-.certificate-link {
-    margin-top: auto; /* Push button to bottom */
-    display: inline-block;
-    padding: 0.6rem 1.2rem;
-    background: linear-gradient(to right, #0891b2, #06b6d4); /* cyan-600 to cyan-500 */
+/* === Button Glow === */
+.button-glow {
+    background: linear-gradient(to right, #06b6d4, #3b82f6);
     color: white;
-    border-radius: 9999px; /* rounded-full */
-    text-decoration: none;
-    font-weight: 500;
+    border-radius: 9999px;
+    padding: 0.75rem 2rem;
     transition: all 0.3s ease;
-    font-size: 0.9rem;
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
 }
 
-.certificate-link:hover {
-    background: linear-gradient(to right, #0e7490, #0891b2); /* darker cyan gradient */
-    box-shadow: 0 4px 10px rgba(6, 182, 212, 0.3);
+.button-glow:hover {
     transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.7);
 }
 
-
-/* --- Contact Buttons --- */
-.contact-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.75rem 1.5rem; /* py-3 px-6 */
-    font-weight: 600; /* font-semibold */
-    border-radius: 9999px; /* rounded-full */
-    transition: all 0.3s ease;
-    text-decoration: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.contact-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.btn-email {
-    background-color: #ef4444; /* red-500 */
-    color: white;
-}
-.btn-email:hover { background-color: #dc2626; /* red-600 */}
-
-.btn-linkedin {
-    background-color: #0a66c2; /* LinkedIn Blue */
-    color: white;
-}
-.btn-linkedin:hover { background-color: #004182; }
-
-.btn-kaggle {
-    background-color: #20beff; /* Kaggle Blue */
-    color: white;
-}
-.btn-kaggle:hover { background-color: #038fce; } /* Darker Kaggle blue */
-
-
-/* --- Animations --- */
-.slide-in-left { animation: slideInLeft 1s ease-out forwards; opacity: 0; }
-@keyframes slideInLeft {
-    from { transform: translateX(-80px); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-.slide-in-right { animation: slideInRight 1s ease-out forwards; opacity: 0; }
-@keyframes slideInRight {
-    from { transform: translateX(80px); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-.fade-in { animation: fadeIn 1.2s ease-out forwards; opacity: 0; }
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.scale-up { animation: scaleUp 0.6s ease-out forwards; opacity: 0; transform: scale(0.95); }
-@keyframes scaleUp {
-    from { transform: scale(0.95); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-/* Card Tilt Effect */
-.tilt-card {
-    transition: transform 0.4s ease-out, box-shadow 0.4s ease-out;
-    transform-style: preserve-3d; /* Needed for perspective */
-}
-.tilt-card:hover {
-    transform: perspective(1000px) rotateY(5deg) rotateX(-5deg) scale(1.03);
-    /* box-shadow is handled by .data-card:hover */
-}
-
-/* --- Background Chart Container --- */
-#chart-container {
-    position: fixed;
-    top: 0;
-    left: 0;
+/* === Profile Image === */
+.profile-image-wrapper img {
     width: 100%;
-    height: 100%;
-    z-index: -1; /* Behind everything */
-    pointer-events: none; /* Clicks pass through */
-    opacity: 0.07; /* Make it very subtle */
+    max-width: 300px;
+    border-radius: 1rem;
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.5);
+    transition: transform 0.3s ease;
 }
 
-.chart-canvas {
-    width: 100%;
-    height: 100%;
+.profile-image-wrapper img:hover {
+    transform: scale(1.03);
+}
+
+/* === Sections === */
+section:nth-child(even) {
+    background-color: #1f2937;
+}
+
+/* === Cards === */
+.card-custom {
+    background-color: #111827;
+    border: none;
+    border-radius: 1rem;
+    padding: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card-custom:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 6px 30px rgba(6, 182, 212, 0.4);
+}
+
+/* === Responsive Fixes === */
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .button-glow {
+        padding: 0.6rem 1.5rem;
+    }
 }
