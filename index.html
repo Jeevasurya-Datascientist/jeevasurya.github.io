@@ -3,437 +3,737 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeevasurya - Data Science Portfolio</title>
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
-    <!-- Tailwind CSS (via CDN) -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
-    <script>
-        // Configure Tailwind theme
-        tailwind.config = {
-          theme: {
-            extend: {
-              colors: {
-                 cyan: {
-                    '50': '#ecfeff', '100': '#cffafe', '200': '#a5f3fc',
-                    '300': '#67e8f9', '400': '#22d3ee', '500': '#06b6d4',
-                    '600': '#0891b2', '700': '#0e7490', '800': '#155e75',
-                    '900': '#164e63', '950': '#083344'
-                 },
-                 gray: {
-                    '50': '#f9fafb', '100': '#f3f4f6', '200': '#e5e7eb',
-                    '300': '#d1d5db', '400': '#9ca3af', '500': '#6b7280',
-                    '600': '#4b5563', '700': '#374151', '800': '#1f2937',
-                    '900': '#111827', '950': '#030712'
-                }
-              },
-              animation: {
-                'floating': 'floating 4s ease-in-out infinite',
-                'slide-in-left': 'slideInLeft 1s ease-out forwards',
-                'slide-in-right': 'slideInRight 1s ease-out forwards',
-                'fade-in': 'fadeIn 1.2s ease-out forwards',
-                'scale-up': 'scaleUp 0.6s ease-out forwards'
-              },
-              keyframes: {
-                floating: {
-                  '0%, 100%': { transform: 'translateY(0)' },
-                  '50%': { transform: 'translateY(-10px)' }
-                },
-                slideInLeft: {
-                  'from': { transform: 'translateX(-80px)', opacity: '0' },
-                  'to': { transform: 'translateX(0)', opacity: '1' }
-                },
-                slideInRight: {
-                  'from': { transform: 'translateX(80px)', opacity: '0' },
-                  'to': { transform: 'translateX(0)', opacity: '1' }
-                },
-                fadeIn: {
-                  'from': { opacity: '0' },
-                  'to': { opacity: '1' }
-                },
-                scaleUp: {
-                  'from': { transform: 'scale(0.95)', opacity: '0' },
-                  'to': { transform: 'scale(1)', opacity: '1' }
-                }
-              }
-            }
-          }
-        }
-      </script>
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
-
-    <!-- Inline critical CSS for immediate display -->
+    <title>Jeevasurya - Data Scientist Portfolio</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Critical path CSS */
-        body {
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
-            background-color: #030712;
-            color: #e5e7eb;
-        }
-        
-        /* Animation classes (fallback if JS loads slowly) */
-        .slide-in-left { animation: slideInLeft 1s ease-out forwards; opacity: 0; }
-        .slide-in-right { animation: slideInRight 1s ease-out forwards; opacity: 0; }
-        .fade-in { animation: fadeIn 1.2s ease-out forwards; opacity: 0; }
-        .scale-up { animation: scaleUp 0.6s ease-out forwards; opacity: 0; }
-        
-        /* Loading spinner */
-        .loading-spinner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #030712;
+        /* Custom styles */
+        .hero-section {
+            background: linear-gradient(135deg, #4286f4, #373B44);
+            color: white;
+            height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease-out;
         }
-        .spinner {
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #4286f4;
+            transition: width 0.3s;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .skill-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .certificate-card {
+            overflow: hidden;
+        }
+        
+        .certificate-card img {
+            transition: transform 0.5s;
+        }
+        
+        .certificate-card:hover img {
+            transform: scale(1.05);
+        }
+        
+        .form-control:focus {
+            border-color: #4286f4;
+            box-shadow: 0 0 0 0.25rem rgba(66, 134, 244, 0.25);
+        }
+        
+        #resume-section {
+            background-color: #f8f9fa;
+        }
+        
+        #skills-section {
+            background-color: #ffffff;
+        }
+        
+        #certificates-section {
+            background-color: #f8f9fa;
+        }
+        
+        #about-section {
+            background-color: #ffffff;
+        }
+        
+        .hidden-certificates {
+            display: none;
+        }
+        
+        /* Preloader animation */
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #4286f4;
+            border-radius: 50%;
             width: 50px;
             height: 50px;
-            border: 5px solid #1f2937;
-            border-top: 5px solid #06b6d4;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
         }
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
+        /* Typewriter effect for hero section */
+        .typewriter h1 {
+            overflow: hidden;
+            border-right: .15em solid #4286f4;
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: 
+                typing 3.5s steps(40, end),
+                blink-caret .75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #4286f4; }
+        }
     </style>
 </head>
-<body class="bg-gray-950 text-gray-200">
-    <!-- Loading Spinner -->
-    <div class="loading-spinner" id="loading-spinner">
-        <div class="spinner"></div>
-    </div>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm" id="navbar">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="#">Jeevasurya</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link mx-2" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-2" href="#skills-section">Skills</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-2" href="#certificates-section">Certificates</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-2" href="#resume-section">Resume</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-2" href="#about-section">About Me</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <!-- Background Chart Canvas -->
-    <div id="chart-container">
-        <canvas id="backgroundChart" class="chart-canvas"></canvas>
-    </div>
-
-    <!-- Header -->
-    <header class="sticky-top backdrop-blur-md bg-gray-950/80 z-50 shadow-lg">
-        <nav class="navbar navbar-expand-lg navbar-dark py-3">
-            <div class="container">
-                <a href="#" class="navbar-brand text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 transition duration-300">
-                    Jeevasurya | Portfolio
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto gap-x-2">
-                        <li class="nav-item">
-                            <a class="nav-link px-3 py-2 rounded-md hover:bg-gray-800 hover:text-cyan-300 transition duration-300" href="#about">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link px-3 py-2 rounded-md hover:bg-gray-800 hover:text-cyan-300 transition duration-300" href="#projects">Projects</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link px-3 py-2 rounded-md hover:bg-gray-800 hover:text-cyan-300 transition duration-300" href="#skills">Skills</a>
-                        </li>
-                         <li class="nav-item">
-                            <a class="nav-link px-3 py-2 rounded-md hover:bg-gray-800 hover:text-cyan-300 transition duration-300" href="#certificates">Certificates</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link px-3 py-2 rounded-md hover:bg-gray-800 hover:text-cyan-300 transition duration-300" href="#contact">Contact</a>
-                        </li>
-                    </ul>
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 typewriter">
+                    <h1 class="display-4 fw-bold mb-4">Hi, I'm Jeevasurya</h1>
+                    <h2 class="h2 mb-4">Data Scientist & ML Engineer</h2>
+                    <p class="lead mb-5">Transforming data into actionable insights and building intelligent solutions through advanced analytics and machine learning.</p>
+                    <div class="d-flex">
+                        <a href="#about-section" class="btn btn-primary px-4 py-2 me-3">Contact Me</a>
+                        <a href="#skills-section" class="btn btn-outline-light px-4 py-2">Explore Skills</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center d-none d-lg-block">
+                    <img src="/api/placeholder/500/500" alt="Jeevasurya" class="img-fluid rounded-circle shadow" style="max-width: 80%;">
                 </div>
             </div>
-        </nav>
-    </header>
+        </div>
+    </section>
 
-    <!-- Main Content -->
-    <main class="container py-5 mt-4">
-
-        <!-- About Section -->
-        <section id="about" class="py-16 px-3">
-            <div class="row align-items-center justify-content-center g-5">
-                <!-- Text Content -->
-                <div class="col-lg-6 col-md-12 slide-in-left order-lg-1 order-2 text-center text-lg-start">
-                     <h1 class="text-4xl sm:text-5xl font-bold mb-3">
-                        Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Jeevasurya</span>
-                    </h1>
-                    <h2 class="text-2xl sm:text-3xl font-semibold text-cyan-400 mb-4">Aspiring Data Scientist</h2>
-                    <p class="text-gray-400 text-lg mb-6 leading-relaxed">
-                        A dedicated student pursuing a Diploma in Computer Science, passionate about exploring the world of data science and machine learning. Eager to develop skills, contribute to impactful projects, and continuously learn in this exciting field.
-                    </p>
-                    <a href="#contact" class="inline-block bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold py-3 px-8 rounded-full transition duration-300 shadow-lg hover:shadow-cyan-500/50 transform hover:scale-105">
-                        Get In Touch
-                    </a>
+    <!-- Skills Section -->
+    <section class="py-5" id="skills-section">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Technical Skills</h2>
+                <p class="lead text-muted">Expertise across the data science spectrum</p>
+            </div>
+            <div class="row g-4">
+                <!-- Data Science Skills -->
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm skill-card">
+                        <div class="card-body text-center">
+                            <div class="rounded-circle bg-primary bg-opacity-10 p-3 d-inline-block mb-3">
+                                <i class="fas fa-chart-line fa-2x text-primary"></i>
+                            </div>
+                            <h3 class="h5 card-title mb-3">Data Analysis</h3>
+                            <p class="card-text text-muted">Expert in statistical analysis, data wrangling, and exploratory data analysis using Python and R.</p>
+                            <div class="mt-4">
+                                <span class="badge bg-light text-dark border me-2 mb-2">Python</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">R</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">Pandas</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">NumPy</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">SQL</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                <!-- Profile Picture - Direct Base64 Embed -->
-                <div class="col-lg-5 col-md-8 col-sm-10 slide-in-right order-lg-2 order-1 animate-floating">
-                    <div class="profile-image-wrapper mx-auto">
-                        <!-- Using both inline style and classes for maximum compatibility -->
-                        <div class="relative overflow-hidden rounded-full border-4 border-cyan-600/50 shadow-xl w-full aspect-square">
-                            <!-- Fallback image path for normal hosting + data attribute for JS loading -->
-                            <img id="profile-image" src="./images/profile.jpg" 
-                                 alt="Jeevasurya Profile Picture"
-                                 data-src="./images/profile.jpg"
-                                 class="w-full h-full object-cover transform transition-transform hover:scale-105 duration-700"
-                                 loading="lazy">
+                <!-- Machine Learning Skills -->
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm skill-card">
+                        <div class="card-body text-center">
+                            <div class="rounded-circle bg-warning bg-opacity-10 p-3 d-inline-block mb-3">
+                                <i class="fas fa-brain fa-2x text-warning"></i>
+                            </div>
+                            <h3 class="h5 card-title mb-3">Machine Learning</h3>
+                            <p class="card-text text-muted">Implementation of ML algorithms, model training, evaluation, and deployment across various domains.</p>
+                            <div class="mt-4">
+                                <span class="badge bg-light text-dark border me-2 mb-2">Scikit-learn</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">TensorFlow</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">PyTorch</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">XGBoost</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">Deep Learning</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Data Visualization Skills -->
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm skill-card">
+                        <div class="card-body text-center">
+                            <div class="rounded-circle bg-success bg-opacity-10 p-3 d-inline-block mb-3">
+                                <i class="fas fa-chart-pie fa-2x text-success"></i>
+                            </div>
+                            <h3 class="h5 card-title mb-3">Data Visualization</h3>
+                            <p class="card-text text-muted">Creating insightful visualizations and interactive dashboards to communicate findings effectively.</p>
+                            <div class="mt-4">
+                                <span class="badge bg-light text-dark border me-2 mb-2">Matplotlib</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">Seaborn</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">Plotly</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">Tableau</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">Power BI</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Big Data Skills -->
+                <div class="col-md-4 mt-4">
+                    <div class="card h-100 border-0 shadow-sm skill-card">
+                        <div class="card-body text-center">
+                            <div class="rounded-circle bg-danger bg-opacity-10 p-3 d-inline-block mb-3">
+                                <i class="fas fa-database fa-2x text-danger"></i>
+                            </div>
+                            <h3 class="h5 card-title mb-3">Big Data Technologies</h3>
+                            <p class="card-text text-muted">Experience with distributed computing frameworks and big data processing tools.</p>
+                            <div class="mt-4">
+                                <span class="badge bg-light text-dark border me-2 mb-2">Hadoop</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">Spark</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">Kafka</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">Hive</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">MongoDB</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cloud Computing Skills -->
+                <div class="col-md-4 mt-4">
+                    <div class="card h-100 border-0 shadow-sm skill-card">
+                        <div class="card-body text-center">
+                            <div class="rounded-circle bg-info bg-opacity-10 p-3 d-inline-block mb-3">
+                                <i class="fas fa-cloud fa-2x text-info"></i>
+                            </div>
+                            <h3 class="h5 card-title mb-3">Cloud Computing</h3>
+                            <p class="card-text text-muted">Deploying and managing data science solutions on cloud platforms.</p>
+                            <div class="mt-4">
+                                <span class="badge bg-light text-dark border me-2 mb-2">AWS</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">Azure</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">Google Cloud</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">Docker</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">Kubernetes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Software Development Skills -->
+                <div class="col-md-4 mt-4">
+                    <div class="card h-100 border-0 shadow-sm skill-card">
+                        <div class="card-body text-center">
+                            <div class="rounded-circle bg-secondary bg-opacity-10 p-3 d-inline-block mb-3">
+                                <i class="fas fa-code fa-2x text-secondary"></i>
+                            </div>
+                            <h3 class="h5 card-title mb-3">Software Development</h3>
+                            <p class="card-text text-muted">Building robust, scalable applications with best coding practices.</p>
+                            <div class="mt-4">
+                                <span class="badge bg-light text-dark border me-2 mb-2">Git</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">CI/CD</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">Flask</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">Django</span>
+                                <span class="badge bg-light text-dark border me-2 mb-2">FastAPI</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Projects Section -->
-        <section id="projects" class="py-16 px-3">
-            <h2 class="section-title fade-in">Projects</h2>
-            <div class="row g-4 justify-content-center">
-                <!-- Project Card 1 -->
-                <div class="col-md-6 col-lg-4 scale-up">
-                    <div class="data-card tilt-card">
-                        <h3 class="card-title">Customer Churn Prediction</h3>
-                        <p class="card-description">
-                            Developed a ML model to predict customer churn for a telecom company using Python, Pandas, Scikit-learn. Visualized results with Matplotlib.
-                        </p>
-                        <a href="#" class="card-link">View Details <span aria-hidden="true">→</span></a>
-                    </div>
-                </div>
-                <!-- Project Card 2 -->
-                <div class="col-md-6 col-lg-4 scale-up" style="animation-delay: 200ms;">
-                    <div class="data-card tilt-card">
-                        <h3 class="card-title">Sales Forecasting</h3>
-                        <p class="card-description">
-                            Built a time series model (ARIMA) in R to predict future sales trends. Created interactive visualizations with Plotly.
-                        </p>
-                        <a href="#" class="card-link">View Details <span aria-hidden="true">→</span></a>
-                    </div>
-                </div>
-                <!-- Project Card 3 -->
-                <div class="col-md-6 col-lg-4 scale-up" style="animation-delay: 400ms;">
-                    <div class="data-card tilt-card">
-                        <h3 class="card-title">Sentiment Analysis</h3>
-                        <p class="card-description">
-                            Implemented sentiment analysis using Python & NLTK to classify customer reviews. Evaluated model performance with various metrics.
-                        </p>
-                        <a href="#" class="card-link">View Details <span aria-hidden="true">→</span></a>
-                    </div>
-                </div>
+    <!-- Certificates Section -->
+    <section class="py-5 bg-light" id="certificates-section">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Certifications</h2>
+                <p class="lead text-muted">Professional qualifications and achievements</p>
             </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills" class="py-16 px-3">
-            <h2 class="section-title fade-in">Skills</h2>
-            <div class="row g-4 justify-content-center">
-                <!-- Technical Skills -->
-                <div class="col-lg-5 col-md-6 slide-in-left">
-                    <div class="data-card h-100">
-                        <h3 class="card-title text-2xl">Technical Skills</h3>
-                        <ul class="list-disc list-inside text-gray-400 space-y-2 mt-4">
-                            <li>Python (Pandas, Scikit-learn, TensorFlow, PyTorch)</li>
-                            <li>R (Tidyverse, ARIMA)</li>
-                            <li>SQL (PostgreSQL, MySQL)</li>
-                            <li>Data Visualization (Matplotlib, Plotly, Seaborn)</li>
-                            <li>Machine Learning (Regression, Classification, Clustering)</li>
-                            <li>Deep Learning (CNNs, RNNs)</li>
-                            <li>Statistical Modeling</li>
-                            <li>Big Data Tools (Basic Hadoop, Spark)</li>
-                            <li>Cloud Platforms (Basic AWS, Azure)</li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Soft Skills -->
-                <div class="col-lg-5 col-md-6 slide-in-right">
-                     <div class="data-card h-100">
-                        <h3 class="card-title text-2xl">Soft Skills</h3>
-                        <ul class="list-disc list-inside text-gray-400 space-y-2 mt-4">
-                            <li>Problem Solving & Analytical Thinking</li>
-                            <li>Communication (Written & Verbal)</li>
-                            <li>Teamwork & Collaboration</li>
-                            <li>Critical Thinking</li>
-                            <li>Time Management & Organization</li>
-                            <li>Data Storytelling</li>
-                            <li>Adaptability & Eagerness to Learn</li>
-                            <li>Attention to Detail</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-         <!-- Certificates Section -->
-        <section id="certificates" class="py-16 px-3">
-            <h2 class="section-title fade-in">Certificates</h2>
-            <div class="row g-4 justify-content-center">
-                <!-- Certificate Card 1 -->
-                <div class="col-md-6 col-lg-4 scale-up">
-                    <div class="certificate-card">
-                        <img src="https://seeklogo.com/images/L/linkedin-learning-logo-4121289336-seeklogo.com.png" alt="LinkedIn Learning Logo" class="certificate-logo">
-                        <div class="certificate-card-body">
-                            <h3 class="certificate-title">Data Science Foundations</h3>
-                            <p class="certificate-description">LinkedIn Learning - Fundamentals</p>
-                            <a href="https://www.linkedin.com/learning/certificates/2a8e0d28508dc76b7de4777f482dd5c61666ec976179933d6139059248ed8f5d" target="_blank" rel="noopener noreferrer" class="certificate-link">View Certificate</a>
+            
+            <div class="row g-4">
+                <!-- Visible certificates (first 3) -->
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 certificate-card">
+                        <img src="/api/placeholder/600/400" class="card-img-top" alt="Machine Learning Certificate">
+                        <div class="card-body">
+                            <h3 class="h5 card-title">Machine Learning Specialization</h3>
+                            <p class="card-text text-muted">Stanford University & Coursera</p>
+                            <p class="small text-muted mb-2">Completed: January 2024</p>
+                            <span class="badge bg-primary">Machine Learning</span>
+                            <span class="badge bg-secondary">AI</span>
                         </div>
                     </div>
                 </div>
-                <!-- Certificate Card 2 -->
-                <div class="col-md-6 col-lg-4 scale-up" style="animation-delay: 200ms;">
-                    <div class="certificate-card">
-                        <img src="https://seeklogo.com/images/L/linkedin-learning-logo-4121289336-seeklogo.com.png" alt="LinkedIn Learning Logo" class="certificate-logo">
-                        <div class="certificate-card-body">
-                            <h3 class="certificate-title">SQL Essential Training</h3>
-                            <p class="certificate-description">LinkedIn Learning - Completion & Exam</p>
-                            <a href="https://www.linkedin.com/learning/certificates/5df93c3487709d91644811b5936e0345e4b9bca63d121dc71cadfffb15bdad5c" target="_blank" rel="noopener noreferrer" class="certificate-link">View Certificate</a>
+                
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 certificate-card">
+                        <img src="/api/placeholder/600/400" class="card-img-top" alt="Data Science Certificate">
+                        <div class="card-body">
+                            <h3 class="h5 card-title">Data Science Professional Certificate</h3>
+                            <p class="card-text text-muted">IBM</p>
+                            <p class="small text-muted mb-2">Completed: October 2023</p>
+                            <span class="badge bg-primary">Data Science</span>
+                            <span class="badge bg-info">Python</span>
                         </div>
                     </div>
                 </div>
-                <!-- Certificate Card 3 -->
-                <div class="col-md-6 col-lg-4 scale-up" style="animation-delay: 400ms;">
-                    <div class="certificate-card">
-                        <img src="https://seeklogo.com/images/L/linkedin-learning-logo-4121289336-seeklogo.com.png" alt="LinkedIn Learning Logo" class="certificate-logo">
-                        <div class="certificate-card-body">
-                            <h3 class="certificate-title">Hands-on Data Science</h3>
-                            <p class="certificate-description">LinkedIn Learning - SQL, Tableau, Python, Spark</p>
-                            <a href="https://www.linkedin.com/learning/certificates/bd4601d33a80152b024007eadf19ee2074e0b0ffec68c125e2398b847690538a" target="_blank" rel="noopener noreferrer" class="certificate-link">View Certificate</a>
+                
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 certificate-card">
+                        <img src="/api/placeholder/600/400" class="card-img-top" alt="Deep Learning Certificate">
+                        <div class="card-body">
+                            <h3 class="h5 card-title">Deep Learning Specialization</h3>
+                            <p class="card-text text-muted">DeepLearning.AI</p>
+                            <p class="small text-muted mb-2">Completed: March 2023</p>
+                            <span class="badge bg-primary">Deep Learning</span>
+                            <span class="badge bg-warning text-dark">Neural Networks</span>
                         </div>
                     </div>
                 </div>
-                <!-- Certificate Card 4 -->
-                <div class="col-md-6 col-lg-4 scale-up" style="animation-delay: 600ms;">
-                    <div class="certificate-card">
-                         <img src="https://sisc.ro/wp-content/uploads/2022/08/SoloLearn_logo.svg.png" alt="SoloLearn Logo" class="certificate-logo">
-                         <div class="certificate-card-body">
-                             <h3 class="certificate-title">AI in Data Analysis</h3>
-                             <p class="certificate-description">SoloLearn - Completion</p>
-                             <a href="https://www.sololearn.com/certificates/CC-ZK8PISMW" target="_blank" rel="noopener noreferrer" class="certificate-link">View Certificate</a>
-                         </div>
+                
+                <!-- Hidden certificates (revealed by "See All" button) -->
+                <div class="col-md-4 hidden-certificates">
+                    <div class="card border-0 shadow-sm h-100 certificate-card">
+                        <img src="/api/placeholder/600/400" class="card-img-top" alt="Big Data Certificate">
+                        <div class="card-body">
+                            <h3 class="h5 card-title">Big Data Specialization</h3>
+                            <p class="card-text text-muted">University of California, San Diego</p>
+                            <p class="small text-muted mb-2">Completed: September 2022</p>
+                            <span class="badge bg-primary">Big Data</span>
+                            <span class="badge bg-success">Hadoop</span>
+                        </div>
                     </div>
                 </div>
-                <!-- Certificate Card 5 -->
-                <div class="col-md-6 col-lg-4 scale-up" style="animation-delay: 800ms;">
-                    <div class="certificate-card">
-                         <img src="https://sisc.ro/wp-content/uploads/2022/08/SoloLearn_logo.svg.png" alt="SoloLearn Logo" class="certificate-logo">
-                         <div class="certificate-card-body">
-                             <h3 class="certificate-title">ML for Beginners</h3>
-                             <p class="certificate-description">SoloLearn - Completion</p>
-                             <a href="https://www.sololearn.com/certificates/CC-N2TWKSUP" target="_blank" rel="noopener noreferrer" class="certificate-link">View Certificate</a>
-                         </div>
+                
+                <div class="col-md-4 hidden-certificates">
+                    <div class="card border-0 shadow-sm h-100 certificate-card">
+                        <img src="/api/placeholder/600/400" class="card-img-top" alt="Cloud Computing Certificate">
+                        <div class="card-body">
+                            <h3 class="h5 card-title">AWS Certified Machine Learning - Specialty</h3>
+                            <p class="card-text text-muted">Amazon Web Services</p>
+                            <p class="small text-muted mb-2">Completed: June 2022</p>
+                            <span class="badge bg-primary">AWS</span>
+                            <span class="badge bg-info">Cloud</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 hidden-certificates">
+                    <div class="card border-0 shadow-sm h-100 certificate-card">
+                        <img src="/api/placeholder/600/400" class="card-img-top" alt="Data Visualization Certificate">
+                        <div class="card-body">
+                            <h3 class="h5 card-title">Data Visualization with Tableau</h3>
+                            <p class="card-text text-muted">University of California, Davis</p>
+                            <p class="small text-muted mb-2">Completed: April 2022</p>
+                            <span class="badge bg-primary">Data Visualization</span>
+                            <span class="badge bg-danger">Tableau</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
+            
+            <div class="text-center mt-5">
+                <button id="see-all-certificates" class="btn btn-outline-primary px-4 py-2">See All Certificates</button>
+                <button id="show-less-certificates" class="btn btn-outline-secondary px-4 py-2 d-none">Show Less</button>
+            </div>
+        </div>
+    </section>
 
-        <!-- Contact Section -->
-        <section id="contact" class="py-16 px-3">
-            <h2 class="section-title fade-in">Get In Touch</h2>
-            <div class="data-card max-w-3xl mx-auto p-8 md:p-12 text-center">
-                <p class="text-gray-400 text-lg mb-8 leading-relaxed">
-                    I'm actively seeking opportunities and collaborations in Data Science. Feel free to reach out via email or connect with me on social media. Let's discuss how we can work together!
-                </p>
-                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-                    <a href="mailto:jeevasurya.datascientist@gmail.com" class="contact-button btn-email">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 inline-block mr-2"> <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z"></path><path d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z"></path> </svg>
-                        Email Me
-                    </a>
-                    <a href="https://www.linkedin.com/in/jeeva-surya/" target="_blank" rel="noopener noreferrer" class="contact-button btn-linkedin">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-linkedin inline-block mr-2" viewBox="0 0 16 16"> <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/> </svg>
-                        LinkedIn
-                    </a>
-                    <a href="https://www.kaggle.com/jsdatapro/" target="_blank" rel="noopener noreferrer" class="contact-button btn-kaggle">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-kanban inline-block mr-2" viewBox="0 0 16 16"> <path d="M13.5 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm-11-1a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/> <path d="M6.5 3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm-4 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm8 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1z"/> </svg>
-                        Kaggle
-                    </a>
+    <!-- Resume Download Section -->
+    <section class="py-5" id="resume-section">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2 class="display-5 fw-bold mb-4">Download My Resume</h2>
+                    <p class="lead mb-4">Get a comprehensive overview of my professional experience, education, skills, and achievements in a downloadable format.</p>
+                    <p class="mb-4">Please fill out the form to access my detailed resume. I'd appreciate knowing how I can assist with your specific needs.</p>
+                    <div class="d-flex align-items-center">
+                        <div class="me-4">
+                            <i class="far fa-file-pdf fa-3x text-danger"></i>
+                        </div>
+                        <div>
+                            <h3 class="h5 mb-1">Updated Resume</h3>
+                            <p class="text-muted small mb-0">PDF format • Last updated May 2025</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow">
+                        <div class="card-body p-4">
+                            <h3 class="h4 mb-4 text-center">Resume Request Form</h3>
+                            <form id="resumeForm">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="company" class="form-label">Company/Organization</label>
+                                    <input type="text" class="form-control" id="company">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="purpose" class="form-label">Purpose for Resume Request</label>
+                                    <select class="form-select" id="purpose" required>
+                                        <option value="" selected disabled>Select purpose</option>
+                                        <option value="job_opportunity">Job Opportunity</option>
+                                        <option value="freelance_project">Freelance Project</option>
+                                        <option value="networking">Professional Networking</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3" id="otherPurposeDiv" style="display: none;">
+                                    <label for="otherPurpose" class="form-label">Please specify</label>
+                                    <input type="text" class="form-control" id="otherPurpose">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Additional Information (Optional)</label>
+                                    <textarea class="form-control" id="message" rows="3"></textarea>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary py-2">Download Resume</button>
+                                </div>
+                            </form>
+                            
+                            <!-- Download loader and success message (hidden initially) -->
+                            <div id="downloadLoader" class="text-center mt-3" style="display: none;">
+                                <div class="loader"></div>
+                                <p class="text-muted mt-2">Preparing your download...</p>
+                            </div>
+                            
+                            <div id="downloadSuccess" class="alert alert-success mt-3" style="display: none;">
+                                <i class="fas fa-check-circle me-2"></i> Thank you! Your download has started. If it doesn't begin automatically, <a href="#" id="direct-download-link" class="alert-link">click here</a>.
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
+
+    <!-- About Me Section -->
+    <section class="py-5" id="about-section">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">About Me</h2>
+                <p class="lead text-muted">My journey, objectives, and contact information</p>
+            </div>
+            
+            <div class="row g-5">
+                <div class="col-lg-6">
+                    <h3 class="h4 mb-4">Professional Journey</h3>
+                    <p class="mb-4">With over 5 years of experience in the data science field, I have developed a strong foundation in machine learning, statistical analysis, and data engineering. My journey began with a solid academic background in Computer Science and Mathematics, which provided me with the theoretical knowledge necessary to excel in data science.</p>
+                    
+                    <h3 class="h4 mb-4">Career Objectives</h3>
+                    <p class="mb-4">I am passionate about leveraging data to solve real-world problems and drive business decisions. My career objectives include:</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i> Developing innovative machine learning solutions for complex business challenges</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i> Contributing to cutting-edge research in artificial intelligence and deep learning</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i> Mentoring junior data scientists and sharing knowledge with the community</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i> Bridging the gap between technical implementations and business strategy</li>
+                    </ul>
+                    
+                    <p class="mt-4">I am constantly expanding my knowledge and skills through continuous learning, attending conferences, and participating in data science competitions. My approach combines technical expertise with business acumen to deliver impactful solutions.</p>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="h4 mb-4">Contact Information</h3>
+                            
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+                                    <i class="fas fa-envelope text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="h6 mb-1">Email</h4>
+                                    <p class="mb-0"><a href="mailto:jeevasurya@example.com" class="text-decoration-none">jeevasurya@example.com</a></p>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+                                    <i class="fas fa-phone text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="h6 mb-1">Phone</h4>
+                                    <p class="mb-0"><a href="tel:+1234567890" class="text-decoration-none">+1 (234) 567-890</a></p>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+                                    <i class="fas fa-map-marker-alt text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="h6 mb-1">Location</h4>
+                                    <p class="mb-0">San Francisco, California</p>
+                                </div>
+                            </div>
+                            
+                            <hr class="my-4">
+                            
+                            <h3 class="h4 mb-3">Connect With Me</h3>
+                            <div class="d-flex">
+                                <a href="#" class="btn btn-outline-dark me-2" title="LinkedIn">
+                                    <i class="fab fa-linkedin"></i>
+                                </a>
+                                <a href="#" class="btn btn-outline-dark me-2" title="GitHub">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="#" class="btn btn-outline-dark me-2" title="Twitter">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="btn btn-outline-dark me-2" title="Kaggle">
+                                    <i class="fab fa-kaggle"></i>
+                                </a>
+                                <a href="#" class="btn btn-outline-dark" title="Medium">
+                                    <i class="fab fa-medium"></i>
+                                </a>
+                            </div>
+                            
+                            <hr class="my-4">
+                            
+                            <h3 class="h4 mb-3">Send a Message</h3>
+                            <form id="contactForm">
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" placeholder="Your Name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="email" class="form-control" placeholder="Your Email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" placeholder="Subject" required>
+                                </div>
+                                <div class="mb-3">
+                                    <textarea class="form-control" rows="4" placeholder="Your Message" required></textarea>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">Send Message</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="py-5 mt-8 text-gray-500 text-center border-t border-gray-800">
+    <footer class="bg-dark text-white py-4">
         <div class="container">
-            © <span id="current-year"></span> Jeevasurya Portfolio. All rights reserved. | Aspiring Data Scientist
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <h4 class="h5 mb-3">Jeevasurya</h4>
+                    <p class="mb-0 text-muted">Data Scientist & Machine Learning Engineer</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="mb-2">
+                        <a href="#" class="text-white text-decoration-none me-3"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-white text-decoration-none me-3"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-white text-decoration-none me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white text-decoration-none me-3"><i class="fab fa-kaggle"></i></a>
+                        <a href="#" class="text-white text-decoration-none"><i class="fab fa-medium"></i></a>
+                    </div>
+                    <p class="small text-muted mb-0">© 2025 Jeevasurya. All rights reserved.</p>
+                </div>
+            </div>
         </div>
     </footer>
 
     <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- Your Custom JS -->
-    <script src="js/script.js"></script>
-    
-    <!-- Additional Script for Image Handling and Loading -->
+    <!-- Custom JavaScript -->
     <script>
-        // Image handling script
-        document.addEventListener('DOMContentLoaded', function() {
-            // Fade out loading spinner
-            setTimeout(() => {
-                const spinner = document.getElementById('loading-spinner');
-                if (spinner) {
-                    spinner.style.opacity = '0';
-                    setTimeout(() => {
-                        spinner.style.display = 'none';
-                    }, 500);
-                }
-            }, 800);
-            
-            // Profile image fallback mechanism
-            const profileImage = document.getElementById('profile-image');
-            if (profileImage) {
-                // Try multiple path variants
-                const imagePaths = [
-                    './images/profile.jpg',
-                    './images/jeevasurya-profile.png',
-                    './images/jeevasurya-profile.jpg',
-                    '/images/profile.jpg',
-                    '../images/profile.jpg',
-                    'images/profile.jpg'
-                ];
-                
-                // Test image loading function
-                function testImagePath(path, callback) {
-                    const tempImg = new Image();
-                    tempImg.onload = function() { callback(path, true); };
-                    tempImg.onerror = function() { callback(path, false); };
-                    tempImg.src = path;
-                }
-                
-                // Try each path until one works
-                let pathIndex = 0;
-                function tryNextPath() {
-                    if (pathIndex >= imagePaths.length) {
-                        console.log('Could not load profile image from any paths');
-                        return;
-                    }
-                    
-                    testImagePath(imagePaths[pathIndex], function(path, success) {
-                        if (success) {
-                            profileImage.src = path;
-                            console.log('Loaded profile image from:', path);
-                        } else {
-                            pathIndex++;
-                            tryNextPath();
-                        }
+        // Smooth scrolling for navbar links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 70,
+                        behavior: 'smooth'
                     });
                 }
+            });
+        });
+        
+        // Add active class to nav items on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
                 
-                // Start trying paths
-                tryNextPath();
+                if (pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active', 'text-primary');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active', 'text-primary');
+                }
+            });
+        });
+        
+        // See All Certificates button functionality
+        document.getElementById('see-all-certificates').addEventListener('click', function() {
+            const hiddenCertificates = document.querySelectorAll('.hidden-certificates');
+            hiddenCertificates.forEach(cert => {
+                cert.style.display = 'block';
+            });
+            
+            this.classList.add('d-none');
+            document.getElementById('show-less-certificates').classList.remove('d-none');
+        });
+        
+        document.getElementById('show-less-certificates').addEventListener('click', function() {
+            const hiddenCertificates = document.querySelectorAll('.hidden-certificates');
+            hiddenCertificates.forEach(cert => {
+                cert.style.display = 'none';
+            });
+            
+            this.classList.add('d-none');
+            document.getElementById('see-all-certificates').classList.remove('d-none');
+        });
+        
+        // Purpose dropdown show/hide "other" field
+        document.getElementById('purpose').addEventListener('change', function() {
+            const otherPurposeDiv = document.getElementById('otherPurposeDiv');
+            if (this.value === 'other') {
+                otherPurposeDiv.style.display = 'block';
+            } else {
+                otherPurposeDiv.style.display = 'none';
+            }
+        });
+        
+        // Resume download form submission
+        document.getElementById('resumeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate form
+            if (this.checkValidity()) {
+                // Show loading animation
+                document.getElementById('downloadLoader').style.display = 'block';
+                
+                // Simulate download delay (2 seconds)
+                setTimeout(function() {
+                    // Hide loader and show success message
+                    document.getElementById('downloadLoader').style.display = 'none';
+                    document.getElementById('downloadSuccess').style.display = 'block';
+                    
+                    // Simulate file download
+                    // In a real application, you would use window.location or a proper download method
+                    const dummyLink = document.createElement('a');
+                    dummyLink.setAttribute('href', '#');
+                    dummyLink.setAttribute('download', 'Jeevasurya_Resume.pdf');
+                    document.body.appendChild(dummyLink);
+                    dummyLink.click();
+                    document.body.removeChild(dummyLink);
+                }, 2000);
+            }
+        });
+        
+        // Direct download link
+        document.getElementById('direct-download-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            const dummyLink = document.createElement('a');
+            dummyLink.setAttribute('href', '#');
+            dummyLink.setAttribute('download', 'Jeevasurya_Resume.pdf');
+            document.body.appendChild(dummyLink);
+            dummyLink.click();
+            document.body.removeChild(dummyLink);
+        });
+        
+        // Contact form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (this.checkValidity()) {
+                // Alert is used for demo purposes - in a real application, you would use AJAX to submit the form
+                alert('Thank you for your message! I will get back to you soon.');
+                this.reset();
+            }
+        });
+        
+        // Add navbar shadow on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 10) {
+                navbar.classList.add('shadow');
+            } else {
+                navbar.classList.remove('shadow');
             }
         });
     </script>
