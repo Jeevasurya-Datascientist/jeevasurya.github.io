@@ -512,7 +512,7 @@
         </div>
     </section>
 
-    <section id="projects-section"> {/* NOTE: This section now uses background: white from the CSS rule */}
+    <section id="projects-section">
         <div class="container">
             <div class="text-center section-title fade-in">
                 <h2 class="display-5">My Projects</h2>
@@ -919,41 +919,41 @@
         displayCertificates(); 
         // --- END CERTIFICATES LOGIC ---
 
-        // --- PROJECTS DATA AND LOGIC ---
+        // --- PROJECTS DATA AND LOGIC --
         const projectsData = [
             {
-                title: "Customer Segmentation Analysis",
-                description: "Utilized K-Means clustering to segment customers based on purchasing behavior, enabling targeted marketing strategies. Preprocessed data using Pandas and visualized segments with Matplotlib/Seaborn.",
-                imageUrl: "https://images.unsplash.com/photo-1556742044-3c52d6e88c62?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", // Replace with actual project image
-                tags: ["Python", "Pandas", "NumPy", "Scikit-learn", "K-Means", "Matplotlib", "Seaborn"],
-                githubUrl: "https://github.com/Jeevasurya-Datascientist", // Replace with your actual GitHub link
-                liveUrl: null // Example: "https://your-project-live-demo.com"
-            },
-            {
-                title: "Movie Recommendation System",
-                description: "Developed a content-based and collaborative filtering recommendation system for movies. Leveraged TF-IDF for text features and cosine similarity for recommendations.",
-                imageUrl: "https://images.unsplash.com/photo-1574267432553-4b4628081c31?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", // Replace with actual project image
-                tags: ["Python", "Pandas", "Scikit-learn", "NLP", "TF-IDF", "Cosine Similarity"],
-                githubUrl: "https://github.com/Jeevasurya-Datascientist", // Replace with your actual GitHub link
+                title: "Online Voting System",
+                description: "A web-based platform enabling secure and transparent online voting. Features include user registration, voter authentication, ballot creation, and automated vote tallying, built with a focus on integrity and ease of use.",
+                imageUrl: "https://images.unsplash.com/photo-1555848954-9e449794289f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", // Image of a hand clicking a vote button on a screen
+                tags: ["PHP", "HTML", "CSS", "JavaScript", "Bootstrap"], 
+                githubUrl: "https://github.com/Jeevasurya-Datascientist/Online-Voting-System", 
                 liveUrl: null
             },
             {
-                title: "Sales Data Forecasting",
-                description: "Applied time series analysis (ARIMA/SARIMA) to forecast future sales based on historical data. Performed EDA and model evaluation to ensure accuracy.",
-                imageUrl: "https://images.unsplash.com/photo-1543286386-713144006d38?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", // Replace with actual project image
-                tags: ["Python", "Pandas", "Statsmodels", "Time Series", "ARIMA", "Forecasting"],
-                githubUrl: "https://github.com/Jeevasurya-Datascientist", // Replace with your actual GitHub link
+                title: "Airline Reservation System",
+                description: "A comprehensive system for managing flight bookings. Allows users to search for flights, view availability and pricing, select seats, and make reservations. Includes an admin panel for flight and booking management.",
+                imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", // Image of an airplane wing/sky or airport departure board
+                tags: ["PHP", "HTML", "CSS", "JavaScript", "Bootstrap"],
+                githubUrl: "https://github.com/Jeevasurya-Datascientist/Airline-Reservation-System", // Replace with your specific repo
+                liveUrl: null
+            },
+            {
+                title: "Expense Tracker",
+                description: "A user-friendly application to help individuals monitor and manage their personal finances. Users can log income and expenses, categorize transactions, view spending patterns through charts, and set budgets.",
+                imageUrl: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", // Image of someone using a calculator/app, or charts
+                tags: ["PHP", "HTML", "CSS", "JavaScript", "Bootstrap"],
+                githubUrl: "https://github.com/Jeevasurya-Datascientist/Expense-Tracker", // Replace with your specific repo
+                liveUrl: null
+            },
+            {
+                title: "Employee Feedback Management System",
+                description: "A platform designed to streamline the collection and analysis of employee feedback. Enables employees to submit suggestions or concerns, and allows management to track, respond to, and report on feedback trends.",
+                imageUrl: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", // Image of people collaborating or a suggestion box concept
+                tags: ["PHP", "HTML", "CSS", "JavaScript", "Bootstrap"],
+                githubUrl: "https://github.com/Jeevasurya-Datascientist/Employee-feedback-management-system", // Replace with your specific repo
                 liveUrl: null
             }
-            // Add more project objects here. For example:
-            // {
-            //     title: "Interactive Data Dashboard",
-            //     description: "Built an interactive dashboard using Plotly Dash to visualize key business metrics, allowing for real-time data exploration and decision-making.",
-            //     imageUrl: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60",
-            //     tags: ["Python", "Plotly Dash", "Pandas", "Data Visualization", "BI"],
-            //     githubUrl: "https://github.com/Jeevasurya-Datascientist",
-            //     liveUrl: null // "https://your-dashboard-live.com"
-            // }
+            // Add more project objects here if you have them
         ];
 
         const projectGrid = document.getElementById('project-grid');
@@ -971,7 +971,7 @@
                 const animationDelay = 0.1 + (index % 3) * 0.15; 
                 const cardHTML = `
                     <div class="col-md-6 col-lg-4 project-item fade-in" style="animation-delay: ${animationDelay}s;">
-                        <div class="card h-100 project-card"> {/* Using project-card for specifics, can inherit from certificate-card for base styles */}
+                        <div class="card h-100 project-card"> 
                             ${project.imageUrl ? `<img src="${project.imageUrl}" class="card-img-top" alt="${project.title}">` : '<div class="card-img-top-placeholder"><i class="fas fa-project-diagram fa-3x text-muted"></i></div>'}
                             <div class="card-body p-4">
                                 <div> 
