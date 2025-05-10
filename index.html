@@ -494,31 +494,14 @@
         <div class="container">
             <div class="text-center section-title fade-in">
                 <h2 class="display-5">My Resume</h2>
-                <p class="lead">Interested in learning more? Fill out the form to download my resume.</p>
+                <p class="lead">Click the button below to download my resume and learn more about my qualifications.</p>
             </div>
-            <div class="fade-in" style="animation-delay: 0.1s;">
-                <div class="card p-4 p-md-5 mx-auto" style="max-width: 650px;">
-                    <h3 class="fw-semibold mb-4 text-center">Request Resume Download</h3>
-                    <form id="resumeRequestForm" action="https://formspree.io/f/mldblopl" method="POST">
-                        <input type="hidden" name="_subject" value="New Resume Download Request from Jeevasurya's Portfolio">
-                        <div class="mb-3">
-                            <label for="requestName" class="form-label">Full Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="requestName" name="name" placeholder="Your Full Name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="requestEmail" class="form-label">Email Address <span class="text-danger">*</span></label>
-                            <input type="email" class="form-control" id="requestEmail" name="email" placeholder="your.email@example.com" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="requestCompany" class="form-label">Company (Optional)</label>
-                            <input type="text" class="form-control" id="requestCompany" name="company" placeholder="Your Company Name">
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100 py-2 fs-5 rounded-pill mt-2">
-                            Submit & Download <i class="fas fa-download ms-2"></i>
-                        </button>
-                    </form>
-                    <div id="resumeFormMessage" class="mt-3"></div>
-                </div>
+            <div class="text-center fade-in" style="animation-delay: 0.1s;">
+                 <a href="https://raw.githubusercontent.com/Jeevasurya-Datascientist/jeevasurya.github.io/main/JEEVA%20SURYA%20PALANISAMY%20Resume%20(1).pdf"
+                   download="JeevaSurya_Palanisamy_Resume.pdf"
+                   class="btn btn-primary btn-lg rounded-pill shadow-sm px-5 py-3 mt-3">
+                    <i class="fas fa-download me-2"></i> Download My Resume
+                </a>
             </div>
         </div>
     </section>
@@ -1064,17 +1047,6 @@
                         if (response.ok) {
                             messageDiv.innerHTML = '<div class="alert alert-success" role="alert">Thank you! Your message has been sent.</div>';
                             formElement.reset();
-                            if (formElement.id === 'resumeRequestForm') {
-                                messageDiv.innerHTML = '<div class="alert alert-success" role="alert">Request sent! Your download will begin shortly.</div>';
-                                const resumeUrl = 'https://raw.githubusercontent.com/Jeevasurya-Datascientist/jeevasurya.github.io/main/JEEVA%20SURYA%20PALANISAMY%20Resume%20(1).pdf';
-                                const resumeDownloadName = 'JeevaSurya_Palanisamy_Resume.pdf';
-                                const link = document.createElement('a');
-                                link.href = resumeUrl;
-                                link.download = resumeDownloadName;
-                                document.body.appendChild(link);
-                                link.click();
-                                document.body.removeChild(link);
-                            }
                         } else {
                             response.json().then(data => {
                                 messageDiv.innerHTML = `<div class="alert alert-danger" role="alert">${data.errors ? data.errors.map(err => err.message).join("<br>") : "Oops! There was a problem."}</div>`;
@@ -1093,7 +1065,6 @@
             }
         }
 
-        handleFormSubmission(document.getElementById('resumeRequestForm'), 'resumeFormMessage');
         handleFormSubmission(document.getElementById('contactForm'), 'formMessage');
 
         document.getElementById('currentYear').textContent = new Date().getFullYear();
