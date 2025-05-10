@@ -381,15 +381,6 @@
             font-weight: 700;
             color: var(--dark-text);
         }
-
-        /* Resume Section */
-        #resume-section iframe {
-            width: 100%;
-            height: 600px;
-            border-radius: 12px;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
         
         /* Responsive Adjustments */
         @media (max-width: 991.98px) { /* Medium devices (tablets, less than 992px) */
@@ -847,19 +838,45 @@
         <div class="container">
             <div class="text-center section-title fade-in">
                 <h2 class="display-5">My Resume</h2>
-                <p class="lead">Download my professional resume for more details.</p>
-            </div>
-            <div class="text-center mb-5 fade-in">
-                <a href="JeevaSurya_Resume_DataScientist.pdf" download="JeevaSurya_Resume.pdf" class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-lg">
-                    <i class="fas fa-download me-2"></i> Download Resume (PDF)
-                </a>
+                <p class="lead">To download my resume, please fill out the form below. Your details help me understand who is interested in my profile.</p>
             </div>
             <div class="fade-in">
-                 <!-- Placeholder for resume iframe or image. For a live PDF, ensure the path is correct and accessible. -->
-                 <p class="text-center text-muted mb-3">Resume Preview (Scrollable)</p>
-                <iframe src="JeevaSurya_Resume_DataScientist.pdf#toolbar=0&navpanes=0&scrollbar=0" title="Jeeva Surya Resume Preview"></iframe>
-                <!-- Fallback if iframe fails or for a static image -->
-                <!-- <img src="resume_preview.jpg" alt="Resume Preview" class="img-fluid rounded shadow"> -->
+                <div class="card p-4 p-md-5 shadow-lg border-0 rounded-3 mx-auto" style="max-width: 700px;">
+                    <h3 class="fw-semibold mb-4 text-center">Request Resume Download</h3>
+                    <form id="resumeRequestForm" action="https://formspree.io/f/YOUR_UNIQUE_FORMSPREE_ID" method="POST">
+                        <!-- Replace YOUR_UNIQUE_FORMSPREE_ID with your actual Formspree endpoint ID -->
+                        <!-- Configure your Formspree form to email to jeevasurya.datascientist@gmail.com -->
+                        <input type="hidden" name="_subject" value="New Resume Download Request from Portfolio">
+                        <input type="hidden" name="portfolio_visitor_info" value="Resume Requested by User">
+                        
+                        <div class="mb-3">
+                            <label for="requestName" class="form-label">Full Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="requestName" name="name" placeholder="Your Full Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="requestEmail" class="form-label">Email Address <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="requestEmail" name="email" placeholder="your.email@example.com" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="requestCompany" class="form-label">Company (Optional)</label>
+                                <input type="text" class="form-control" id="requestCompany" name="company" placeholder="Your Company Name">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="requestRole" class="form-label">Your Role (Optional)</label>
+                                <input type="text" class="form-control" id="requestRole" name="role" placeholder="e.g., Recruiter, Hiring Manager">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="requestPurpose" class="form-label">Purpose of Download (Optional)</label>
+                            <textarea class="form-control" id="requestPurpose" name="purpose" rows="3" placeholder="E.g., Recruitment opportunity, Collaboration, General interest..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2 fs-5 rounded-pill">
+                            Submit & Download Resume <i class="fas fa-download ms-2"></i>
+                        </button>
+                    </form>
+                    <div id="resumeFormMessage" class="mt-3"></div>
+                </div>
             </div>
         </div>
     </section>
@@ -878,7 +895,7 @@
                         Hello! I'm a passionate Data Scientist with a strong foundation in Python, machine learning, and statistical analysis. My journey into data science was fueled by a curiosity to uncover hidden patterns in data and translate them into impactful business solutions. I thrive on challenges and am constantly seeking to expand my knowledge in this ever-evolving field.
                     </p>
                     <p class="text-muted">
-                        When I'm not crunching numbers or building models, I enjoy [mention a hobby or two, e.g., exploring new technologies, reading tech blogs, or hiking]. I believe in continuous learning and collaboration to achieve innovative outcomes.
+                        When I'm not crunching numbers or building models, I enjoy exploring new technologies, contributing to open-source projects, and reading tech blogs. I believe in continuous learning and collaboration to achieve innovative outcomes.
                     </p>
                     <div class="mt-4">
                         <h4 class="fw-medium mb-3">Let's Connect:</h4>
@@ -893,26 +910,28 @@
                 <div class="col-lg-6 fade-in">
                     <div class="card p-4 shadow-lg border-0 rounded-3">
                         <h3 class="fw-semibold mb-4 text-center">Send Me a Message</h3>
-                        <form id="contactForm">
+                        <form id="contactForm" action="https://formspree.io/f/mldblopl" method="POST">
+                             <!-- Replace YOUR_OTHER_FORMSPREE_ID_FOR_CONTACT with a different Formspree endpoint for general contact -->
+                            <input type="hidden" name="_subject" value="New Contact Message from Portfolio">
                             <div class="mb-3">
                                 <label for="contactName" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="contactName" placeholder="Your Name" required>
+                                <input type="text" class="form-control" id="contactName" name="name" placeholder="Your Name" required>
                             </div>
                             <div class="mb-3">
                                 <label for="contactEmail" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="contactEmail" placeholder="your.email@example.com" required>
+                                <input type="email" class="form-control" id="contactEmail" name="email" placeholder="your.email@example.com" required>
                             </div>
                             <div class="mb-3">
                                 <label for="contactSubject" class="form-label">Subject</label>
-                                <input type="text" class="form-control" id="contactSubject" placeholder="Message Subject">
+                                <input type="text" class="form-control" id="contactSubject" name="subject" placeholder="Message Subject">
                             </div>
                             <div class="mb-3">
                                 <label for="contactMessage" class="form-label">Message</label>
-                                <textarea class="form-control" id="contactMessage" rows="5" placeholder="Your message here..." required></textarea>
+                                <textarea class="form-control" id="contactMessage" name="message" rows="5" placeholder="Your message here..." required></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill">Send Message <i class="fas fa-paper-plane ms-2"></i></button>
                         </form>
-                        <div id="form-message" class="mt-3"></div>
+                        <div id="formMessage" class="mt-3"></div>
                     </div>
                 </div>
             </div>
@@ -1008,7 +1027,7 @@
                 threshold: 0.1 // Trigger when 10% of the element is visible
             };
 
-            const observer = new IntersectionObserver((entries, observer) => {
+            const observer = new IntersectionObserver((entries, obs) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
@@ -1017,9 +1036,9 @@
                         if (entry.target.classList.contains('tw-progress')) {
                             const progressBar = entry.target.querySelector('.tw-progress-bar');
                             if (progressBar) {
-                                const चौडाई = progressBar.getAttribute('data-width');
-                                progressBar.style.width = चौडाई;
-                                if (चौडाई === '100%') progressBar.classList.add('full');
+                                const width = progressBar.getAttribute('data-width');
+                                progressBar.style.width = width;
+                                if (width === '100%') progressBar.classList.add('full');
                             }
                         }
                         // For individual cards, if direct animation on card is preferred over parent
@@ -1028,7 +1047,7 @@
                         }
 
                         // Unobserve after animation to save resources, if animation is one-time
-                        // observer.unobserve(entry.target); 
+                        // obs.unobserve(entry.target); 
                     }
                 });
             }, observerOptions);
@@ -1037,8 +1056,7 @@
             
             // Animate progress bars (also trigger on scroll into view)
             const progressBars = document.querySelectorAll('.tw-progress-bar');
-            const progressSection = document.getElementById('skills-section');
-
+            
             function animateProgressBars() {
                 progressBars.forEach(bar => {
                     const rect = bar.closest('.tw-progress').getBoundingClientRect();
@@ -1205,29 +1223,120 @@
                 });
             }
 
-            // Contact Form Submission (Basic - No backend)
-            const contactForm = document.getElementById('contactForm');
-            const formMessage = document.getElementById('form-message');
-            if (contactForm) {
-                contactForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    // Basic validation example
-                    const name = document.getElementById('contactName').value;
-                    const email = document.getElementById('contactEmail').value;
-                    const message = document.getElementById('contactMessage').value;
+            // Resume Request Form Submission
+            const resumeRequestForm = document.getElementById('resumeRequestForm');
+            const resumeFormMessage = document.getElementById('resumeFormMessage');
+            // URL encode the filename for safety, though modern browsers handle it.
+            const resumeUrl = 'https://raw.githubusercontent.com/Jeevasurya-Datascientist/jeevasurya.github.io/main/JEEVA%20SURYA%20PALANISAMY%20Resume%20(1).pdf';
+            const resumeDownloadName = 'JeevaSurya_Palanisamy_Resume.pdf';
 
-                    if (name.trim() === '' || email.trim() === '' || message.trim() === '') {
-                        formMessage.innerHTML = '<div class="alert alert-danger" role="alert">Please fill in all required fields.</div>';
+            if (resumeRequestForm) {
+                resumeRequestForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    const formData = new FormData(resumeRequestForm);
+                    const action = resumeRequestForm.action; // Formspree URL
+                    const submitButton = resumeRequestForm.querySelector('button[type="submit"]');
+
+                    // Basic client-side validation (also relying on 'required' attributes)
+                    if (!formData.get('name').trim() || !formData.get('email').trim()) {
+                        resumeFormMessage.innerHTML = '<div class="alert alert-danger" role="alert">Please fill in your Name and Email.</div>';
                         return;
                     }
                     
-                    // Simulate form submission
-                    formMessage.innerHTML = '<div class="alert alert-success" role="alert">Thank you for your message! I will get back to you soon.</div>';
-                    contactForm.reset();
+                    submitButton.disabled = true;
+                    submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
+
+                    fetch(action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    }).then(response => {
+                        if (response.ok) {
+                            resumeFormMessage.innerHTML = '<div class="alert alert-success" role="alert">Thank you! Your request has been sent. The download will start shortly.</div>';
+                            resumeRequestForm.reset();
+
+                            // Trigger download
+                            const link = document.createElement('a');
+                            link.href = resumeUrl;
+                            link.download = resumeDownloadName; // Desired filename for the user
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                        } else {
+                            response.json().then(data => {
+                                if (data.errors) {
+                                    resumeFormMessage.innerHTML = `<div class="alert alert-danger" role="alert">${data.errors.map(err => err.message).join("<br>")}</div>`;
+                                } else {
+                                    resumeFormMessage.innerHTML = '<div class="alert alert-danger" role="alert">Oops! There was a problem submitting your request. Please try again.</div>';
+                                }
+                            }).catch(() => {
+                                resumeFormMessage.innerHTML = '<div class="alert alert-danger" role="alert">Oops! There was an issue processing the server response.</div>';
+                            });
+                        }
+                    }).catch(error => {
+                        resumeFormMessage.innerHTML = `<div class="alert alert-danger" role="alert">Network error: ${error.message}. Please check your connection and try again.</div>`;
+                    }).finally(() => {
+                        submitButton.disabled = false;
+                        submitButton.innerHTML = 'Submit & Download Resume <i class="fas fa-download ms-2"></i>';
+                        setTimeout(() => {
+                            resumeFormMessage.innerHTML = '';
+                        }, 7000); // Clear message after 7 seconds
+                    });
+                });
+            }
+
+
+            // Contact Form Submission (using Formspree)
+            const contactForm = document.getElementById('contactForm');
+            const formMessageDisplay = document.getElementById('formMessage'); // Corrected ID
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(contactForm);
+                    const action = contactForm.action;
+                    const submitButton = contactForm.querySelector('button[type="submit"]');
+
+                    if (!formData.get('name').trim() || !formData.get('email').trim() || !formData.get('message').trim()) {
+                        formMessageDisplay.innerHTML = '<div class="alert alert-danger" role="alert">Please fill in all required fields.</div>';
+                        return;
+                    }
+
+                    submitButton.disabled = true;
+                    submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
                     
-                    setTimeout(() => {
-                        formMessage.innerHTML = '';
-                    }, 5000);
+                    fetch(action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    }).then(response => {
+                        if (response.ok) {
+                            formMessageDisplay.innerHTML = '<div class="alert alert-success" role="alert">Thank you for your message! I will get back to you soon.</div>';
+                            contactForm.reset();
+                        } else {
+                            response.json().then(data => {
+                                if (data.errors) {
+                                     formMessageDisplay.innerHTML = `<div class="alert alert-danger" role="alert">${data.errors.map(err => err.message).join("<br>")}</div>`;
+                                } else {
+                                    formMessageDisplay.innerHTML = '<div class="alert alert-danger" role="alert">Oops! There was a problem sending your message.</div>';
+                                }
+                            }).catch(() => {
+                                formMessageDisplay.innerHTML = '<div class="alert alert-danger" role="alert">Oops! There was an issue processing the server response for contact form.</div>';
+                            });
+                        }
+                    }).catch(error => {
+                        formMessageDisplay.innerHTML = `<div class="alert alert-danger" role="alert">Network error: ${error.message}. Please try again.</div>`;
+                    }).finally(() => {
+                        submitButton.disabled = false;
+                        submitButton.innerHTML = 'Send Message <i class="fas fa-paper-plane ms-2"></i>';
+                        setTimeout(() => {
+                            formMessageDisplay.innerHTML = '';
+                        }, 5000);
+                    });
                 });
             }
 
