@@ -147,7 +147,7 @@
         /* Section Styles */
         section { padding-top: 80px; padding-bottom: 80px; }
         #home { padding-top: 0; padding-bottom: 0; }
-        #skills-section, #about-section { background: white; }
+        #skills-section, #about-section, #projects-section { background: white; } /* Added #projects-section */
         #certificates-section, #resume-section, #data-visualization-section { background: var(--light-bg); }
         .section-title h2 { font-weight: 700; color: var(--dark-text); margin-bottom: 0.75rem; }
         .section-title p { color: #4b5563; /* gray-600 */ max-width: 600px; margin-left:auto; margin-right:auto;}
@@ -160,7 +160,7 @@
 
         /* Card Styles */
         .skill-card, .certificate-card, .stats-card, .chart-container, 
-        #resume-section .card, #about-section .card {
+        #resume-section .card, #about-section .card, .project-card { /* Added .project-card */
             border: 1px solid #e5e7eb; /* gray-200 */
             border-radius: 12px;
             background-color: white;
@@ -170,21 +170,21 @@
             flex-direction: column; /* For consistent height in h-100 */
         }
         .skill-card:hover, .certificate-card:hover, .stats-card:hover, 
-        .chart-container:hover, #resume-section .card:hover, #about-section .card:hover {
+        .chart-container:hover, #resume-section .card:hover, #about-section .card:hover, .project-card:hover { /* Added .project-card:hover */
             transform: translateY(-6px);
             box-shadow: var(--card-hover-shadow);
         }
-        .certificate-card img { 
+        .certificate-card img, .project-card img { /* Added .project-card img */
             object-fit: cover; 
             height: 180px; /* Adjusted for better card balance */
             border-top-left-radius: 11px; 
             border-top-right-radius: 11px; 
             transition: transform 0.3s ease-in-out;
         }
-        .certificate-card:hover img { 
+        .certificate-card:hover img, .project-card:hover img { /* Added .project-card:hover img */
             transform: scale(1.03); 
         }
-        .certificate-card .card-body {
+        .certificate-card .card-body, .project-card .card-body { /* Added .project-card .card-body */
             flex-grow: 1; /* Allows card body to expand and push footer down */
             display: flex;
             flex-direction: column;
@@ -209,8 +209,29 @@
             justify-content: center;
             font-size: 1.5rem; /* Adjust icon size */
         }
-        .skill-card .card-title, .certificate-card .card-title { font-weight: 600; color: var(--dark-text); }
+        .skill-card .card-title, .certificate-card .card-title, .project-card .card-title { font-weight: 600; color: var(--dark-text); } /* Added .project-card .card-title */
         .skill-card .card-text { font-size: 0.9rem; }
+
+        /* Project Card Specifics */
+        .project-card .card-text {
+            font-size: 0.88rem; 
+            line-height: 1.5;
+            min-height: 70px; /* Helps align cards if descriptions vary significantly */
+        }
+        .project-links a.btn {
+            font-size: 0.8rem; 
+            padding: 0.3rem 0.8rem;
+        }
+        .card-img-top-placeholder { /* For projects without an image */
+             border-top-left-radius: 11px;
+             border-top-right-radius: 11px;
+             height: 180px;
+             background-color: #e9ecef; /* A light gray */
+             display:flex;
+             align-items:center;
+             justify-content:center;
+        }
+
 
         /* Badges */
         .skill-badge {
@@ -308,6 +329,7 @@
                     <li class="nav-item"><a class="nav-link mx-1" href="#skills-section">Skills</a></li>
                     <li class="nav-item"><a class="nav-link mx-1" href="#certificates-section">Certificates</a></li>
                     <li class="nav-item"><a class="nav-link mx-1" href="#data-visualization-section">Visualizations</a></li>
+                    <li class="nav-item"><a class="nav-link mx-1" href="#projects-section">Projects</a></li>
                     <li class="nav-item"><a class="nav-link mx-1" href="#resume-section">Resume</a></li>
                     <li class="nav-item"><a class="nav-link mx-1" href="#about-section">About & Contact</a></li>
                 </ul>
@@ -486,6 +508,18 @@
                         <canvas id="dsTopicExplorationChart"></canvas>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects-section"> {/* NOTE: This section now uses background: white from the CSS rule */}
+        <div class="container">
+            <div class="text-center section-title fade-in">
+                <h2 class="display-5">My Projects</h2>
+                <p class="lead">A selection of projects showcasing my skills in data science and Python development.</p>
+            </div>
+            <div class="row g-4" id="project-grid">
+                <!-- Project cards will be dynamically injected here by JavaScript -->
             </div>
         </div>
     </section>
@@ -801,19 +835,13 @@
             if (certificatesData && certificatesData.length > 0) {
                 const totalCertificates = certificatesData.length;
 
-                // Certifications count
                 if (certificationsCountEl) {
                     certificationsCountEl.textContent = totalCertificates;
                 }
-
-                // Courses count (assuming each certificate represents a course completion)
                 if (coursesCountEl) {
-                    // If you want a different logic for courses, adjust here.
-                    // For now, same as total certificates.
                     coursesCountEl.textContent = totalCertificates; 
                 }
 
-                // Specializations count (heuristic: check titles for keywords)
                 let specializations = 0;
                 certificatesData.forEach(cert => {
                     const titleLower = cert.title.toLowerCase();
@@ -824,14 +852,9 @@
                 if (specializationsCountEl) {
                     specializationsCountEl.textContent = specializations;
                 }
-
-                // Learning Hours: Remains static for now.
-                // If you add an 'hours' property to each certificate object in certificatesData,
-                // you could sum them here and update 'learningHoursCountEl.textContent'.
             }
         }
-        // --- END FUNCTION TO UPDATE STATS CARDS ---
-
+        
         const certificateGrid = document.getElementById('certificate-grid');
         const toggleBtn = document.getElementById('toggleCertificatesBtn');
         const toggleButtonContainer = document.getElementById('toggleButtonContainer');
@@ -839,9 +862,9 @@
         let certificatesVisible = false;
 
         function displayCertificates() {
-            certificateGrid.innerHTML = ''; // Clear existing cards
+            certificateGrid.innerHTML = ''; 
             certificatesData.forEach((cert, index) => {
-                const animationDelay = 0.1 + (index % 3) * 0.1; // Stagger animation for each row
+                const animationDelay = 0.1 + (index % 3) * 0.1; 
                 const cardHTML = `
                     <div class="col-md-6 col-lg-4 certificate-item fade-in" style="animation-delay: ${animationDelay}s; ${index >= initiallyVisibleCount ? 'display: none;' : ''}">
                         <div class="certificate-card h-100">
@@ -862,7 +885,6 @@
                 certificateGrid.insertAdjacentHTML('beforeend', cardHTML);
             });
 
-             // Re-observe newly added cards for fade-in
             const newAnimatedElements = certificateGrid.querySelectorAll('.fade-in');
             newAnimatedElements.forEach(el => observer.observe(el));
 
@@ -872,7 +894,7 @@
             } else {
                 toggleButtonContainer.style.display = 'block';
                 toggleBtn.textContent = 'Show More Certificates';
-                certificatesVisible = false; // Reset state
+                certificatesVisible = false; 
             }
         }
         
@@ -893,17 +915,96 @@
             });
         }
         
-        // Call updateStatsCards after certificatesData is defined and before displaying them
         updateStatsCards(); 
-        displayCertificates(); // Initial display of certificate cards
-
+        displayCertificates(); 
         // --- END CERTIFICATES LOGIC ---
+
+        // --- PROJECTS DATA AND LOGIC ---
+        const projectsData = [
+            {
+                title: "Customer Segmentation Analysis",
+                description: "Utilized K-Means clustering to segment customers based on purchasing behavior, enabling targeted marketing strategies. Preprocessed data using Pandas and visualized segments with Matplotlib/Seaborn.",
+                imageUrl: "https://images.unsplash.com/photo-1556742044-3c52d6e88c62?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", // Replace with actual project image
+                tags: ["Python", "Pandas", "NumPy", "Scikit-learn", "K-Means", "Matplotlib", "Seaborn"],
+                githubUrl: "https://github.com/Jeevasurya-Datascientist", // Replace with your actual GitHub link
+                liveUrl: null // Example: "https://your-project-live-demo.com"
+            },
+            {
+                title: "Movie Recommendation System",
+                description: "Developed a content-based and collaborative filtering recommendation system for movies. Leveraged TF-IDF for text features and cosine similarity for recommendations.",
+                imageUrl: "https://images.unsplash.com/photo-1574267432553-4b4628081c31?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", // Replace with actual project image
+                tags: ["Python", "Pandas", "Scikit-learn", "NLP", "TF-IDF", "Cosine Similarity"],
+                githubUrl: "https://github.com/Jeevasurya-Datascientist", // Replace with your actual GitHub link
+                liveUrl: null
+            },
+            {
+                title: "Sales Data Forecasting",
+                description: "Applied time series analysis (ARIMA/SARIMA) to forecast future sales based on historical data. Performed EDA and model evaluation to ensure accuracy.",
+                imageUrl: "https://images.unsplash.com/photo-1543286386-713144006d38?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", // Replace with actual project image
+                tags: ["Python", "Pandas", "Statsmodels", "Time Series", "ARIMA", "Forecasting"],
+                githubUrl: "https://github.com/Jeevasurya-Datascientist", // Replace with your actual GitHub link
+                liveUrl: null
+            }
+            // Add more project objects here. For example:
+            // {
+            //     title: "Interactive Data Dashboard",
+            //     description: "Built an interactive dashboard using Plotly Dash to visualize key business metrics, allowing for real-time data exploration and decision-making.",
+            //     imageUrl: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60",
+            //     tags: ["Python", "Plotly Dash", "Pandas", "Data Visualization", "BI"],
+            //     githubUrl: "https://github.com/Jeevasurya-Datascientist",
+            //     liveUrl: null // "https://your-dashboard-live.com"
+            // }
+        ];
+
+        const projectGrid = document.getElementById('project-grid');
+
+        function displayProjects() {
+            if (!projectGrid) return;
+            projectGrid.innerHTML = ''; 
+
+            if (projectsData.length === 0) {
+                projectGrid.innerHTML = '<p class="text-center col-12">More projects coming soon!</p>';
+                return;
+            }
+
+            projectsData.forEach((project, index) => {
+                const animationDelay = 0.1 + (index % 3) * 0.15; 
+                const cardHTML = `
+                    <div class="col-md-6 col-lg-4 project-item fade-in" style="animation-delay: ${animationDelay}s;">
+                        <div class="card h-100 project-card"> {/* Using project-card for specifics, can inherit from certificate-card for base styles */}
+                            ${project.imageUrl ? `<img src="${project.imageUrl}" class="card-img-top" alt="${project.title}">` : '<div class="card-img-top-placeholder"><i class="fas fa-project-diagram fa-3x text-muted"></i></div>'}
+                            <div class="card-body p-4">
+                                <div> 
+                                    <h3 class="h5 card-title fw-semibold mb-2">${project.title}</h3>
+                                    <p class="card-text text-muted small mb-3">${project.description}</p>
+                                    <div class="certificate-tags mb-3">
+                                        ${project.tags.map(tag => `<span class="skill-badge">${tag}</span>`).join('')}
+                                    </div>
+                                </div>
+                                <div class="project-links mt-auto pt-3 border-top">
+                                    ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-secondary me-2 mb-1 rounded-pill"><i class="fab fa-github me-1"></i> GitHub</a>` : ''}
+                                    ${project.liveUrl ? `<a href="${project.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary mb-1 rounded-pill"><i class="fas fa-external-link-alt me-1"></i> Live Demo</a>` : ''}
+                                    ${!(project.githubUrl || project.liveUrl) ? `<small class="text-muted fst-italic">Links coming soon</small>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                projectGrid.insertAdjacentHTML('beforeend', cardHTML);
+            });
+
+            const newAnimatedElements = projectGrid.querySelectorAll('.fade-in');
+            newAnimatedElements.forEach(el => observer.observe(el));
+        }
+        
+        displayProjects();
+        // --- END PROJECTS LOGIC ---
 
 
         const chartFont = { family: "'Inter', sans-serif", size: 11 };
-        const chartLegendColor = '#4b5563'; // gray-600
-        const chartGridColor = '#e5e7eb'; // gray-200
-        const chartTicksColor = '#6b7280'; // gray-500
+        const chartLegendColor = '#4b5563'; 
+        const chartGridColor = '#e5e7eb'; 
+        const chartTicksColor = '#6b7280'; 
 
         const commonChartOptions = (showLegend = true, legendPos = 'top') => ({
             responsive: true,
@@ -930,18 +1031,18 @@
         });
         
         const chartColors = [
-            'rgba(59, 130, 246, 0.7)',  /* --primary with alpha */
-            'rgba(16, 185, 129, 0.7)', /* --accent with alpha */
-            'rgba(245, 158, 11, 0.7)', /* --chart-color-3 with alpha */
-            'rgba(239, 68, 68, 0.7)',  /* --chart-color-4 with alpha */
-            'rgba(139, 92, 246, 0.7)'  /* --chart-color-5 with alpha */
+            'rgba(59, 130, 246, 0.7)',  
+            'rgba(16, 185, 129, 0.7)', 
+            'rgba(245, 158, 11, 0.7)', 
+            'rgba(239, 68, 68, 0.7)',  
+            'rgba(139, 92, 246, 0.7)'  
         ];
         const chartBorderColors = [
-            'rgb(59, 130, 246)',  /* --primary */
-            'rgb(16, 185, 129)', /* --accent */
-            'rgb(245, 158, 11)', /* --chart-color-3 */
-            'rgb(239, 68, 68)',  /* --chart-color-4 */
-            'rgb(139, 92, 246)'  /* --chart-color-5 */
+            'rgb(59, 130, 246)',  
+            'rgb(16, 185, 129)', 
+            'rgb(245, 158, 11)', 
+            'rgb(239, 68, 68)',  
+            'rgb(139, 92, 246)'  
         ];
 
 
@@ -970,7 +1071,7 @@
                     labels: ['Q1 2023', 'Q2 2023', 'Q3 2023', 'Q4 2023', 'Q1 2024', 'Q2 2024'],
                     datasets: [{
                         label: 'Key Learning Achievements',
-                        data: [2, 4, 5, 7, 9, 10], // Cumulative or count
+                        data: [2, 4, 5, 7, 9, 10], 
                         borderColor: chartBorderColors[0],
                         backgroundColor: chartColors[0],
                         fill: true, tension: 0.4,
@@ -989,7 +1090,7 @@
                     labels: ['Pandas', 'NumPy', 'Scikit-learn', 'Matplotlib', 'Seaborn', 'SQL'],
                     datasets: [{
                         label: 'Library Usage in Projects',
-                        data: [9, 8, 7, 7, 6, 8], // Relative frequency or comfort
+                        data: [9, 8, 7, 7, 6, 8], 
                         backgroundColor: chartColors,
                         borderColor: chartBorderColors,
                         borderWidth: 1, borderRadius: 5
