@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeevasurya - Data Scientist Portfolio</title>
+    <title>Jeevasurya - Aspiring Data Scientist</title>
     <!-- Bootstrap CSS CDN -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Tailwind CSS CDN (Note: Using Tailwind classes alongside Bootstrap can lead to conflicts. Prioritize one or use with caution and custom scoping) -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Google Fonts -->
@@ -16,7 +14,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* Custom styles with enhanced visuals */
         :root {
             --primary: #3b82f6; /* blue-500 */
             --secondary: #1f2937; /* gray-800 */
@@ -28,14 +25,17 @@
             --chart-color-2: #10b981;
             --chart-color-3: #f59e0b;
             --chart-color-4: #ef4444;
-            --chart-color-5: #8b5cf6;
+            --chart-color-5: #8b5cf6; /* violet-500 */
+            --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+            --card-hover-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
         }
 
         body {
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
-            background-color: #f5f5f5; /* A very light gray for overall background */
+            background-color: #f9fafb; /* Even lighter gray for body */
             color: var(--dark-text);
+            overflow-x: hidden; /* Prevent horizontal scroll from animations */
         }
 
         /* Preloader */
@@ -52,12 +52,12 @@
             align-items: center;
         }
         .loader {
-            border: 6px solid #f3f3f3;
+            border: 6px solid #e5e7eb; /* Lighter gray for loader track */
             border-top: 6px solid var(--primary);
             border-radius: 50%;
             width: 60px;
             height: 60px;
-            animation: spin 1.5s linear infinite;
+            animation: spin 1.2s linear infinite;
         }
 
         @keyframes spin {
@@ -67,7 +67,7 @@
 
         /* Hero Section */
         .hero-section {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: var(--light-text);
             min-height: 100vh;
             display: flex;
@@ -75,780 +75,457 @@
             position: relative;
             overflow: hidden;
         }
-
         .hero-section::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.05), transparent);
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 40%);
+            animation: pulseShine 10s infinite linear;
             z-index: 0;
+        }
+        @keyframes pulseShine {
+            0% { transform: scale(0.8) rotate(0deg); opacity: 0.5; }
+            50% { transform: scale(1) rotate(180deg); opacity: 1; }
+            100% { transform: scale(0.8) rotate(360deg); opacity: 0.5; }
         }
         .hero-section .container {
             position: relative;
             z-index: 1;
         }
-
-        /* Improved Typewriter Effect */
         .typewriter h1 {
             overflow: hidden;
-            border-right: .15em solid var(--accent);
+            border-right: .12em solid var(--accent);
             white-space: nowrap;
             margin: 0 auto;
-            letter-spacing: .05em;
-            animation: 
-                typing 3.5s steps(40, end) forwards,
-                blink-caret .75s step-end infinite;
+            letter-spacing: .03em;
+            animation: typing 3.5s steps(35, end) forwards, blink-caret .8s step-end infinite;
+            font-weight: 800;
+        }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent); } }
+
+        .hero-section .btn-primary, .hero-section .btn-outline-light {
+            padding: 0.75rem 1.75rem;
+            font-size: 1.05rem;
+            font-weight: 500;
         }
 
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: var(--accent); }
-        }
-
-        /* Enhanced Navigation */
+        /* Navigation */
         .navbar {
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.9) !important; /* Slightly more opaque */
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            background: rgba(255, 255, 255, 0.85) !important;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
         }
         .navbar.scrolled {
             background: rgba(255, 255, 255, 0.98) !important;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
         }
-
         .nav-link {
             position: relative;
             color: var(--dark-text) !important;
             font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 0.5rem 0.8rem !important;
+            transition: color 0.3s ease;
+            padding: 0.5rem 1rem !important;
         }
-
         .nav-link::after {
             content: '';
             position: absolute;
             width: 0;
             height: 2px;
-            bottom: -2px;
+            bottom: -4px;
             left: 50%;
             transform: translateX(-50%);
             background-color: var(--primary);
             transition: width 0.3s ease;
         }
-
-        .nav-link:hover::after,
-        .nav-link.active::after {
-            width: 70%;
-        }
-        .nav-link.active {
-            color: var(--primary) !important;
-            font-weight: 600;
-        }
-
+        .nav-link:hover, .nav-link.active { color: var(--primary) !important; }
+        .nav-link:hover::after, .nav-link.active::after { width: 60%; }
 
         /* Section Styles */
-        section {
-            padding-top: 80px;
-            padding-bottom: 80px;
-        }
-        #home {
-            padding-top: 0; /* Hero section already has specific padding/height */
-            padding-bottom: 0;
-        }
+        section { padding-top: 80px; padding-bottom: 80px; }
+        #home { padding-top: 0; padding-bottom: 0; }
+        #skills-section, #about-section { background: white; }
+        #certificates-section, #resume-section, #data-visualization-section { background: var(--light-bg); }
+        .section-title h2 { font-weight: 700; color: var(--dark-text); margin-bottom: 0.75rem; }
+        .section-title p { color: #4b5563; /* gray-600 */ max-width: 600px; margin-left:auto; margin-right:auto;}
 
-        #skills-section, #about-section {
-            background: white;
-        }
+        /* Animations */
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-        #certificates-section, #resume-section, #data-visualization-section {
-            background: var(--light-bg);
-        }
-
-        .section-title {
-            margin-bottom: 3rem;
-        }
-        .section-title h2 {
-            font-weight: 700;
-            color: var(--dark-text);
-        }
-        .section-title p {
-            color: #6b7280; /* gray-500 */
-        }
-
-        /* Improved Animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .slide-in-left {
-            opacity: 0;
-            transform: translateX(-50px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .slide-in-left.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .slide-in-right {
-            opacity: 0;
-            transform: translateX(50px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .slide-in-right.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-
-        /* Enhanced Card Styles */
-        .skill-card, .certificate-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-radius: 12px;
-            overflow: hidden;
-            background-color: white;
+        /* Card Styles */
+        .skill-card, .certificate-card, .stats-card, .chart-container, 
+        #resume-section .card, #about-section .card {
             border: 1px solid #e5e7eb; /* gray-200 */
+            border-radius: 12px;
+            background-color: white;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
-        .skill-card:hover, .certificate-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        .skill-card:hover, .certificate-card:hover, .stats-card:hover, 
+        .chart-container:hover, #resume-section .card:hover, #about-section .card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--card-hover-shadow);
         }
-
-        .certificate-card img {
-            transition: transform 0.5s ease;
-            object-fit: cover;
-            height: 200px; /* Fixed height for certificate images */
+        .certificate-card img { object-fit: cover; height: 200px; border-top-left-radius: 11px; border-top-right-radius: 11px; }
+        .certificate-card:hover img { transform: scale(1.05); }
+        
+        .skill-icon-container {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
         }
+        .skill-card .card-title { font-weight: 600; color: var(--dark-text); }
+        .skill-card .card-text { font-size: 0.9rem; }
 
-        .certificate-card:hover img {
-            transform: scale(1.08);
-        }
-
-        .tw-badge { /* Custom class for Tailwind-like badges */
-            padding: 0.3em 0.7em;
-            font-size: 0.8rem;
-            border-radius: 0.375rem; /* rounded-md */
+        /* Badges */
+        .skill-badge {
+            background-color: #eef2ff; /* indigo-50 */
+            color: var(--primary); /* indigo-700 */
+            border: 1px solid #c7d2fe; /* indigo-200 */
+            padding: 0.35em 0.75em;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: 1rem; /* pill shape */
             margin: 0.2rem;
         }
 
-        /* Improved Progress Bars */
+        /* Progress Bars */
         .tw-progress {
-            height: 0.75rem; /* Increased height */
-            border-radius: 8px;
-            background-color: #e5e7eb; /* gray-200 */
+            height: 0.65rem;
+            border-radius: 0.5rem;
+            background-color: #e5e7eb;
             overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
         }
-
         .tw-progress-bar {
             background: linear-gradient(90deg, var(--primary), var(--chart-color-5));
-            transition: width 1.5s ease-out;
+            transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1); /* Smoother transition */
             height: 100%;
-            border-radius: 8px 0 0 8px; /* Round left corners */
-        }
-        .tw-progress-bar.full {
-            border-radius: 8px; /* Full radius if 100% */
+            border-radius: 0.5rem;
         }
 
-
-        /* Enhanced Form Styles */
+        /* Forms */
         .form-control, .form-select {
             border-radius: 8px;
-            transition: all 0.3s ease;
-            padding: 0.75rem 1rem; /* Increased padding */
-            border: 1px solid #d1d5db; /* gray-300 */
-            background-color: #fff;
+            padding: 0.8rem 1rem;
+            border: 1px solid #d1d5db;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-
         .form-control:focus, .form-select:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
-            background-color: #fff;
-        }
-        .form-label {
-            font-weight: 500;
-            margin-bottom: 0.5rem;
+            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.2);
         }
         .btn-primary {
             background-color: var(--primary);
             border-color: var(--primary);
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
         }
         .btn-primary:hover {
-            background-color: #2563eb; /* darker blue */
-            border-color: #2563eb;
-            transform: translateY(-2px);
-        }
-        .btn-outline-light {
-            transition: all 0.3s ease;
-        }
-        .btn-outline-light:hover {
-            background-color: rgba(255,255,255,0.1);
+            background-color: #2563eb;
+            border-color: #1d4ed8;
             transform: translateY(-2px);
         }
 
+        /* Footer */
+        footer { background: var(--secondary); color: #d1d5db; padding: 40px 0; font-size: 0.9rem;}
+        footer .social-icons a { color: #9ca3af; font-size: 1.4rem; margin: 0 0.6rem; transition: color 0.3s ease, transform 0.3s ease; }
+        footer .social-icons a:hover { color: var(--primary); transform: translateY(-2px); }
 
-        /* Enhanced Footer */
-        footer {
-            background: var(--secondary);
-            color: var(--light-text);
-            padding: 50px 0;
-        }
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        footer a:hover {
-            color: #059669; /* darker emerald */
-        }
-        .social-icons a {
-            color: var(--light-text);
-            font-size: 1.5rem;
-            margin: 0 0.75rem;
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-        .social-icons a:hover {
-            color: var(--primary);
-            transform: scale(1.2);
-        }
-
-        /* Enhanced Cards & Visualization Containers */
-        .chart-container {
-            height: 350px; /* Increased height */
-            width: 100%;
-            border-radius: 12px; /* Increased border radius */
-            overflow: hidden;
-            transition: all 0.3s ease;
-            padding: 1.5rem; /* Add padding inside chart container */
-            background-color: #fff;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        .chart-container:hover {
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        
-        .stats-card {
-            border: none;
-            border-radius: 12px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            background-color: white;
-        }
-        
-        .stats-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        
-        .stats-icon {
-            width: 56px; /* Increased size */
-            height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 16px; /* More rounded */
-            margin-right: 1.2rem;
-            font-size: 1.5rem; /* Icon size */
-        }
-        .stats-card .card-body {
-            padding: 1.5rem; /* Consistent padding */
-        }
-        .stats-card h5 {
-            font-size: 0.9rem;
-            color: #6b7280; /* gray-500 */
-            font-weight: 500;
-        }
-        .stats-card h3 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--dark-text);
-        }
-        
-        /* Responsive Adjustments */
-        @media (max-width: 991.98px) { /* Medium devices (tablets, less than 992px) */
-            .hero-section {
-                text-align: center;
-            }
-            .profile-image-container {
-                margin-top: 2rem;
-            }
-            .hero-section .d-flex {
-                justify-content: center;
-            }
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
-            .hero-section {
-                min-height: auto;
-                padding: 6rem 0 4rem 0;
-            }
-            .hero-section h1 {
-                font-size: 2.5rem;
-            }
-             .hero-section h2 {
-                font-size: 1.5rem;
-            }
-            .profile-image-container {
-                width: 60% !important;
-                margin: 2rem auto 0 auto;
-            }
-            .chart-container {
-                height: 300px;
-            }
-            .navbar-nav {
-                background-color: white;
-                padding: 1rem;
-                border-radius: 8px;
-                margin-top: 0.5rem;
-                box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            }
-            .nav-link::after {
-                left: 0;
-                transform: translateX(0);
-            }
-             .nav-link:hover::after,
-            .nav-link.active::after {
-                width: 30%;
-            }
+            .hero-section { min-height: auto; padding: 5rem 0 3rem 0; text-align: center; }
+            .typewriter h1 { font-size: 2.2rem; }
+            .hero-section h2 { font-size: 1.3rem; }
+            .profile-image-container { width: 50% !important; margin: 2rem auto 0 auto; }
+            .hero-section .d-flex { justify-content: center; flex-direction: column; align-items: center; gap: 0.8rem !important; }
+            .navbar-nav { background-color: white; padding: 1rem; border-radius: 8px; margin-top: 0.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+            .section-title h2 { font-size: 2rem; }
+            .chart-container { height: 280px; }
         }
 
-        /* Tailwind utility class overrides if necessary, or use !important sparingly */
-        /* Example: .text-primary { color: var(--primary) !important; } */
-        .bg-primary { background-color: var(--primary) !important; }
-        .text-primary { color: var(--primary) !important; }
-        .border-primary { border-color: var(--primary) !important; }
-
-        .bg-secondary { background-color: var(--secondary) !important; }
-        .text-secondary { color: var(--secondary) !important; }
-        
-        .bg-accent { background-color: var(--accent) !important; }
-        .text-accent { color: var(--accent) !important; }
-
-        /* Specific Tailwind classes that might conflict with Bootstrap */
-        .shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
-        .rounded-circle { border-radius: 50% !important; } /* Ensure Bootstrap's !important wins or remove Tailwind's if not needed */
     </style>
 </head>
-<body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="100">
+<body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="80">
 
-    <!-- Preloader -->
-    <div id="preloader">
-        <div class="loader"></div>
-    </div>
+    <div id="preloader"><div class="loader"></div></div>
 
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="navbar">
+    <nav class="navbar navbar-expand-lg fixed-top" id="navbar">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="#home">Jeevasurya</a>
+            <a class="navbar-brand fw-bold text-primary fs-4" href="#home">Jeevasurya</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link mx-2 active" href="#home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link mx-2" href="#skills-section">Skills</a></li>
-                    <li class="nav-item"><a class="nav-link mx-2" href="#certificates-section">Certificates</a></li>
-                    <li class="nav-item"><a class="nav-link mx-2" href="#data-visualization-section">Visualization</a></li>
-                    <li class="nav-item"><a class="nav-link mx-2" href="#resume-section">Resume</a></li>
-                    <li class="nav-item"><a class="nav-link mx-2" href="#about-section">About & Contact</a></li>
+                    <li class="nav-item"><a class="nav-link mx-1 active" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link mx-1" href="#skills-section">Skills</a></li>
+                    <li class="nav-item"><a class="nav-link mx-1" href="#certificates-section">Certificates</a></li>
+                    <li class="nav-item"><a class="nav-link mx-1" href="#data-visualization-section">Visualizations</a></li>
+                    <li class="nav-item"><a class="nav-link mx-1" href="#resume-section">Resume</a></li>
+                    <li class="nav-item"><a class="nav-link mx-1" href="#about-section">About & Contact</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero-section" id="home">
         <div class="container">
-            <div class="row align-items-center">
+            <div class="row align-items-center gy-4">
                 <div class="col-lg-7 typewriter fade-in">
-                    <h1 class="display-3 fw-bold mb-3">Hi, I'm Jeeva Surya</h1>
-                    <h2 class="h2 mb-4 fw-normal">Data Science Enthusiast | Python Developer</h2>
-                    <p class="lead mb-5" style="max-width: 600px;">Transforming raw data into actionable insights through Python programming and machine learning techniques.</p>
+                    <h1 class="display-3 mb-3">Hi, I'm Jeeva Surya</h1>
+                    <h2 class="h2 mb-4 fw-light">Aspiring Data Scientist | Python Developer</h2>
+                    <p class="lead mb-5" style="max-width: 550px;">Eager to transform data into insights and build intelligent solutions with Python and Machine Learning.</p>
                     <div class="d-flex gap-3">
-                        <a href="#about-section" class="btn btn-primary px-4 py-2 fs-5 rounded-pill shadow-lg"><i class="fas fa-envelope me-2"></i>Contact Me</a>
-                        <a href="#skills-section" class="btn btn-outline-light px-4 py-2 fs-5 rounded-pill shadow-lg"><i class="fas fa-cogs me-2"></i>Explore Skills</a>
+                        <a href="#resume-section" class="btn btn-primary rounded-pill shadow-sm"><i class="fas fa-file-alt me-2"></i>My Resume</a>
+                        <a href="#about-section" class="btn btn-outline-light rounded-pill shadow-sm"><i class="fas fa-user-circle me-2"></i>About Me</a>
                     </div>
                 </div>
-                <div class="col-lg-5 text-center d-none d-lg-block slide-in-right">
-                    <div class="profile-image-container position-relative" style="width: 80%; margin: 0 auto;">
-                         <img src="https://github.com/Jeevasurya-Datascientist/jeevasurya.github.io/blob/main/Linkedin%20profile%201.png?raw=true" alt="Jeeva Surya" class="img-fluid rounded-circle shadow-lg position-relative" style="z-index: 2; max-width: 100%; object-fit: cover; border: 5px solid white;">
+                <div class="col-lg-5 text-center d-none d-lg-block slide-in-right" style="animation-delay: 0.2s;">
+                    <div class="profile-image-container position-relative" style="width: 75%; margin: 0 auto;">
+                         <img src="https://github.com/Jeevasurya-Datascientist/jeevasurya.github.io/blob/main/Linkedin%20profile%201.png?raw=true" alt="Jeeva Surya" class="img-fluid rounded-circle shadow-lg" style="border: 6px solid rgba(255,255,255,0.2);">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Skills Section -->
     <section id="skills-section">
         <div class="container">
             <div class="text-center section-title fade-in">
-                <h2 class="display-5">Technical Skills</h2>
-                <p class="lead">Expertise across the data science spectrum</p>
+                <h2 class="display-5">My Core Skills</h2>
+                <p class="lead">Building a strong foundation in data science tools and techniques.</p>
             </div>
             <div class="row g-4">
-                <!-- Skill cards will be animated by IntersectionObserver -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 border-0 shadow-sm skill-card">
-                        <div class="card-body text-center p-4">
-                            <div class="rounded-circle bg-primary bg-opacity-10 p-3 d-inline-block mb-3">
-                                <i class="fas fa-chart-line fa-2x text-primary"></i>
-                            </div>
-                            <h3 class="h5 card-title mb-3 fw-semibold">Data Analysis</h3>
-                            <p class="card-text text-muted small">Expert in statistical analysis, data wrangling, and exploratory data analysis using Python and R.</p>
-                            <div class="mt-4 d-flex flex-wrap justify-content-center gap-2">
-                                <span class="badge bg-light text-dark border tw-badge">Python</span>
-                                <span class="badge bg-light text-dark border tw-badge">R</span>
-                                <span class="badge bg-light text-dark border tw-badge">Pandas</span>
-                                <span class="badge bg-light text-dark border tw-badge">NumPy</span>
-                                <span class="badge bg-light text-dark border tw-badge">SQL</span>
-                            </div>
-                        </div>
+                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.1s;">
+                    <div class="card h-100 skill-card text-center p-4">
+                        <div class="skill-icon-container bg-primary bg-opacity-10 text-primary"><i class="fab fa-python"></i></div>
+                        <h3 class="h5 card-title mb-2">Python Programming</h3>
+                        <p class="card-text text-muted">Core language for data manipulation, analysis, and machine learning.</p>
+                        <div class="mt-3"><span class="skill-badge">Python</span><span class="skill-badge">OOP</span><span class="skill-badge">Scripting</span></div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 border-0 shadow-sm skill-card">
-                        <div class="card-body text-center p-4">
-                            <div class="rounded-circle bg-warning bg-opacity-10 p-3 d-inline-block mb-3">
-                                <i class="fas fa-brain fa-2x text-warning"></i>
-                            </div>
-                            <h3 class="h5 card-title mb-3 fw-semibold">Machine Learning</h3>
-                            <p class="card-text text-muted small">Implementation of ML algorithms, model training, evaluation, and deployment.</p>
-                            <div class="mt-4 d-flex flex-wrap justify-content-center gap-2">
-                                <span class="badge bg-light text-dark border tw-badge">Scikit-learn</span>
-                                <span class="badge bg-light text-dark border tw-badge">TensorFlow</span>
-                                <span class="badge bg-light text-dark border tw-badge">PyTorch</span>
-                                <span class="badge bg-light text-dark border tw-badge">XGBoost</span>
-                            </div>
-                        </div>
+                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.2s;">
+                    <div class="card h-100 skill-card text-center p-4">
+                        <div class="skill-icon-container bg-success bg-opacity-10 text-success"><i class="fas fa-table-list"></i></div>
+                        <h3 class="h5 card-title mb-2">Data Analysis & Manipulation</h3>
+                        <p class="card-text text-muted">Cleaning, transforming, and analyzing data to uncover patterns.</p>
+                        <div class="mt-3"><span class="skill-badge">Pandas</span><span class="skill-badge">NumPy</span><span class="skill-badge">EDA</span></div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 border-0 shadow-sm skill-card">
-                        <div class="card-body text-center p-4">
-                            <div class="rounded-circle bg-success bg-opacity-10 p-3 d-inline-block mb-3">
-                                <i class="fas fa-chart-pie fa-2x text-success"></i>
-                            </div>
-                            <h3 class="h5 card-title mb-3 fw-semibold">Data Visualization</h3>
-                            <p class="card-text text-muted small">Creating insightful visualizations and interactive dashboards.</p>
-                            <div class="mt-4 d-flex flex-wrap justify-content-center gap-2">
-                                <span class="badge bg-light text-dark border tw-badge">Matplotlib</span>
-                                <span class="badge bg-light text-dark border tw-badge">Seaborn</span>
-                                <span class="badge bg-light text-dark border tw-badge">Plotly</span>
-                                <span class="badge bg-light text-dark border tw-badge">Tableau</span>
-                            </div>
-                        </div>
+                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.3s;">
+                    <div class="card h-100 skill-card text-center p-4">
+                        <div class="skill-icon-container bg-warning bg-opacity-10 text-warning"><i class="fas fa-robot"></i></div>
+                        <h3 class="h5 card-title mb-2">Machine Learning Fundamentals</h3>
+                        <p class="card-text text-muted">Applying algorithms for prediction, classification, and clustering.</p>
+                        <div class="mt-3"><span class="skill-badge">Scikit-learn</span><span class="skill-badge">Regression</span><span class="skill-badge">Classification</span></div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 border-0 shadow-sm skill-card">
-                        <div class="card-body text-center p-4">
-                            <div class="rounded-circle bg-danger bg-opacity-10 p-3 d-inline-block mb-3">
-                                <i class="fas fa-database fa-2x text-danger"></i>
-                            </div>
-                            <h3 class="h5 card-title mb-3 fw-semibold">Big Data Tech</h3>
-                            <p class="card-text text-muted small">Experience with distributed computing frameworks and big data processing tools.</p>
-                            <div class="mt-4 d-flex flex-wrap justify-content-center gap-2">
-                                <span class="badge bg-light text-dark border tw-badge">Hadoop</span>
-                                <span class="badge bg-light text-dark border tw-badge">Spark</span>
-                                <span class="badge bg-light text-dark border tw-badge">Kafka</span>
-                                <span class="badge bg-light text-dark border tw-badge">MongoDB</span>
-                            </div>
-                        </div>
+                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.4s;">
+                    <div class="card h-100 skill-card text-center p-4">
+                        <div class="skill-icon-container bg-info bg-opacity-10 text-info"><i class="fas fa-chart-bar"></i></div>
+                        <h3 class="h5 card-title mb-2">Data Visualization</h3>
+                        <p class="card-text text-muted">Creating visual representations of data for clear communication.</p>
+                        <div class="mt-3"><span class="skill-badge">Matplotlib</span><span class="skill-badge">Seaborn</span><span class="skill-badge">Plotly</span></div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 border-0 shadow-sm skill-card">
-                        <div class="card-body text-center p-4">
-                            <div class="rounded-circle bg-info bg-opacity-10 p-3 d-inline-block mb-3">
-                                <i class="fas fa-cloud fa-2x text-info"></i>
-                            </div>
-                            <h3 class="h5 card-title mb-3 fw-semibold">Cloud Computing</h3>
-                            <p class="card-text text-muted small">Deploying and managing data science solutions on cloud platforms.</p>
-                            <div class="mt-4 d-flex flex-wrap justify-content-center gap-2">
-                                <span class="badge bg-light text-dark border tw-badge">AWS</span>
-                                <span class="badge bg-light text-dark border tw-badge">Azure</span>
-                                <span class="badge bg-light text-dark border tw-badge">GCP</span>
-                                <span class="badge bg-light text-dark border tw-badge">Docker</span>
-                            </div>
-                        </div>
+                 <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.5s;">
+                    <div class="card h-100 skill-card text-center p-4">
+                        <div class="skill-icon-container bg-danger bg-opacity-10 text-danger"><i class="fas fa-database"></i></div>
+                        <h3 class="h5 card-title mb-2">SQL & Databases</h3>
+                        <p class="card-text text-muted">Querying and managing data stored in relational databases.</p>
+                        <div class="mt-3"><span class="skill-badge">SQL</span><span class="skill-badge">Joins</span><span class="skill-badge">Queries</span><span class="skill-badge">MongoDB (Familiar)</span></div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 border-0 shadow-sm skill-card">
-                        <div class="card-body text-center p-4">
-                            <div class="rounded-circle bg-secondary bg-opacity-25 p-3 d-inline-block mb-3">
-                                <i class="fas fa-code fa-2x text-secondary"></i>
-                            </div>
-                            <h3 class="h5 card-title mb-3 fw-semibold">Software Dev</h3>
-                            <p class="card-text text-muted small">Building robust, scalable applications with best coding practices.</p>
-                            <div class="mt-4 d-flex flex-wrap justify-content-center gap-2">
-                                <span class="badge bg-light text-dark border tw-badge">Git</span>
-                                <span class="badge bg-light text-dark border tw-badge">CI/CD</span>
-                                <span class="badge bg-light text-dark border tw-badge">Flask</span>
-                                <span class="badge bg-light text-dark border tw-badge">FastAPI</span>
-                            </div>
-                        </div>
+                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.6s;">
+                    <div class="card h-100 skill-card text-center p-4">
+                        <div class="skill-icon-container bg-secondary bg-opacity-10 text-secondary"><i class="fas fa-tools"></i></div>
+                        <h3 class="h5 card-title mb-2">Development Tools</h3>
+                        <p class="card-text text-muted">Version control, environment management, and coding environments.</p>
+                        <div class="mt-3"><span class="skill-badge">Git & GitHub</span><span class="skill-badge">Jupyter</span><span class="skill-badge">VS Code</span></div>
                     </div>
                 </div>
             </div>
-            <!-- Proficiency Levels -->
-            <div class="row mt-5 fade-in">
+            <div class="row mt-5 fade-in" style="animation-delay: 0.7s;">
                 <div class="col-12">
-                    <h3 class="h4 mb-4 text-center">Proficiency Levels</h3>
+                    <h3 class="h4 mb-4 text-center">Proficiency Snapshot</h3>
                     <div class="mb-3">
-                        <div class="d-flex justify-content-between mb-1">
-                            <span class="fw-medium">Python</span>
-                            <span class="fw-medium">95%</span>
-                        </div>
-                        <div class="tw-progress">
-                            <div class="tw-progress-bar" data-width="95%"></div>
-                        </div>
+                        <div class="d-flex justify-content-between mb-1"><span class="fw-medium">Python (Pandas, NumPy)</span><span class="fw-medium">85%</span></div>
+                        <div class="tw-progress"><div class="tw-progress-bar" data-width="85%"></div></div>
                     </div>
                     <div class="mb-3">
-                        <div class="d-flex justify-content-between mb-1">
-                            <span class="fw-medium">Machine Learning</span>
-                            <span class="fw-medium">85%</span>
-                        </div>
-                        <div class="tw-progress">
-                            <div class="tw-progress-bar" data-width="85%"></div>
-                        </div>
+                        <div class="d-flex justify-content-between mb-1"><span class="fw-medium">Machine Learning (Scikit-learn)</span><span class="fw-medium">75%</span></div>
+                        <div class="tw-progress"><div class="tw-progress-bar" data-width="75%"></div></div>
                     </div>
                     <div class="mb-3">
-                        <div class="d-flex justify-content-between mb-1">
-                            <span class="fw-medium">Data Analysis & SQL</span>
-                            <span class="fw-medium">90%</span>
-                        </div>
-                        <div class="tw-progress">
-                            <div class="tw-progress-bar" data-width="90%"></div>
-                        </div>
+                        <div class="d-flex justify-content-between mb-1"><span class="fw-medium">SQL</span><span class="fw-medium">80%</span></div>
+                        <div class="tw-progress"><div class="tw-progress-bar" data-width="80%"></div></div>
                     </div>
                      <div class="mb-3">
-                        <div class="d-flex justify-content-between mb-1">
-                            <span class="fw-medium">Data Visualization</span>
-                            <span class="fw-medium">85%</span>
-                        </div>
-                        <div class="tw-progress">
-                            <div class="tw-progress-bar" data-width="85%"></div>
-                        </div>
+                        <div class="d-flex justify-content-between mb-1"><span class="fw-medium">Data Visualization (Matplotlib, Seaborn)</span><span class="fw-medium">75%</span></div>
+                        <div class="tw-progress"><div class="tw-progress-bar" data-width="75%"></div></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Certificates Section -->
     <section id="certificates-section">
         <div class="container">
             <div class="text-center section-title fade-in">
-                <h2 class="display-5">Certifications</h2>
-                <p class="lead">Professional qualifications and achievements</p>
+                <h2 class="display-5">My Learning Journey</h2>
+                <p class="lead">Dedicated to continuous learning through certifications and courses.</p>
             </div>
-            
-            <!-- Certificate Statistics Cards -->
             <div class="row g-4 mb-5">
-                 <!-- Stats cards will be animated by IntersectionObserver -->
-                <div class="col-sm-6 col-lg-3">
-                    <div class="card stats-card h-100">
-                        <div class="card-body d-flex align-items-center">
-                            <div class="stats-icon bg-primary bg-opacity-10">
-                                <i class="fas fa-certificate text-primary"></i>
-                            </div>
-                            <div>
-                                <h5 class="card-title mb-0">Total Certs</h5>
-                                <h3 class="mb-0 mt-1">18</h3>
-                            </div>
-                        </div>
+                <div class="col-sm-6 col-lg-3 fade-in" style="animation-delay: 0.1s;">
+                    <div class="stats-card h-100 p-3 text-center">
+                        <div class="stats-icon bg-primary bg-opacity-10 text-primary mx-auto mb-2"><i class="fas fa-certificate"></i></div>
+                        <h3 class="mb-0">18</h3><h5 class="card-title mb-0 text-muted fw-normal">Certifications</h5>
                     </div>
                 </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="card stats-card h-100">
-                        <div class="card-body d-flex align-items-center">
-                            <div class="stats-icon bg-success bg-opacity-10">
-                                <i class="fas fa-graduation-cap text-success"></i>
-                            </div>
-                            <div>
-                                <h5 class="card-title mb-0">Courses</h5>
-                                <h3 class="mb-0 mt-1">42</h3>
-                            </div>
-                        </div>
+                <div class="col-sm-6 col-lg-3 fade-in" style="animation-delay: 0.2s;">
+                    <div class="stats-card h-100 p-3 text-center">
+                        <div class="stats-icon bg-success bg-opacity-10 text-success mx-auto mb-2"><i class="fas fa-graduation-cap"></i></div>
+                        <h3 class="mb-0">42</h3><h5 class="card-title mb-0 text-muted fw-normal">Courses</h5>
                     </div>
                 </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="card stats-card h-100">
-                        <div class="card-body d-flex align-items-center">
-                            <div class="stats-icon bg-warning bg-opacity-10">
-                                <i class="fas fa-star text-warning"></i>
-                            </div>
-                            <div>
-                                <h5 class="card-title mb-0">Specializations</h5>
-                                <h3 class="mb-0 mt-1">7</h3>
-                            </div>
-                        </div>
+                <div class="col-sm-6 col-lg-3 fade-in" style="animation-delay: 0.3s;">
+                    <div class="stats-card h-100 p-3 text-center">
+                        <div class="stats-icon bg-warning bg-opacity-10 text-warning mx-auto mb-2"><i class="fas fa-star"></i></div>
+                        <h3 class="mb-0">7</h3><h5 class="card-title mb-0 text-muted fw-normal">Specializations</h5>
                     </div>
                 </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="card stats-card h-100">
-                        <div class="card-body d-flex align-items-center">
-                            <div class="stats-icon bg-info bg-opacity-10">
-                                <i class="fas fa-clock text-info"></i>
-                            </div>
-                            <div>
-                                <h5 class="card-title mb-0">Learning Hours</h5>
-                                <h3 class="mb-0 mt-1">840+</h3>
-                            </div>
-                        </div>
+                <div class="col-sm-6 col-lg-3 fade-in" style="animation-delay: 0.4s;">
+                    <div class="stats-card h-100 p-3 text-center">
+                        <div class="stats-icon bg-info bg-opacity-10 text-info mx-auto mb-2"><i class="fas fa-user-clock"></i></div>
+                        <h3 class="mb-0">840+</h3><h5 class="card-title mb-0 text-muted fw-normal">Learning Hours</h5>
                     </div>
                 </div>
             </div>
             
             <div class="row g-4">
-                <!-- Certificate cards will be animated by IntersectionObserver -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card border-0 shadow-sm h-100 certificate-card">
-                        <img src="https://images.unsplash.com/photo-1580894732444-8ec533959546?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bWFjaGluZSUyMGxlYXJuaW5nJTIwY291cnNlfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="Machine Learning Certificate">
+                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.5s;">
+                    <div class="certificate-card h-100">
+                        <img src="https://images.unsplash.com/photo-1580894732444-8ec533959546?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="Machine Learning">
                         <div class="card-body p-4">
                             <h3 class="h5 card-title fw-semibold">Machine Learning Specialization</h3>
-                            <p class="card-text text-muted small">Stanford University & Coursera</p>
-                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1"></i> Jan 2024</p>
-                            <span class="badge bg-primary tw-badge">Machine Learning</span>
-                            <span class="badge bg-secondary bg-opacity-75 tw-badge">AI</span>
+                            <p class="card-text text-muted small mb-1">Stanford University & Coursera</p>
+                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1 text-primary opacity-75"></i> Jan 2024</p>
+                            <span class="skill-badge">Machine Learning</span><span class="skill-badge">AI</span>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card border-0 shadow-sm h-100 certificate-card">
-                        <img src="https://images.unsplash.com/photo-1605106702734-205df224ecce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmlnJTIwZGF0YXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="Big Data Certificate">
-                        <div class="card-body p-4">
-                            <h3 class="h5 card-title fw-semibold">Big Data Specialization</h3>
-                            <p class="card-text text-muted small">University of California, San Diego</p>
-                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1"></i> Sep 2023</p>
-                            <span class="badge bg-primary tw-badge">Big Data</span>
-                            <span class="badge bg-success bg-opacity-75 tw-badge">Hadoop</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card border-0 shadow-sm h-100 certificate-card">
-                        <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZGVlcCUyMGxlYXJuaW5nfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="Deep Learning Certificate">
-                        <div class="card-body p-4">
-                            <h3 class="h5 card-title fw-semibold">Deep Learning Specialization</h3>
-                            <p class="card-text text-muted small">DeepLearning.AI</p>
-                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1"></i> Mar 2024</p>
-                            <span class="badge bg-primary tw-badge">Neural Networks</span>
-                            <span class="badge bg-info bg-opacity-75 tw-badge">AI</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 certificate-item-hidden" style="display: none;">
-                    <div class="card border-0 shadow-sm h-100 certificate-card">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGF0YSUyMHNjaWVuY2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="Data Science Certificate">
-                        <div class="card-body p-4">
-                            <h3 class="h5 card-title fw-semibold">Data Science Professional Certificate</h3>
-                            <p class="card-text text-muted small">IBM</p>
-                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1"></i> Nov 2023</p>
-                            <span class="badge bg-primary tw-badge">Data Science</span>
-                            <span class="badge bg-danger bg-opacity-75 tw-badge">Statistics</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 certificate-item-hidden" style="display: none;">
-                    <div class="card border-0 shadow-sm h-100 certificate-card">
-                        <img src="https://images.unsplash.com/photo-1607004468138-2f7908535415?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXdzJTIwY2VydGlmaWNhdGlvbnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="AWS Certificate">
-                        <div class="card-body p-4">
-                            <h3 class="h5 card-title fw-semibold">AWS Certified ML Specialty</h3>
-                            <p class="card-text text-muted small">Amazon Web Services</p>
-                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1"></i> Feb 2024</p>
-                            <span class="badge bg-primary tw-badge">AWS</span>
-                            <span class="badge bg-warning bg-opacity-75 tw-badge">Cloud ML</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 certificate-item-hidden" style="display: none;">
-                    <div class="card border-0 shadow-sm h-100 certificate-card">
-                        <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHl0aG9uJTIwY2VydGlmaWNhdGlvbnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="Python Certificate">
+                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.6s;">
+                    <div class="certificate-card h-100">
+                        <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="Python Programming">
                         <div class="card-body p-4">
                             <h3 class="h5 card-title fw-semibold">Python for Everybody Specialization</h3>
-                            <p class="card-text text-muted small">University of Michigan</p>
-                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1"></i> Jun 2023</p>
-                            <span class="badge bg-primary tw-badge">Python</span>
-                            <span class="badge bg-info bg-opacity-75 tw-badge">Programming</span>
+                            <p class="card-text text-muted small mb-1">University of Michigan</p>
+                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1 text-primary opacity-75"></i> Jun 2023</p>
+                            <span class="skill-badge">Python</span><span class="skill-badge">Programming</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.7s;">
+                    <div class="certificate-card h-100">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="Data Science">
+                        <div class="card-body p-4">
+                            <h3 class="h5 card-title fw-semibold">Data Science Professional Certificate</h3>
+                            <p class="card-text text-muted small mb-1">IBM</p>
+                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1 text-primary opacity-75"></i> Nov 2023</p>
+                            <span class="skill-badge">Data Science</span><span class="skill-badge">Statistics</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Hidden certificates toggle -->
+                 <div class="col-md-6 col-lg-4 certificate-item-hidden fade-in" style="display: none; animation-delay: 0.1s;">
+                    <div class="certificate-card h-100">
+                        <img src="https://images.unsplash.com/photo-1605106702734-205df224ecce?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="Big Data">
+                        <div class="card-body p-4">
+                            <h3 class="h5 card-title fw-semibold">Big Data Specialization</h3>
+                            <p class="card-text text-muted small mb-1">UC San Diego</p>
+                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1 text-primary opacity-75"></i> Sep 2023</p>
+                            <span class="skill-badge">Big Data</span><span class="skill-badge">Hadoop</span>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-md-6 col-lg-4 certificate-item-hidden fade-in" style="display: none; animation-delay: 0.2s;">
+                    <div class="certificate-card h-100">
+                        <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="Deep Learning">
+                        <div class="card-body p-4">
+                            <h3 class="h5 card-title fw-semibold">Deep Learning Specialization</h3>
+                            <p class="card-text text-muted small mb-1">DeepLearning.AI</p>
+                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1 text-primary opacity-75"></i> Mar 2024</p>
+                            <span class="skill-badge">Deep Learning</span><span class="skill-badge">Neural Networks</span>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-md-6 col-lg-4 certificate-item-hidden fade-in" style="display: none; animation-delay: 0.3s;">
+                    <div class="certificate-card h-100">
+                        <img src="https://images.unsplash.com/photo-1607004468138-2f7908535415?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="AWS ML">
+                        <div class="card-body p-4">
+                            <h3 class="h5 card-title fw-semibold">AWS Certified ML Specialty</h3>
+                            <p class="card-text text-muted small mb-1">Amazon Web Services</p>
+                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1 text-primary opacity-75"></i> Feb 2024</p>
+                            <span class="skill-badge">AWS</span><span class="skill-badge">Cloud ML</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="text-center mt-5 fade-in">
+            <div class="text-center mt-5 fade-in" style="animation-delay: 0.8s;">
                 <button id="toggleCertificatesBtn" class="btn btn-outline-primary px-4 py-2 rounded-pill">Show More Certificates</button>
             </div>
         </div>
     </section>
 
-    <!-- Data Visualization Section -->
     <section id="data-visualization-section">
         <div class="container">
             <div class="text-center section-title fade-in">
-                <h2 class="display-5">Data Visualizations</h2>
-                <p class="lead">Illustrating insights with interactive charts</p>
+                <h2 class="display-5">Data Storytelling</h2>
+                <p class="lead">Visualizing data to communicate findings and project insights.</p>
             </div>
             <div class="row g-4">
-                 <!-- Charts will be animated by IntersectionObserver -->
-                <div class="col-lg-6">
-                    <div class="chart-container">
-                        <canvas id="skillDistributionChart"></canvas>
+                <div class="col-lg-6 fade-in" style="animation-delay: 0.1s;">
+                    <div class="chart-container p-3">
+                        <canvas id="skillFocusChart"></canvas>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="chart-container">
-                        <canvas id="projectTimelineChart"></canvas>
+                <div class="col-lg-6 fade-in" style="animation-delay: 0.2s;">
+                    <div class="chart-container p-3">
+                        <canvas id="learningMilestonesChart"></canvas>
                     </div>
                 </div>
-                <div class="col-lg-6 mt-lg-4">
-                     <div class="chart-container">
-                        <canvas id="techUsageChart"></canvas>
+                <div class="col-lg-6 mt-lg-4 fade-in" style="animation-delay: 0.3s;">
+                     <div class="chart-container p-3">
+                        <canvas id="projectTechStackChart"></canvas>
                     </div>
                 </div>
-                <div class="col-lg-6 mt-lg-4">
-                     <div class="chart-container">
-                        <canvas id="learningProgressChart"></canvas>
+                <div class="col-lg-6 mt-lg-4 fade-in" style="animation-delay: 0.4s;">
+                     <div class="chart-container p-3">
+                        <canvas id="dsTopicExplorationChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Resume Section -->
     <section id="resume-section">
         <div class="container">
             <div class="text-center section-title fade-in">
                 <h2 class="display-5">My Resume</h2>
-                <p class="lead">To download my resume, please fill out the form below. Your details help me understand who is interested in my profile.</p>
+                <p class="lead">Interested in learning more? Fill out the form to download my resume.</p>
             </div>
-            <div class="fade-in">
-                <div class="card p-4 p-md-5 shadow-lg border-0 rounded-3 mx-auto" style="max-width: 700px;">
+            <div class="fade-in" style="animation-delay: 0.1s;">
+                <div class="card p-4 p-md-5 mx-auto" style="max-width: 650px;">
                     <h3 class="fw-semibold mb-4 text-center">Request Resume Download</h3>
                     <form id="resumeRequestForm" action="https://formspree.io/f/mldblopl" method="POST">
-                        <!-- Replace YOUR_UNIQUE_FORMSPREE_ID with your actual Formspree endpoint ID -->
-                        <!-- Configure your Formspree form to email to jeevasurya.datascientist@gmail.com -->
-                        <input type="hidden" name="_subject" value="New Resume Download Request from Portfolio">
-                        <input type="hidden" name="portfolio_visitor_info" value="Resume Requested by User">
-                        
+                        <input type="hidden" name="_subject" value="New Resume Download Request from Jeevasurya's Portfolio">
                         <div class="mb-3">
                             <label for="requestName" class="form-label">Full Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="requestName" name="name" placeholder="Your Full Name" required>
@@ -857,22 +534,12 @@
                             <label for="requestEmail" class="form-label">Email Address <span class="text-danger">*</span></label>
                             <input type="email" class="form-control" id="requestEmail" name="email" placeholder="your.email@example.com" required>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="requestCompany" class="form-label">Company (Optional)</label>
-                                <input type="text" class="form-control" id="requestCompany" name="company" placeholder="Your Company Name">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="requestRole" class="form-label">Your Role (Optional)</label>
-                                <input type="text" class="form-control" id="requestRole" name="role" placeholder="e.g., Recruiter, Hiring Manager">
-                            </div>
+                        <div class="mb-3">
+                            <label for="requestCompany" class="form-label">Company (Optional)</label>
+                            <input type="text" class="form-control" id="requestCompany" name="company" placeholder="Your Company Name">
                         </div>
-                        <div class="mb-4">
-                            <label for="requestPurpose" class="form-label">Purpose of Download (Optional)</label>
-                            <textarea class="form-control" id="requestPurpose" name="purpose" rows="3" placeholder="E.g., Recruitment opportunity, Collaboration, General interest..."></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100 py-2 fs-5 rounded-pill">
-                            Submit & Download Resume <i class="fas fa-download ms-2"></i>
+                        <button type="submit" class="btn btn-primary w-100 py-2 fs-5 rounded-pill mt-2">
+                            Submit & Download <i class="fas fa-download ms-2"></i>
                         </button>
                     </form>
                     <div id="resumeFormMessage" class="mt-3"></div>
@@ -881,38 +548,35 @@
         </div>
     </section>
 
-    <!-- About Me & Contact Section -->
     <section id="about-section">
         <div class="container">
             <div class="text-center section-title fade-in">
-                <h2 class="display-5">About Me & Contact</h2>
-                <p class="lead">Get to know me and let's connect!</p>
+                <h2 class="display-5">About Me</h2>
+                <p class="lead">My journey into the world of data science and how to connect.</p>
             </div>
             <div class="row g-5 align-items-center">
-                <div class="col-lg-6 fade-in">
-                    <h3 class="fw-semibold mb-3">Jeeva Surya</h3>
+                <div class="col-lg-6 fade-in" style="animation-delay: 0.1s;">
+                    <h3 class="fw-semibold mb-3">Hello, I'm Jeeva Surya!</h3>
                     <p class="text-muted mb-3">
-                        Hello! I'm a passionate Data Scientist with a strong foundation in Python, machine learning, and statistical analysis. My journey into data science was fueled by a curiosity to uncover hidden patterns in data and translate them into impactful business solutions. I thrive on challenges and am constantly seeking to expand my knowledge in this ever-evolving field.
+                        I'm a data science enthusiast with a strong passion for leveraging Python and machine learning to solve real-world problems. My curiosity for uncovering patterns and insights from data drives my continuous learning and exploration in this dynamic field. I am committed to developing practical skills and applying them to create impactful solutions.
                     </p>
                     <p class="text-muted">
-                        When I'm not crunching numbers or building models, I enjoy exploring new technologies, contributing to open-source projects, and reading tech blogs. I believe in continuous learning and collaboration to achieve innovative outcomes.
+                        Currently, I'm focusing on strengthening my foundational knowledge, working on personal projects, and seeking opportunities to contribute and grow as a Data Scientist. Outside of data, I enjoy [mention 1-2 brief, relatable hobbies, e.g., "reading about new tech trends" or "playing chess"].
                     </p>
                     <div class="mt-4">
                         <h4 class="fw-medium mb-3">Let's Connect:</h4>
-                        <div class="social-icons">
-                            <a href="https://www.linkedin.com/in/jeevasurya-a" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                            <a href="https://github.com/Jeevasurya-Datascientist" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
-                            <a href="mailto:jeevasurya.official@email.com" title="Email"><i class="fas fa-envelope"></i></a>
-                            <!-- Add more social links as needed -->
+                        <div class="social-icons d-flex">
+                            <a href="https://www.linkedin.com/in/jeevasurya-a" target="_blank" title="LinkedIn" class="me-3"><i class="fab fa-linkedin"></i></a>
+                            <a href="https://github.com/Jeevasurya-Datascientist" target="_blank" title="GitHub" class="me-3"><i class="fab fa-github"></i></a>
+                            <a href="mailto:jeevasurya.datascientist@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 fade-in">
-                    <div class="card p-4 shadow-lg border-0 rounded-3">
+                <div class="col-lg-6 fade-in" style="animation-delay: 0.2s;">
+                    <div class="card p-4">
                         <h3 class="fw-semibold mb-4 text-center">Send Me a Message</h3>
                         <form id="contactForm" action="https://formspree.io/f/mldblopl" method="POST">
-                             <!-- Replace YOUR_OTHER_FORMSPREE_ID_FOR_CONTACT with a different Formspree endpoint for general contact -->
-                            <input type="hidden" name="_subject" value="New Contact Message from Portfolio">
+                            <input type="hidden" name="_subject" value="New Contact Message from Jeevasurya's Portfolio">
                             <div class="mb-3">
                                 <label for="contactName" class="form-label">Full Name</label>
                                 <input type="text" class="form-control" id="contactName" name="name" placeholder="Your Name" required>
@@ -922,12 +586,8 @@
                                 <input type="email" class="form-control" id="contactEmail" name="email" placeholder="your.email@example.com" required>
                             </div>
                             <div class="mb-3">
-                                <label for="contactSubject" class="form-label">Subject</label>
-                                <input type="text" class="form-control" id="contactSubject" name="subject" placeholder="Message Subject">
-                            </div>
-                            <div class="mb-3">
                                 <label for="contactMessage" class="form-label">Message</label>
-                                <textarea class="form-control" id="contactMessage" name="message" rows="5" placeholder="Your message here..." required></textarea>
+                                <textarea class="form-control" id="contactMessage" name="message" rows="4" placeholder="Your message here..." required></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill">Send Message <i class="fas fa-paper-plane ms-2"></i></button>
                         </form>
@@ -938,411 +598,293 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="container text-center">
-            <p class="mb-2">© <span id="currentYear"></span> Jeevasurya. All Rights Reserved.</p>
-            <p class="small">Designed with <i class="fas fa-heart text-danger"></i> using Bootstrap & a touch of Tailwind inspiration.</p>
-            <p class="small">Portfolio of a Data Science Enthusiast.</p>
+            <div class="social-icons mb-3">
+                <a href="https://www.linkedin.com/in/jeevasurya-a" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/Jeevasurya-Datascientist" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="mailto:jeevasurya.datascientist@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+            <p class="mb-1">© <span id="currentYear"></span> Jeevasurya Palanisamy. All Rights Reserved.</p>
+            <p class="small">Aspiring Data Scientist | Built with Passion</p>
         </div>
     </footer>
 
-    <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <!-- Chart.js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Preloader
-            const preloader = document.getElementById('preloader');
-            window.addEventListener('load', () => {
-                preloader.style.transition = 'opacity 0.5s ease';
-                preloader.style.opacity = '0';
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 500);
-            });
-
-            // Navbar scroll effect
-            const navbar = document.getElementById('navbar');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            });
-
-            // Active Nav Link on Scroll
-            const navLinks = document.querySelectorAll('.nav-link');
-            const sections = document.querySelectorAll('section');
-            
-            function changeLinkState() {
-                let index = sections.length;
-
-                while(--index && window.scrollY + 100 < sections[index].offsetTop) {}
-                
-                navLinks.forEach((link) => link.classList.remove('active'));
-                // Check if a corresponding navLink exists before adding 'active'
-                if (navLinks[index]) {
-                    navLinks[index].classList.add('active');
-                }
-            }
-            changeLinkState(); // Initial call
-            window.addEventListener('scroll', changeLinkState);
-
-
-            // Smooth scrolling for nav links
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    if (this.hash !== "") {
-                        e.preventDefault();
-                        const hash = this.hash;
-                        const targetElement = document.querySelector(hash);
-                        if (targetElement) {
-                           const offset = navbar.offsetHeight;
-                           const elementPosition = targetElement.getBoundingClientRect().top;
-                           const offsetPosition = elementPosition + window.pageYOffset - offset;
-                        
-                           window.scrollTo({
-                               top: offsetPosition,
-                               behavior: "smooth"
-                           });
-                           // Close mobile navbar if open
-                           const navbarCollapse = document.getElementById('navbarNav');
-                           if (navbarCollapse.classList.contains('show')) {
-                               new bootstrap.Collapse(navbarCollapse).hide();
-                           }
-                        }
-                    }
-                });
-            });
-            
-            // Intersection Observer for animations
-            const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .skill-card, .stats-card, .certificate-card, .chart-container');
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1 // Trigger when 10% of the element is visible
-            };
-
-            const observer = new IntersectionObserver((entries, obs) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        
-                        // Animate progress bars when they become visible
-                        if (entry.target.classList.contains('tw-progress')) {
-                            const progressBar = entry.target.querySelector('.tw-progress-bar');
-                            if (progressBar) {
-                                const width = progressBar.getAttribute('data-width');
-                                progressBar.style.width = width;
-                                if (width === '100%') progressBar.classList.add('full');
-                            }
-                        }
-                        // For individual cards, if direct animation on card is preferred over parent
-                        if (entry.target.classList.contains('skill-card') || entry.target.classList.contains('stats-card') || entry.target.classList.contains('certificate-card') || entry.target.classList.contains('chart-container')) {
-                           // The 'visible' class handles the animation defined in CSS
-                        }
-
-                        // Unobserve after animation to save resources, if animation is one-time
-                        // obs.unobserve(entry.target); 
-                    }
-                });
-            }, observerOptions);
-
-            animatedElements.forEach(el => observer.observe(el));
-            
-            // Animate progress bars (also trigger on scroll into view)
-            const progressBars = document.querySelectorAll('.tw-progress-bar');
-            
-            function animateProgressBars() {
-                progressBars.forEach(bar => {
-                    const rect = bar.closest('.tw-progress').getBoundingClientRect();
-                    if (rect.top < window.innerHeight && rect.bottom >= 0) { // Check if in viewport
-                        const width = bar.getAttribute('data-width');
-                        bar.style.width = width;
-                        if (width === '100%') bar.classList.add('full');
-                    }
-                });
-            }
-            // Initial check in case they are already in view
-            animateProgressBars();
-            window.addEventListener('scroll', animateProgressBars);
-
-
-            // "Show More/Less" Certificates
-            const toggleBtn = document.getElementById('toggleCertificatesBtn');
-            const hiddenCertificates = document.querySelectorAll('.certificate-item-hidden');
-            let certificatesVisible = false;
-
-            if (toggleBtn) {
-                toggleBtn.addEventListener('click', () => {
-                    certificatesVisible = !certificatesVisible;
-                    hiddenCertificates.forEach(cert => {
-                        if (certificatesVisible) {
-                            cert.style.display = 'block'; // Or 'flex' if using flexbox for layout
-                            // Trigger fade-in animation if desired
-                            setTimeout(() => cert.classList.add('visible'), 50); 
-                        } else {
-                            cert.style.display = 'none';
-                            cert.classList.remove('visible');
-                        }
-                    });
-                    toggleBtn.textContent = certificatesVisible ? 'Show Less Certificates' : 'Show More Certificates';
-                });
-            }
-
-            // Chart.js Examples
-            const commonChartOptions = {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: {
-                            font: { family: "'Inter', sans-serif", size: 12 },
-                            color: '#4b5563' // gray-600
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(31, 41, 55, 0.9)', // gray-800
-                        titleFont: { family: "'Inter', sans-serif", weight: 'bold' },
-                        bodyFont: { family: "'Inter', sans-serif" },
-                        padding: 10,
-                        cornerRadius: 6,
-                        boxPadding: 3
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: { color: '#e5e7eb' }, // gray-200
-                        ticks: { color: '#6b7280', font: { family: "'Inter', sans-serif" } } // gray-500
-                    },
-                    x: {
-                        grid: { display: false },
-                        ticks: { color: '#6b7280', font: { family: "'Inter', sans-serif" } } // gray-500
-                    }
-                }
-            };
-            
-            const chartColors = ['var(--chart-color-1)', 'var(--chart-color-2)', 'var(--chart-color-3)', 'var(--chart-color-4)', 'var(--chart-color-5)'];
-
-            // Skill Distribution Chart (Doughnut)
-            const skillCtx = document.getElementById('skillDistributionChart')?.getContext('2d');
-            if (skillCtx) {
-                new Chart(skillCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Python', 'Machine Learning', 'Data Analysis', 'SQL', 'Visualization'],
-                        datasets: [{
-                            label: 'Skill Proficiency',
-                            data: [95, 85, 90, 80, 85],
-                            backgroundColor: chartColors,
-                            borderColor: '#fff',
-                            borderWidth: 2,
-                            hoverOffset: 8
-                        }]
-                    },
-                    options: { ...commonChartOptions, cutout: '60%' }
-                });
-            }
-
-            // Project Timeline Chart (Line)
-            const projectCtx = document.getElementById('projectTimelineChart')?.getContext('2d');
-            if (projectCtx) {
-                new Chart(projectCtx, {
-                    type: 'line',
-                    data: {
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                        datasets: [{
-                            label: 'Projects Completed',
-                            data: [2, 3, 1, 4, 2, 3],
-                            borderColor: 'var(--chart-color-1)',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            fill: true,
-                            tension: 0.3,
-                            pointBackgroundColor: 'var(--chart-color-1)',
-                            pointBorderColor: '#fff',
-                            pointHoverRadius: 6,
-                            pointRadius: 4
-                        }]
-                    },
-                    options: commonChartOptions
-                });
-            }
-
-            // Tech Usage Chart (Bar)
-            const techCtx = document.getElementById('techUsageChart')?.getContext('2d');
-            if (techCtx) {
-                new Chart(techCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Scikit-learn', 'TensorFlow', 'Pandas', 'Matplotlib', 'Spark'],
-                        datasets: [{
-                            label: 'Technology Usage Frequency (Projects)',
-                            data: [25, 15, 30, 22, 10],
-                            backgroundColor: chartColors.slice(0,5).map(color => color.replace(')', ', 0.7)').replace('rgb', 'rgba')),
-                            borderColor: chartColors.slice(0,5),
-                            borderWidth: 1,
-                            borderRadius: 4,
-                            hoverBackgroundColor: chartColors.slice(0,5)
-                        }]
-                    },
-                    options: { ...commonChartOptions, indexAxis: 'y' }
-                });
-            }
-
-            // Learning Progress Chart (Polar Area)
-            const learningCtx = document.getElementById('learningProgressChart')?.getContext('2d');
-            if (learningCtx) {
-                new Chart(learningCtx, {
-                    type: 'polarArea',
-                    data: {
-                        labels: ['Deep Learning', 'Big Data', 'Cloud (AWS)', 'NLP', 'Statistics'],
-                        datasets: [{
-                            label: 'Areas of Focus (Learning Hours)',
-                            data: [150, 120, 100, 90, 110],
-                            backgroundColor: chartColors.map(color => color.replace(')', ', 0.7)').replace('rgb', 'rgba')),
-                            borderColor: '#fff',
-                            borderWidth: 1,
-                            hoverOffset: 4
-                        }]
-                    },
-                    options: { ...commonChartOptions, 
-                        scales: {
-                            r: {
-                                pointLabels: { display: true, centerPointLabels: true, font: {size: 10} },
-                                ticks: { display: true, backdropPadding: 0 },
-                                grid: { circular: true }
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Resume Request Form Submission
-            const resumeRequestForm = document.getElementById('resumeRequestForm');
-            const resumeFormMessage = document.getElementById('resumeFormMessage');
-            // URL encode the filename for safety, though modern browsers handle it.
-            const resumeUrl = 'https://raw.githubusercontent.com/Jeevasurya-Datascientist/jeevasurya.github.io/main/JEEVA%20SURYA%20PALANISAMY%20Resume%20(1).pdf';
-            const resumeDownloadName = 'JeevaSurya_Palanisamy_Resume.pdf';
-
-            if (resumeRequestForm) {
-                resumeRequestForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-
-                    const formData = new FormData(resumeRequestForm);
-                    const action = resumeRequestForm.action; // Formspree URL
-                    const submitButton = resumeRequestForm.querySelector('button[type="submit"]');
-
-                    // Basic client-side validation (also relying on 'required' attributes)
-                    if (!formData.get('name').trim() || !formData.get('email').trim()) {
-                        resumeFormMessage.innerHTML = '<div class="alert alert-danger" role="alert">Please fill in your Name and Email.</div>';
-                        return;
-                    }
-                    
-                    submitButton.disabled = true;
-                    submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
-
-                    fetch(action, {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    }).then(response => {
-                        if (response.ok) {
-                            resumeFormMessage.innerHTML = '<div class="alert alert-success" role="alert">Thank you! Your request has been sent. The download will start shortly.</div>';
-                            resumeRequestForm.reset();
-
-                            // Trigger download
-                            const link = document.createElement('a');
-                            link.href = resumeUrl;
-                            link.download = resumeDownloadName; // Desired filename for the user
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
-                        } else {
-                            response.json().then(data => {
-                                if (data.errors) {
-                                    resumeFormMessage.innerHTML = `<div class="alert alert-danger" role="alert">${data.errors.map(err => err.message).join("<br>")}</div>`;
-                                } else {
-                                    resumeFormMessage.innerHTML = '<div class="alert alert-danger" role="alert">Oops! There was a problem submitting your request. Please try again.</div>';
-                                }
-                            }).catch(() => {
-                                resumeFormMessage.innerHTML = '<div class="alert alert-danger" role="alert">Oops! There was an issue processing the server response.</div>';
-                            });
-                        }
-                    }).catch(error => {
-                        resumeFormMessage.innerHTML = `<div class="alert alert-danger" role="alert">Network error: ${error.message}. Please check your connection and try again.</div>`;
-                    }).finally(() => {
-                        submitButton.disabled = false;
-                        submitButton.innerHTML = 'Submit & Download Resume <i class="fas fa-download ms-2"></i>';
-                        setTimeout(() => {
-                            resumeFormMessage.innerHTML = '';
-                        }, 7000); // Clear message after 7 seconds
-                    });
-                });
-            }
-
-
-            // Contact Form Submission (using Formspree)
-            const contactForm = document.getElementById('contactForm');
-            const formMessageDisplay = document.getElementById('formMessage'); // Corrected ID
-            if (contactForm) {
-                contactForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const formData = new FormData(contactForm);
-                    const action = contactForm.action;
-                    const submitButton = contactForm.querySelector('button[type="submit"]');
-
-                    if (!formData.get('name').trim() || !formData.get('email').trim() || !formData.get('message').trim()) {
-                        formMessageDisplay.innerHTML = '<div class="alert alert-danger" role="alert">Please fill in all required fields.</div>';
-                        return;
-                    }
-
-                    submitButton.disabled = true;
-                    submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
-                    
-                    fetch(action, {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    }).then(response => {
-                        if (response.ok) {
-                            formMessageDisplay.innerHTML = '<div class="alert alert-success" role="alert">Thank you for your message! I will get back to you soon.</div>';
-                            contactForm.reset();
-                        } else {
-                            response.json().then(data => {
-                                if (data.errors) {
-                                     formMessageDisplay.innerHTML = `<div class="alert alert-danger" role="alert">${data.errors.map(err => err.message).join("<br>")}</div>`;
-                                } else {
-                                    formMessageDisplay.innerHTML = '<div class="alert alert-danger" role="alert">Oops! There was a problem sending your message.</div>';
-                                }
-                            }).catch(() => {
-                                formMessageDisplay.innerHTML = '<div class="alert alert-danger" role="alert">Oops! There was an issue processing the server response for contact form.</div>';
-                            });
-                        }
-                    }).catch(error => {
-                        formMessageDisplay.innerHTML = `<div class="alert alert-danger" role="alert">Network error: ${error.message}. Please try again.</div>`;
-                    }).finally(() => {
-                        submitButton.disabled = false;
-                        submitButton.innerHTML = 'Send Message <i class="fas fa-paper-plane ms-2"></i>';
-                        setTimeout(() => {
-                            formMessageDisplay.innerHTML = '';
-                        }, 5000);
-                    });
-                });
-            }
-
-            // Update current year in footer
-            document.getElementById('currentYear').textContent = new Date().getFullYear();
+    document.addEventListener('DOMContentLoaded', function() {
+        const preloader = document.getElementById('preloader');
+        window.addEventListener('load', () => {
+            preloader.style.transition = 'opacity 0.5s ease, visibility 0.5s ease';
+            preloader.style.opacity = '0';
+            preloader.style.visibility = 'hidden';
         });
+
+        const navbar = document.getElementById('navbar');
+        const heroSectionHeight = document.getElementById('home')?.offsetHeight || 0;
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > Math.min(50, heroSectionHeight / 2)) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id]');
+        function changeLinkState() {
+            let index = sections.length;
+            while(--index && window.scrollY + navbar.offsetHeight + 20 < sections[index].offsetTop) {}
+            navLinks.forEach((link) => link.classList.remove('active'));
+            const activeLink = document.querySelector(`.nav-link[href="#${sections[index] ? sections[index].id : 'home'}"]`);
+            if (activeLink) activeLink.classList.add('active');
+        }
+        changeLinkState();
+        window.addEventListener('scroll', changeLinkState);
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.hash !== "") {
+                    e.preventDefault();
+                    const hash = this.hash;
+                    const targetElement = document.querySelector(hash);
+                    if (targetElement) {
+                       const offset = navbar.offsetHeight;
+                       const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                       const offsetPosition = elementPosition - offset;
+                       window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+                       const navbarCollapse = document.getElementById('navbarNav');
+                       if (navbarCollapse.classList.contains('show')) {
+                           new bootstrap.Collapse(navbarCollapse).hide();
+                       }
+                    }
+                }
+            });
+        });
+        
+        const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    if (entry.target.classList.contains('fade-in')) { // specifically for progress bars if needed
+                        const progressBars = entry.target.querySelectorAll('.tw-progress-bar');
+                        progressBars.forEach(bar => {
+                            const width = bar.getAttribute('data-width');
+                            bar.style.width = width;
+                        });
+                    }
+                    // observer.unobserve(entry.target); // Optional: unobserve after first animation
+                }
+            });
+        }, { threshold: 0.1 });
+        animatedElements.forEach(el => observer.observe(el));
+
+        // Animate progress bars specifically when their parent .fade-in becomes visible
+        // This is now handled by the general IntersectionObserver logic above for .fade-in elements containing progress bars.
+
+        const toggleBtn = document.getElementById('toggleCertificatesBtn');
+        const hiddenCertificates = document.querySelectorAll('.certificate-item-hidden');
+        let certificatesVisible = false;
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                certificatesVisible = !certificatesVisible;
+                hiddenCertificates.forEach((cert, index) => {
+                    if (certificatesVisible) {
+                        cert.style.display = 'block';
+                        setTimeout(() => cert.classList.add('visible'), 50 * (index + 1)); // Staggered fade-in
+                    } else {
+                        cert.classList.remove('visible');
+                        setTimeout(() => cert.style.display = 'none', 300); // Hide after fade-out
+                    }
+                });
+                toggleBtn.textContent = certificatesVisible ? 'Show Less Certificates' : 'Show More Certificates';
+            });
+        }
+
+        const chartFont = { family: "'Inter', sans-serif", size: 11 };
+        const chartLegendColor = '#4b5563'; // gray-600
+        const chartGridColor = '#e5e7eb'; // gray-200
+        const chartTicksColor = '#6b7280'; // gray-500
+
+        const commonChartOptions = (showLegend = true, legendPos = 'top') => ({
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: showLegend,
+                    position: legendPos,
+                    labels: { font: chartFont, color: chartLegendColor, padding:15 }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(31, 41, 55, 0.9)',
+                    titleFont: { ...chartFont, weight: 'bold' },
+                    bodyFont: chartFont,
+                    padding: 10,
+                    cornerRadius: 6,
+                    boxPadding: 3
+                }
+            },
+            scales: {
+                y: { beginAtZero: true, grid: { color: chartGridColor }, ticks: { color: chartTicksColor, font: chartFont } },
+                x: { grid: { display: false }, ticks: { color: chartTicksColor, font: chartFont } }
+            }
+        });
+        
+        const chartColors = [
+            'rgba(59, 130, 246, 0.7)',  /* --primary with alpha */
+            'rgba(16, 185, 129, 0.7)', /* --accent with alpha */
+            'rgba(245, 158, 11, 0.7)', /* --chart-color-3 with alpha */
+            'rgba(239, 68, 68, 0.7)',  /* --chart-color-4 with alpha */
+            'rgba(139, 92, 246, 0.7)'  /* --chart-color-5 with alpha */
+        ];
+        const chartBorderColors = [
+            'rgb(59, 130, 246)',  /* --primary */
+            'rgb(16, 185, 129)', /* --accent */
+            'rgb(245, 158, 11)', /* --chart-color-3 */
+            'rgb(239, 68, 68)',  /* --chart-color-4 */
+            'rgb(139, 92, 246)'  /* --chart-color-5 */
+        ];
+
+
+        const skillCtx = document.getElementById('skillFocusChart')?.getContext('2d');
+        if (skillCtx) {
+            new Chart(skillCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Python & Libraries', 'Machine Learning', 'Data Analysis/SQL', 'Visualization', 'Tools'],
+                    datasets: [{
+                        label: 'Skill Area Focus',
+                        data: [35, 25, 20, 15, 5],
+                        backgroundColor: chartColors,
+                        borderColor: '#fff', borderWidth: 2, hoverOffset: 8
+                    }]
+                },
+                options: { ...commonChartOptions(true, 'bottom'), cutout: '65%' }
+            });
+        }
+
+        const milestonesCtx = document.getElementById('learningMilestonesChart')?.getContext('2d');
+        if (milestonesCtx) {
+            new Chart(milestonesCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Q1 2023', 'Q2 2023', 'Q3 2023', 'Q4 2023', 'Q1 2024', 'Q2 2024'],
+                    datasets: [{
+                        label: 'Key Learning Achievements',
+                        data: [2, 4, 5, 7, 9, 10], // Cumulative or count
+                        borderColor: chartBorderColors[0],
+                        backgroundColor: chartColors[0],
+                        fill: true, tension: 0.4,
+                        pointBackgroundColor: chartBorderColors[0], pointBorderColor: '#fff', pointHoverRadius: 7, pointRadius: 5
+                    }]
+                },
+                options: commonChartOptions()
+            });
+        }
+
+        const techStackCtx = document.getElementById('projectTechStackChart')?.getContext('2d');
+        if (techStackCtx) {
+            new Chart(techStackCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Pandas', 'NumPy', 'Scikit-learn', 'Matplotlib', 'Seaborn', 'SQL'],
+                    datasets: [{
+                        label: 'Library Usage in Projects',
+                        data: [9, 8, 7, 7, 6, 8], // Relative frequency or comfort
+                        backgroundColor: chartColors,
+                        borderColor: chartBorderColors,
+                        borderWidth: 1, borderRadius: 5
+                    }]
+                },
+                options: { ...commonChartOptions(false), indexAxis: 'y', scales: {
+                    y: { beginAtZero: true, grid: { display: false }, ticks: { color: chartTicksColor, font: chartFont } },
+                    x: { grid: { color: chartGridColor }, ticks: { color: chartTicksColor, font: chartFont } }
+                }}
+            });
+        }
+
+        const dsExplorationCtx = document.getElementById('dsTopicExplorationChart')?.getContext('2d');
+        if (dsExplorationCtx) {
+            new Chart(dsExplorationCtx, {
+                type: 'polarArea',
+                data: {
+                    labels: ['Statistical Analysis', 'Feature Engineering', 'Model Evaluation', 'Time Series Basics', 'NLP Fundamentals'],
+                    datasets: [{
+                        label: 'Time Spent on Topics (hrs)',
+                        data: [60, 45, 50, 30, 40],
+                        backgroundColor: chartColors,
+                        borderColor: '#fff', borderWidth: 1
+                    }]
+                },
+                options: { ...commonChartOptions(true, 'bottom'), scales: { r: { pointLabels: { font: chartFont, color: chartTicksColor }, grid: { color: chartGridColor }, ticks: { backdropColor: 'transparent', color: chartTicksColor, font: chartFont, z:1 } } } }
+            });
+        }
+        
+        function handleFormSubmission(formElement, messageElementId) {
+            const messageDiv = document.getElementById(messageElementId);
+            if (formElement) {
+                formElement.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(formElement);
+                    const action = formElement.action;
+                    const submitButton = formElement.querySelector('button[type="submit"]');
+                    const originalButtonText = submitButton.innerHTML;
+
+                    let isValid = true;
+                    formElement.querySelectorAll('[required]').forEach(input => {
+                        if (!input.value.trim()) isValid = false;
+                    });
+
+                    if (!isValid) {
+                        messageDiv.innerHTML = '<div class="alert alert-danger" role="alert">Please fill in all required fields.</div>';
+                        return;
+                    }
+                    
+                    submitButton.disabled = true;
+                    submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+
+                    fetch(action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' }})
+                    .then(response => {
+                        if (response.ok) {
+                            messageDiv.innerHTML = '<div class="alert alert-success" role="alert">Thank you! Your message has been sent.</div>';
+                            formElement.reset();
+                            if (formElement.id === 'resumeRequestForm') {
+                                messageDiv.innerHTML = '<div class="alert alert-success" role="alert">Request sent! Your download will begin shortly.</div>';
+                                const resumeUrl = 'https://raw.githubusercontent.com/Jeevasurya-Datascientist/jeevasurya.github.io/main/JEEVA%20SURYA%20PALANISAMY%20Resume%20(1).pdf';
+                                const resumeDownloadName = 'JeevaSurya_Palanisamy_Resume.pdf';
+                                const link = document.createElement('a');
+                                link.href = resumeUrl;
+                                link.download = resumeDownloadName;
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
+                            }
+                        } else {
+                            response.json().then(data => {
+                                messageDiv.innerHTML = `<div class="alert alert-danger" role="alert">${data.errors ? data.errors.map(err => err.message).join("<br>") : "Oops! There was a problem."}</div>`;
+                            }).catch(() => {
+                                messageDiv.innerHTML = '<div class="alert alert-danger" role="alert">Oops! An unknown error occurred.</div>';
+                            });
+                        }
+                    }).catch(() => {
+                        messageDiv.innerHTML = '<div class="alert alert-danger" role="alert">Network error. Please try again.</div>';
+                    }).finally(() => {
+                        submitButton.disabled = false;
+                        submitButton.innerHTML = originalButtonText;
+                        setTimeout(() => { messageDiv.innerHTML = ''; }, 7000);
+                    });
+                });
+            }
+        }
+
+        handleFormSubmission(document.getElementById('resumeRequestForm'), 'resumeFormMessage');
+        handleFormSubmission(document.getElementById('contactForm'), 'formMessage');
+
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+    });
     </script>
 </body>
 </html>
