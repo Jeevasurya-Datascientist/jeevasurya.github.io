@@ -420,32 +420,31 @@
         <div class="container">
             <div class="text-center section-title fade-in">
                 <h2 class="display-5">My Learning Journey</h2>
-                <p class="lead">Dedicated to continuous learning through certifications and courses. Displaying 20 completed certificates below.</p>
+                <p class="lead">Dedicated to continuous learning through certifications and courses. Displaying certificates completed below.</p>
             </div>
             <div class="row g-4 mb-5">
-                 <!-- These stats are from your original HTML. Update them manually if needed. -->
                 <div class="col-sm-6 col-lg-3 fade-in" style="animation-delay: 0.1s;">
                     <div class="stats-card h-100 p-3 text-center">
                         <div class="stats-icon bg-primary bg-opacity-10 text-primary mx-auto mb-2"><i class="fas fa-certificate"></i></div>
-                        <h3 class="mb-0">18</h3><h5 class="card-title mb-0 text-muted fw-normal">Certifications</h5>
+                        <h3 class="mb-0" id="certificationsCount">0</h3><h5 class="card-title mb-0 text-muted fw-normal">Certifications</h5>
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-3 fade-in" style="animation-delay: 0.2s;">
                     <div class="stats-card h-100 p-3 text-center">
                         <div class="stats-icon bg-success bg-opacity-10 text-success mx-auto mb-2"><i class="fas fa-graduation-cap"></i></div>
-                        <h3 class="mb-0">42</h3><h5 class="card-title mb-0 text-muted fw-normal">Courses</h5>
+                        <h3 class="mb-0" id="coursesCount">0</h3><h5 class="card-title mb-0 text-muted fw-normal">Courses</h5>
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-3 fade-in" style="animation-delay: 0.3s;">
                     <div class="stats-card h-100 p-3 text-center">
                         <div class="stats-icon bg-warning bg-opacity-10 text-warning mx-auto mb-2"><i class="fas fa-star"></i></div>
-                        <h3 class="mb-0">7</h3><h5 class="card-title mb-0 text-muted fw-normal">Specializations</h5>
+                        <h3 class="mb-0" id="specializationsCount">0</h3><h5 class="card-title mb-0 text-muted fw-normal">Specializations</h5>
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-3 fade-in" style="animation-delay: 0.4s;">
                     <div class="stats-card h-100 p-3 text-center">
                         <div class="stats-icon bg-info bg-opacity-10 text-info mx-auto mb-2"><i class="fas fa-user-clock"></i></div>
-                        <h3 class="mb-0">840+</h3><h5 class="card-title mb-0 text-muted fw-normal">Learning Hours</h5>
+                        <h3 class="mb-0" id="learningHoursCount">840+</h3><h5 class="card-title mb-0 text-muted fw-normal">Learning Hours</h5>
                     </div>
                 </div>
             </div>
@@ -730,7 +729,7 @@
                 issuer: "LinkedIn Learning",
                 url: "https://www.linkedin.com/learning/certificates/b55bb7d07a2b420b90f256f38e13b8ee1ee55b66f85ac0592034c0b8a8ce955d?trk=share_certificate",
                 tags: ["SQL", "PostgreSQL", "Databases"],
-                imageUrl: "https://images.unsplash.com/photo-1593720213428-28a5b9e94613?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" // New image
+                imageUrl: "https://images.unsplash.com/photo-1593720213428-28a5b9e94613?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" 
             },
             // III. Programming for Data Science: Python
             {
@@ -738,7 +737,7 @@
                 issuer: "LinkedIn Learning",
                 url: "https://www.linkedin.com/learning/certificates/caebde15f5f382c1f3bf8b0a39827cc97e69b9d5dad87c23f25609ba4a9d5ded?trk=share_certificate",
                 tags: ["Python", "Data Science", "Machine Learning"],
-                imageUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" // New, highly reliable Python/coding image
+                imageUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" 
             },
             // IV. Introduction to Machine Learning
             {
@@ -760,8 +759,8 @@
                 title: "Microsoft exam Certificate",
                 issuer: "Microsoft (via LinkedIn Learning)",
                 url: "https://www.linkedin.com/learning/certificates/14f14850a34abbaa372907c447eb199718e2667d6dfb20f2cd91afcb6f093a85?trk=share_certificate",
-                tags: ["Microsoft", "Exam", "LinkedIn Learning"], // Added LinkedIn Learning tag
-                imageUrl: "https://www.google.com/imgres?q=microsoft%2C%20linkedin%20learning%20logo&imgurl=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Fmicrosoft-linkedin-logos-kiev-ukraine-june-printed-white-paper-buys-social-media-73453287.jpg&imgrefurl=https%3A%2F%2Fwww.dreamstime.com%2Feditorial-photography-microsoft-linkedin-logos-kiev-ukraine-june-printed-white-paper-buys-social-media-image73453287&docid=7pRRfHpLo0Vn5M&tbnid=o8dad_kTkIeRJM&vet=12ahUKEwidtL-EmJiNAxWexTgGHWazLUsQM3oECHYQAA..i&w=800&h=462&hcb=2&ved=2ahUKEwidtL-EmJiNAxWexTgGHWazLUsQM3oECHYQAA" // Replace this
+                tags: ["Microsoft", "Exam", "LinkedIn Learning"], 
+                imageUrl: "https://images.unsplash.com/photo-1550745165-9bc0b252726c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
             },
             // VI. Exploring AI & Modern Analytical Techniques
             {
@@ -783,7 +782,7 @@
                 issuer: "LinkedIn Learning",
                 url: "https://www.linkedin.com/learning/certificates/e3ba929dfd4052bc64d1b9ee66684addd3f9503e2e7100ee2d422a62b32e2eee",
                 tags: ["ChatGPT", "AI", "Nano Tips"],
-                imageUrl: "https://images.unsplash.com/photo-1611162616805-6<seg_100>18566a2a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" // New image: Abstract, techy, chat-like
+                imageUrl: "https://images.unsplash.com/photo-1677756119517-756a188d2d94?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" 
             },
             // VII. Essential Soft Skills: Communication
             {
@@ -808,6 +807,47 @@
                 imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
             }
         ];
+
+        // --- FUNCTION TO UPDATE STATS CARDS ---
+        function updateStatsCards() {
+            const certificationsCountEl = document.getElementById('certificationsCount');
+            const coursesCountEl = document.getElementById('coursesCount');
+            const specializationsCountEl = document.getElementById('specializationsCount');
+            // const learningHoursCountEl = document.getElementById('learningHoursCount'); // For future use
+
+            if (certificatesData && certificatesData.length > 0) {
+                const totalCertificates = certificatesData.length;
+
+                // Certifications count
+                if (certificationsCountEl) {
+                    certificationsCountEl.textContent = totalCertificates;
+                }
+
+                // Courses count (assuming each certificate represents a course completion)
+                if (coursesCountEl) {
+                    // If you want a different logic for courses, adjust here.
+                    // For now, same as total certificates.
+                    coursesCountEl.textContent = totalCertificates; 
+                }
+
+                // Specializations count (heuristic: check titles for keywords)
+                let specializations = 0;
+                certificatesData.forEach(cert => {
+                    const titleLower = cert.title.toLowerCase();
+                    if (titleLower.includes("specialization") || titleLower.includes("professional certificate")) {
+                        specializations++;
+                    }
+                });
+                if (specializationsCountEl) {
+                    specializationsCountEl.textContent = specializations;
+                }
+
+                // Learning Hours: Remains static for now.
+                // If you add an 'hours' property to each certificate object in certificatesData,
+                // you could sum them here and update 'learningHoursCountEl.textContent'.
+            }
+        }
+        // --- END FUNCTION TO UPDATE STATS CARDS ---
 
         const certificateGrid = document.getElementById('certificate-grid');
         const toggleBtn = document.getElementById('toggleCertificatesBtn');
@@ -861,12 +901,7 @@
                     if (index >= initiallyVisibleCount) {
                         if (certificatesVisible) {
                             certCard.style.display = 'block';
-                            // Trigger reflow to re-apply animation if needed for newly shown items
-                            // void certCard.offsetWidth; // This can sometimes help
-                            // certCard.classList.add('visible'); // Ensure visible class is added if not already
                         } else {
-                            // certCard.classList.remove('visible'); // Remove visible for fade-out effect
-                            // setTimeout(() => { certCard.style.display = 'none'; }, 300); // Hide after animation
                              certCard.style.display = 'none';
                         }
                     }
@@ -875,7 +910,9 @@
             });
         }
         
-        displayCertificates(); // Initial display
+        // Call updateStatsCards after certificatesData is defined and before displaying them
+        updateStatsCards(); 
+        displayCertificates(); // Initial display of certificate cards
 
         // --- END CERTIFICATES LOGIC ---
 
