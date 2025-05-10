@@ -155,6 +155,8 @@
         /* Animations */
         .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
+        .slide-in-right.visible { /* Add if you have specific slide-in styles not covered by general fade-in */ }
+
 
         /* Card Styles */
         .skill-card, .certificate-card, .stats-card, .chart-container, 
@@ -164,15 +166,32 @@
             background-color: white;
             box-shadow: var(--card-shadow);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex; /* For consistent height in h-100 */
+            flex-direction: column; /* For consistent height in h-100 */
         }
         .skill-card:hover, .certificate-card:hover, .stats-card:hover, 
         .chart-container:hover, #resume-section .card:hover, #about-section .card:hover {
             transform: translateY(-6px);
             box-shadow: var(--card-hover-shadow);
         }
-        .certificate-card img { object-fit: cover; height: 200px; border-top-left-radius: 11px; border-top-right-radius: 11px; }
-        .certificate-card:hover img { transform: scale(1.05); }
-        
+        .certificate-card img { 
+            object-fit: cover; 
+            height: 180px; /* Adjusted for better card balance */
+            border-top-left-radius: 11px; 
+            border-top-right-radius: 11px; 
+            transition: transform 0.3s ease-in-out;
+        }
+        .certificate-card:hover img { 
+            transform: scale(1.03); 
+        }
+        .certificate-card .card-body {
+            flex-grow: 1; /* Allows card body to expand and push footer down */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .certificate-tags { margin-bottom: 0.75rem; }
+
         .skill-icon-container {
             width: 60px; height: 60px;
             border-radius: 50%;
@@ -182,7 +201,15 @@
             margin-bottom: 1rem;
             font-size: 1.75rem;
         }
-        .skill-card .card-title { font-weight: 600; color: var(--dark-text); }
+        .stats-icon { /* Specific for stats cards if different from skill-icon */
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            display: flex; /* Use flex for centering icon */
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem; /* Adjust icon size */
+        }
+        .skill-card .card-title, .certificate-card .card-title { font-weight: 600; color: var(--dark-text); }
         .skill-card .card-text { font-size: 0.9rem; }
 
         /* Badges */
@@ -195,6 +222,7 @@
             font-weight: 500;
             border-radius: 1rem; /* pill shape */
             margin: 0.2rem;
+            display: inline-block;
         }
 
         /* Progress Bars */
@@ -222,16 +250,28 @@
             border-color: var(--primary);
             box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.2);
         }
+        .btn-primary, .btn-outline-primary {
+            transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
+        }
         .btn-primary {
             background-color: var(--primary);
             border-color: var(--primary);
-            transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
         }
         .btn-primary:hover {
             background-color: #2563eb;
             border-color: #1d4ed8;
             transform: translateY(-2px);
         }
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
 
         /* Footer */
         footer { background: var(--secondary); color: #d1d5db; padding: 40px 0; font-size: 0.9rem;}
@@ -340,7 +380,7 @@
                         <div class="skill-icon-container bg-danger bg-opacity-10 text-danger"><i class="fas fa-database"></i></div>
                         <h3 class="h5 card-title mb-2">SQL & Databases</h3>
                         <p class="card-text text-muted">Querying and managing data stored in relational databases.</p>
-                        <div class="mt-3"><span class="skill-badge">SQL</span><span class="skill-badge">Joins</span><span class="skill-badge">Queries</span><span class="skill-badge">MongoDB (Familiar)</span></div>
+                        <div class="mt-3"><span class="skill-badge">SQL</span><span class="skill-badge">Joins</span><span class="skill-badge">Queries</span></div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.6s;">
@@ -380,9 +420,10 @@
         <div class="container">
             <div class="text-center section-title fade-in">
                 <h2 class="display-5">My Learning Journey</h2>
-                <p class="lead">Dedicated to continuous learning through certifications and courses.</p>
+                <p class="lead">Dedicated to continuous learning through certifications and courses. Displaying 20 completed certificates below.</p>
             </div>
             <div class="row g-4 mb-5">
+                 <!-- These stats are from your original HTML. Update them manually if needed. -->
                 <div class="col-sm-6 col-lg-3 fade-in" style="animation-delay: 0.1s;">
                     <div class="stats-card h-100 p-3 text-center">
                         <div class="stats-icon bg-primary bg-opacity-10 text-primary mx-auto mb-2"><i class="fas fa-certificate"></i></div>
@@ -409,76 +450,11 @@
                 </div>
             </div>
             
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.5s;">
-                    <div class="certificate-card h-100">
-                        <img src="https://images.unsplash.com/photo-1580894732444-8ec533959546?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="Machine Learning">
-                        <div class="card-body p-4">
-                            <h3 class="h5 card-title fw-semibold">Machine Learning Specialization</h3>
-                            <p class="card-text text-muted small mb-1">Stanford University & Coursera</p>
-                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1 text-primary opacity-75"></i> Jan 2024</p>
-                            <span class="skill-badge">Machine Learning</span><span class="skill-badge">AI</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.6s;">
-                    <div class="certificate-card h-100">
-                        <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="Python Programming">
-                        <div class="card-body p-4">
-                            <h3 class="h5 card-title fw-semibold">Python for Everybody Specialization</h3>
-                            <p class="card-text text-muted small mb-1">University of Michigan</p>
-                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1 text-primary opacity-75"></i> Jun 2023</p>
-                            <span class="skill-badge">Python</span><span class="skill-badge">Programming</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.7s;">
-                    <div class="certificate-card h-100">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="Data Science">
-                        <div class="card-body p-4">
-                            <h3 class="h5 card-title fw-semibold">Data Science Professional Certificate</h3>
-                            <p class="card-text text-muted small mb-1">IBM</p>
-                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1 text-primary opacity-75"></i> Nov 2023</p>
-                            <span class="skill-badge">Data Science</span><span class="skill-badge">Statistics</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- Hidden certificates toggle -->
-                 <div class="col-md-6 col-lg-4 certificate-item-hidden fade-in" style="display: none; animation-delay: 0.1s;">
-                    <div class="certificate-card h-100">
-                        <img src="https://images.unsplash.com/photo-1605106702734-205df224ecce?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="Big Data">
-                        <div class="card-body p-4">
-                            <h3 class="h5 card-title fw-semibold">Big Data Specialization</h3>
-                            <p class="card-text text-muted small mb-1">UC San Diego</p>
-                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1 text-primary opacity-75"></i> Sep 2023</p>
-                            <span class="skill-badge">Big Data</span><span class="skill-badge">Hadoop</span>
-                        </div>
-                    </div>
-                </div>
-                 <div class="col-md-6 col-lg-4 certificate-item-hidden fade-in" style="display: none; animation-delay: 0.2s;">
-                    <div class="certificate-card h-100">
-                        <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="Deep Learning">
-                        <div class="card-body p-4">
-                            <h3 class="h5 card-title fw-semibold">Deep Learning Specialization</h3>
-                            <p class="card-text text-muted small mb-1">DeepLearning.AI</p>
-                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1 text-primary opacity-75"></i> Mar 2024</p>
-                            <span class="skill-badge">Deep Learning</span><span class="skill-badge">Neural Networks</span>
-                        </div>
-                    </div>
-                </div>
-                 <div class="col-md-6 col-lg-4 certificate-item-hidden fade-in" style="display: none; animation-delay: 0.3s;">
-                    <div class="certificate-card h-100">
-                        <img src="https://images.unsplash.com/photo-1607004468138-2f7908535415?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" class="card-img-top" alt="AWS ML">
-                        <div class="card-body p-4">
-                            <h3 class="h5 card-title fw-semibold">AWS Certified ML Specialty</h3>
-                            <p class="card-text text-muted small mb-1">Amazon Web Services</p>
-                            <p class="small text-muted mb-2"><i class="fas fa-calendar-alt me-1 text-primary opacity-75"></i> Feb 2024</p>
-                            <span class="skill-badge">AWS</span><span class="skill-badge">Cloud ML</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="row g-4" id="certificate-grid">
+                <!-- Certificate cards will be injected here by JavaScript -->
             </div>
-            <div class="text-center mt-5 fade-in" style="animation-delay: 0.8s;">
+
+            <div id="toggleButtonContainer" class="text-center mt-5 fade-in" style="animation-delay: 0.8s;">
                 <button id="toggleCertificatesBtn" class="btn btn-outline-primary px-4 py-2 rounded-pill">Show More Certificates</button>
             </div>
         </div>
@@ -561,12 +537,12 @@
                         I'm a data science enthusiast with a strong passion for leveraging Python and machine learning to solve real-world problems. My curiosity for uncovering patterns and insights from data drives my continuous learning and exploration in this dynamic field. I am committed to developing practical skills and applying them to create impactful solutions.
                     </p>
                     <p class="text-muted">
-                        Currently, I'm focusing on strengthening my foundational knowledge, working on personal projects, and seeking opportunities to contribute and grow as a Data Scientist. Outside of data, I enjoy [mention 1-2 brief, relatable hobbies, e.g., "reading about new tech trends" or "playing chess"].
+                        Currently, I'm focusing on strengthening my foundational knowledge, working on personal projects, and seeking opportunities to contribute and grow as a Data Scientist. Outside of data, I enjoy reading about new tech trends and exploring data visualization techniques.
                     </p>
                     <div class="mt-4">
                         <h4 class="fw-medium mb-3">Let's Connect:</h4>
                         <div class="social-icons d-flex">
-                            <a href="https://www.linkedin.com/in/jeevasurya-a" target="_blank" title="LinkedIn" class="me-3"><i class="fab fa-linkedin"></i></a>
+                            <a href="https://www.linkedin.com/in/jeeva-surya/" target="_blank" title="LinkedIn" class="me-3"><i class="fab fa-linkedin"></i></a>
                             <a href="https://github.com/Jeevasurya-Datascientist" target="_blank" title="GitHub" class="me-3"><i class="fab fa-github"></i></a>
                             <a href="mailto:jeevasurya.datascientist@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
                         </div>
@@ -601,7 +577,7 @@
     <footer>
         <div class="container text-center">
             <div class="social-icons mb-3">
-                <a href="https://www.linkedin.com/in/jeevasurya-a" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.linkedin.com/in/jeeva-surya/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
                 <a href="https://github.com/Jeevasurya-Datascientist" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
                 <a href="mailto:jeevasurya.datascientist@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
             </div>
@@ -669,7 +645,7 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    if (entry.target.classList.contains('fade-in')) { // specifically for progress bars if needed
+                    if (entry.target.classList.contains('fade-in')) { 
                         const progressBars = entry.target.querySelectorAll('.tw-progress-bar');
                         progressBars.forEach(bar => {
                             const width = bar.getAttribute('data-width');
@@ -682,27 +658,227 @@
         }, { threshold: 0.1 });
         animatedElements.forEach(el => observer.observe(el));
 
-        // Animate progress bars specifically when their parent .fade-in becomes visible
-        // This is now handled by the general IntersectionObserver logic above for .fade-in elements containing progress bars.
+        // --- CERTIFICATES DATA AND LOGIC ---
+        const certificatesData = [
+            // I. Core Data Analytics & Science Foundations
+            {
+                title: "Data Science Foundations: Fundamentals (Completion)",
+                issuer: "LinkedIn Learning",
+                url: "https://www.linkedin.com/learning/certificates/2a8e0d28508dc76b7de4777f482dd5c61666ec976179933d6139059248ed8f5d",
+                tags: ["Data Science", "Fundamentals"],
+                imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            {
+                title: "Data Science Foundations: Fundamentals (Exam)",
+                issuer: "LinkedIn Learning",
+                url: "https://www.linkedin.com/learning/certificates/5df93c3487709d91644811b5936e0345e4b9bca63d121dc71cadfffb15bdad5c",
+                tags: ["Data Science", "Fundamentals", "Exam"],
+                imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            {
+                title: "Introduction to Career Skills in Data Analytics",
+                issuer: "LinkedIn Learning",
+                url: "https://www.linkedin.com/learning/certificates/cb0647b925b443c5fbb88edf65020369d1aa5b8c26fde9d71d27c0564dbe777",
+                tags: ["Data Analytics", "Career Skills"],
+                imageUrl: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            {
+                title: "Learning Data Analytics: Part 1 (Completion)",
+                issuer: "LinkedIn Learning",
+                url: "https://www.linkedin.com/learning/certificates/0a0073a450611d2ba9f1176d4fc6985f94b441da9a24e3db007f5de1eb0d0cb2s",
+                tags: ["Data Analytics", "Core Skills"],
+                imageUrl: "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            {
+                title: "Learning Data Analytics: Part 1 (Exam)",
+                issuer: "LinkedIn Learning",
+                url: "https://www.linkedin.com/learning/certificates/8b3d532e3fcf30375402ac65357278c142bca0652fbbea778ca66269a8c55ae5",
+                tags: ["Data Analytics", "Core Skills", "Exam"],
+                imageUrl: "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            {
+                title: "Learning Data Analytics Part 2 (Completion)",
+                issuer: "LinkedIn Learning",
+                url: "https://www.linkedin.com/learning/certificates/1f4538acdf761f574aacee5f484f0dd1a9f30b236d2c778a0fd950dbacfa3ad3?trk=share_certificate",
+                tags: ["Data Analytics", "Advanced Skills"],
+                imageUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            {
+                title: "Learning Data Analytics Part 2 (Exam)",
+                issuer: "LinkedIn Learning",
+                url: "https://www.linkedin.com/learning/certificates/8b786e18d21fea2f57075e49cbcdfcd0dff3b0a1124893e365b614a8725f8b0f?trk=share_certificate",
+                tags: ["Data Analytics", "Advanced Skills", "Exam"],
+                imageUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            // II. Essential Data Manipulation: SQL
+            {
+                title: "SQL Essential Training (Completion)",
+                issuer: "LinkedIn Learning",
+                url: "https://www.linkedin.com/learning/certificates/6c746a7a1fa273282ff24eb3cdc37cb11306cf9873b295e593f7bf07d8ba6b47",
+                tags: ["SQL", "Databases"],
+                imageUrl: "https://images.unsplash.com/photo-1529078155058-5d716f45d604?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            {
+                title: "SQL Essential Training (Exam)",
+                issuer: "LinkedIn Learning",
+                url: "https://www.linkedin.com/learning/certificates/9c4968a38e8b7619ce35e396040167b61effa605b2c443426fc277f6e2de78ba",
+                tags: ["SQL", "Databases", "Exam"],
+                imageUrl: "https://images.unsplash.com/photo-1529078155058-5d716f45d604?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            {
+                title: "PostgreSQL Essential Training",
+                issuer: "LinkedIn Learning",
+                url: "https://www.linkedin.com/learning/certificates/b55bb7d07a2b420b90f256f38e13b8ee1ee55b66f85ac0592034c0b8a8ce955d?trk=share_certificate",
+                tags: ["SQL", "PostgreSQL", "Databases"],
+                imageUrl: "https://images.unsplash.com/photo-1607004468138-2f7908535415?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            // III. Programming for Data Science: Python
+            {
+                title: "Python for Data science and Machine Learning Part 1",
+                issuer: "LinkedIn Learning",
+                url: "https://www.linkedin.com/learning/certificates/caebde15f5f382c1f3bf8b0a39827cc97e69b9d5dad87c23f25609ba4a9d5ded?trk=share_certificate",
+                tags: ["Python", "Data Science", "Machine Learning"],
+                imageUrl: "https://images.unsplash.com/photo-1580894732444-8ec533959546?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            // IV. Introduction to Machine Learning
+            {
+                title: "ML for Beginners",
+                issuer: "Sololearn",
+                url: "https://www.sololearn.com/certificates/CC-N2TWKSUP",
+                tags: ["Machine Learning", "Beginner"],
+                imageUrl: "https://images.unsplash.com/photo-1507146426996-ef05306b995a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            // V. Applied Data Science & Tools Integration
+            {
+                title: "Hands-on-Data-science using SQL,Tableau,Python,Spark",
+                issuer: "LinkedIn Learning",
+                url: "https://www.linkedin.com/learning/certificates/bd4601d33a80152b024007eadf19ee2074e0b0ffec68c125e2398b847690538a",
+                tags: ["Data Science", "SQL", "Tableau", "Python", "Spark", "Hands-on"],
+                imageUrl: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            {
+                title: "Microsoft exam Certificate",
+                issuer: "Microsoft (via LinkedIn Learning)",
+                url: "https://www.linkedin.com/learning/certificates/14f14850a34abbaa372907c447eb199718e2667d6dfb20f2cd91afcb6f093a85?trk=share_certificate",
+                tags: ["Microsoft", "Exam"],
+                imageUrl: "https://images.unsplash.com/photo-1605106702734-205df224ecce?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            // VI. Exploring AI & Modern Analytical Techniques
+            {
+                title: "AI in Data Analysis",
+                issuer: "Sololearn",
+                url: "https://www.sololearn.com/certificates/CC-ZK8PISMW",
+                tags: ["AI", "Data Analysis"],
+                imageUrl: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            {
+                title: "Improving Insights in OpenAI",
+                issuer: "LinkedIn Learning",
+                url: "https://www.linkedin.com/learning/certificates/e637f8cff0e8a5adc5ce1b89c5953e6ce56a14bc080fd01aba3b41dbb03b69d9",
+                tags: ["AI", "OpenAI", "Insights"],
+                imageUrl: "https://images.unsplash.com/photo-1677756119517-756a188d2d94?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            {
+                title: "Nano Tips for Use of Chatgpt",
+                issuer: "LinkedIn Learning",
+                url: "https://www.linkedin.com/learning/certificates/e3ba929dfd4052bc64d1b9ee66684addd3f9503e2e7100ee2d422a62b32e2eee",
+                tags: ["ChatGPT", "AI", "Nano Tips"],
+                imageUrl: "https://images.unsplash.com/photo-1678483789004-a6273a60587f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            // VII. Essential Soft Skills: Communication
+            {
+                title: "Interpersonal Communication (Completion)",
+                issuer: "LinkedIn Learning",
+                url: "https://www.linkedin.com/learning/certificates/f7ca45d1955a9ca10ea2e3a68c441f2673b4d86f0f99ab7aa52ac8defd6e290c?trk=share_certificate",
+                tags: ["Communication", "Soft Skills"],
+                imageUrl: "https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            {
+                title: "Interpersonal Communication (Exam)",
+                issuer: "LinkedIn Learning",
+                url: "https://www.linkedin.com/learning/certificates/f6760718e4849d0ec1b4c8d9a15d2831b5bf638b9b40ab6d777a6712b441ce32?trk=share_certificate",
+                tags: ["Communication", "Soft Skills", "Exam"],
+                imageUrl: "https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            },
+            {
+                title: "Nano Tips to Enhance Your Communication",
+                issuer: "LinkedIn Learning",
+                url: "https://www.linkedin.com/learning/certificates/8ff974fd88654cb39d5d302eebd8b9b12afe7f7da7a580ffc8ccf6ded33b2c16?trk=share_certificate",
+                tags: ["Communication", "Soft Skills", "Nano Tips"],
+                imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
+            }
+        ];
 
+        const certificateGrid = document.getElementById('certificate-grid');
         const toggleBtn = document.getElementById('toggleCertificatesBtn');
-        const hiddenCertificates = document.querySelectorAll('.certificate-item-hidden');
+        const toggleButtonContainer = document.getElementById('toggleButtonContainer');
+        const initiallyVisibleCount = 6;
         let certificatesVisible = false;
+
+        function displayCertificates() {
+            certificateGrid.innerHTML = ''; // Clear existing cards
+            certificatesData.forEach((cert, index) => {
+                const animationDelay = 0.1 + (index % 3) * 0.1; // Stagger animation for each row
+                const cardHTML = `
+                    <div class="col-md-6 col-lg-4 certificate-item fade-in" style="animation-delay: ${animationDelay}s; ${index >= initiallyVisibleCount ? 'display: none;' : ''}">
+                        <div class="certificate-card h-100">
+                            <img src="${cert.imageUrl}" class="card-img-top" alt="${cert.title}">
+                            <div class="card-body p-4">
+                                <div>
+                                    <h3 class="h5 card-title fw-semibold mb-1">${cert.title}</h3>
+                                    <p class="card-text text-muted small mb-2"><em>${cert.issuer}</em></p>
+                                    <div class="certificate-tags mb-3">
+                                        ${cert.tags.map(tag => `<span class="skill-badge">${tag}</span>`).join('')}
+                                    </div>
+                                </div>
+                                <a href="${cert.url}" target="_blank" class="btn btn-sm btn-outline-primary mt-auto rounded-pill">View Certificate <i class="fas fa-external-link-alt ms-1"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                certificateGrid.insertAdjacentHTML('beforeend', cardHTML);
+            });
+
+             // Re-observe newly added cards for fade-in
+            const newAnimatedElements = certificateGrid.querySelectorAll('.fade-in');
+            newAnimatedElements.forEach(el => observer.observe(el));
+
+
+            if (certificatesData.length <= initiallyVisibleCount) {
+                toggleButtonContainer.style.display = 'none';
+            } else {
+                toggleButtonContainer.style.display = 'block';
+                toggleBtn.textContent = 'Show More Certificates';
+                certificatesVisible = false; // Reset state
+            }
+        }
+        
         if (toggleBtn) {
             toggleBtn.addEventListener('click', () => {
                 certificatesVisible = !certificatesVisible;
-                hiddenCertificates.forEach((cert, index) => {
-                    if (certificatesVisible) {
-                        cert.style.display = 'block';
-                        setTimeout(() => cert.classList.add('visible'), 50 * (index + 1)); // Staggered fade-in
-                    } else {
-                        cert.classList.remove('visible');
-                        setTimeout(() => cert.style.display = 'none', 300); // Hide after fade-out
+                const allCertificateItems = certificateGrid.querySelectorAll('.certificate-item');
+                allCertificateItems.forEach((certCard, index) => {
+                    if (index >= initiallyVisibleCount) {
+                        if (certificatesVisible) {
+                            certCard.style.display = 'block';
+                            // Trigger reflow to re-apply animation if needed for newly shown items
+                            // void certCard.offsetWidth; // This can sometimes help
+                            // certCard.classList.add('visible'); // Ensure visible class is added if not already
+                        } else {
+                            // certCard.classList.remove('visible'); // Remove visible for fade-out effect
+                            // setTimeout(() => { certCard.style.display = 'none'; }, 300); // Hide after animation
+                             certCard.style.display = 'none';
+                        }
                     }
                 });
                 toggleBtn.textContent = certificatesVisible ? 'Show Less Certificates' : 'Show More Certificates';
             });
         }
+        
+        displayCertificates(); // Initial display
+
+        // --- END CERTIFICATES LOGIC ---
+
 
         const chartFont = { family: "'Inter', sans-serif", size: 11 };
         const chartLegendColor = '#4b5563'; // gray-600
