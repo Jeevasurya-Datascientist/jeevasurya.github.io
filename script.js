@@ -130,7 +130,6 @@
         // --- END IMPROVED TYPEWRITER EFFECT ---
 
 
-        // --- CERTIFICATES DATA AND LOGIC ---
         const certificatesData = [
             {
                 title: "Data Science Foundations: Fundamentals (Completion)",
