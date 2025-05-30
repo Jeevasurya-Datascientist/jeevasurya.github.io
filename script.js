@@ -83,9 +83,9 @@
         if (typewriterTextElement) { 
             const phrasesToType = [
                 "Hi, I'm Jeeva Surya.",
-                "An Aspiring Data Scientist.",
-                "A Python Developer.",
-                "Transforming Data into Insights."
+                "Aspiring Data Scientist.",
+                "Python Developer.",
+                "Data to Actionable Insights."
             ];
             let phraseIndex = 0;
             let charIndex = 0;
