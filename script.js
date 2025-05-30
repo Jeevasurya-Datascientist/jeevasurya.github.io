@@ -1,74 +1,137 @@
     document.addEventListener('DOMContentLoaded', function() {
         const preloader = document.getElementById('preloader');
-        window.addEventListener('load', () => {
-            preloader.style.transition = 'opacity 0.5s ease, visibility 0.5s ease';
-            preloader.style.opacity = '0';
-            preloader.style.visibility = 'hidden';
-        });
+        if (preloader) {
+            window.addEventListener('load', () => {
+                preloader.style.transition = 'opacity 0.5s ease, visibility 0.5s ease';
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+            });
+        }
 
         const navbar = document.getElementById('navbar');
         const heroSectionHeight = document.getElementById('home')?.offsetHeight || 0;
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > Math.min(50, heroSectionHeight / 2)) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
+        if (navbar) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > Math.min(50, heroSectionHeight / 2)) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        }
 
         const navLinks = document.querySelectorAll('.nav-link');
         const sections = document.querySelectorAll('section[id]');
+        
         function changeLinkState() {
+            if (!navbar || sections.length === 0) return;
             let index = sections.length;
             while(--index && window.scrollY + navbar.offsetHeight + 20 < sections[index].offsetTop) {}
             navLinks.forEach((link) => link.classList.remove('active'));
             const activeLink = document.querySelector(`.nav-link[href="#${sections[index] ? sections[index].id : 'home'}"]`);
             if (activeLink) activeLink.classList.add('active');
         }
-        changeLinkState();
-        window.addEventListener('scroll', changeLinkState);
+        
+        if (navLinks.length > 0 && sections.length > 0) {
+            changeLinkState();
+            window.addEventListener('scroll', changeLinkState);
 
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                if (this.hash !== "") {
-                    e.preventDefault();
-                    const hash = this.hash;
-                    const targetElement = document.querySelector(hash);
-                    if (targetElement) {
-                       const offset = navbar.offsetHeight;
-                       const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
-                       const offsetPosition = elementPosition - offset;
-                       window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-                       const navbarCollapse = document.getElementById('navbarNav');
-                       if (navbarCollapse.classList.contains('show')) {
-                           new bootstrap.Collapse(navbarCollapse).hide();
-                       }
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.hash !== "") {
+                        e.preventDefault();
+                        const hash = this.hash;
+                        const targetElement = document.querySelector(hash);
+                        if (targetElement && navbar) {
+                           const offset = navbar.offsetHeight;
+                           const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                           const offsetPosition = elementPosition - offset;
+                           window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+                           const navbarCollapse = document.getElementById('navbarNav');
+                           if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+                               new bootstrap.Collapse(navbarCollapse).hide();
+                           }
+                        }
                     }
-                }
+                });
             });
-        });
+        }
         
         const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    if (entry.target.classList.contains('fade-in')) { 
-                        const progressBars = entry.target.querySelectorAll('.tw-progress-bar');
-                        progressBars.forEach(bar => {
-                            const width = bar.getAttribute('data-width');
-                            bar.style.width = width;
-                        });
+        if (animatedElements.length > 0) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        if (entry.target.classList.contains('fade-in')) { 
+                            const progressBars = entry.target.querySelectorAll('.tw-progress-bar');
+                            progressBars.forEach(bar => {
+                                const width = bar.getAttribute('data-width');
+                                if (width) bar.style.width = width;
+                            });
+                        }
+                        // observer.unobserve(entry.target); // Optional: unobserve after first animation
                     }
-                    // observer.unobserve(entry.target); // Optional: unobserve after first animation
+                });
+            }, { threshold: 0.1 });
+            animatedElements.forEach(el => observer.observe(el));
+        }
+
+        // --- IMPROVED TYPEWRITER EFFECT ---
+        const typewriterTextElement = document.getElementById('typewriter-text');
+        
+        if (typewriterTextElement) { 
+            const phrasesToType = [
+                "Hi, I'm Jeeva Surya.",
+                "An Aspiring Data Scientist.",
+                "A Python Developer.",
+                "Transforming Data into Insights."
+            ];
+            let phraseIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            
+            const typingSpeed = 100;
+            const deletingSpeed = 50;
+            const pauseBeforeDelete = 2000;
+            const pauseAfterDelete = 200;
+            const initialDelay = 1200; 
+
+            function typeEffect() {
+                const currentPhrase = phrasesToType[phraseIndex];
+                let nextTimeoutDuration;
+
+                if (isDeleting) {
+                    typewriterTextElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                    charIndex--;
+                    nextTimeoutDuration = deletingSpeed;
+                } else {
+                    typewriterTextElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                    charIndex++;
+                    nextTimeoutDuration = typingSpeed;
                 }
-            });
-        }, { threshold: 0.1 });
-        animatedElements.forEach(el => observer.observe(el));
+
+                if (!isDeleting && charIndex === currentPhrase.length) {
+                    isDeleting = true;
+                    nextTimeoutDuration = pauseBeforeDelete; 
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    phraseIndex = (phraseIndex + 1) % phrasesToType.length;
+                    nextTimeoutDuration = pauseAfterDelete;
+                }
+                
+                setTimeout(typeEffect, nextTimeoutDuration);
+            }
+            
+            if (phrasesToType.length > 0) {
+                setTimeout(typeEffect, initialDelay); 
+            }
+        }
+        // --- END IMPROVED TYPEWRITER EFFECT ---
+
 
         // --- CERTIFICATES DATA AND LOGIC ---
         const certificatesData = [
-            // I. Core Data Analytics & Science Foundations
             {
                 title: "Data Science Foundations: Fundamentals (Completion)",
                 issuer: "LinkedIn Learning",
@@ -118,7 +181,6 @@
                 tags: ["Data Analytics", "Advanced Skills", "Exam"],
                 imageUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
             },
-            // II. Essential Data Manipulation: SQL
             {
                 title: "SQL Essential Training (Completion)",
                 issuer: "LinkedIn Learning",
@@ -140,7 +202,6 @@
                 tags: ["SQL", "PostgreSQL", "Databases"],
                 imageUrl: "https://images.unsplash.com/photo-1593720213428-28a5b9e94613?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" 
             },
-            // III. Programming for Data Science: Python
             {
                 title: "Python for Data science and Machine Learning Part 1",
                 issuer: "LinkedIn Learning",
@@ -148,7 +209,6 @@
                 tags: ["Python", "Data Science", "Machine Learning"],
                 imageUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" 
             },
-            // IV. Introduction to Machine Learning
             {
                 title: "ML for Beginners",
                 issuer: "Sololearn",
@@ -156,7 +216,6 @@
                 tags: ["Machine Learning", "Beginner"],
                 imageUrl: "https://images.unsplash.com/photo-1507146426996-ef05306b995a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
             },
-            // V. Applied Data Science & Tools Integration
             {
                 title: "Hands-on-Data-science using SQL,Tableau,Python,Spark",
                 issuer: "LinkedIn Learning",
@@ -171,7 +230,6 @@
                 tags: ["Microsoft", "Exam", "LinkedIn Learning"],
                 imageUrl: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60"
             },
-            // VI. Exploring AI & Modern Analytical Techniques
             {
                 title: "AI in Data Analysis",
                 issuer: "Sololearn",
@@ -193,7 +251,6 @@
                 tags: ["ChatGPT", "AI", "Nano Tips"],
                 imageUrl: "https://images.unsplash.com/photo-1677756119517-756a188d2d94?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" 
             },
-            // VII. Essential Soft Skills: Communication
             {
                 title: "Interpersonal Communication (Completion)",
                 issuer: "LinkedIn Learning",
@@ -217,22 +274,16 @@
             }
         ];
 
-        // --- FUNCTION TO UPDATE STATS CARDS ---
         function updateStatsCards() {
             const certificationsCountEl = document.getElementById('certificationsCount');
             const coursesCountEl = document.getElementById('coursesCount');
             const specializationsCountEl = document.getElementById('specializationsCount');
-            // const learningHoursCountEl = document.getElementById('learningHoursCount'); // For future use
 
             if (certificatesData && certificatesData.length > 0) {
                 const totalCertificates = certificatesData.length;
 
-                if (certificationsCountEl) {
-                    certificationsCountEl.textContent = totalCertificates;
-                }
-                if (coursesCountEl) {
-                    coursesCountEl.textContent = totalCertificates; 
-                }
+                if (certificationsCountEl) certificationsCountEl.textContent = totalCertificates;
+                if (coursesCountEl) coursesCountEl.textContent = totalCertificates; 
 
                 let specializations = 0;
                 certificatesData.forEach(cert => {
@@ -241,9 +292,7 @@
                         specializations++;
                     }
                 });
-                if (specializationsCountEl) {
-                    specializationsCountEl.textContent = specializations;
-                }
+                if (specializationsCountEl) specializationsCountEl.textContent = specializations;
             }
         }
         
@@ -254,6 +303,7 @@
         let certificatesVisible = false;
 
         function displayCertificates() {
+            if (!certificateGrid || !animatedElements) return; // Check for observer too
             certificateGrid.innerHTML = ''; 
             certificatesData.forEach((cert, index) => {
                 const animationDelay = 0.1 + (index % 3) * 0.1; 
@@ -278,7 +328,14 @@
             });
 
             const newAnimatedElements = certificateGrid.querySelectorAll('.fade-in');
-            newAnimatedElements.forEach(el => observer.observe(el));
+            const observerForCerts = new IntersectionObserver((entries) => { // Create a local observer if global one is not sufficient or causes issues
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            newAnimatedElements.forEach(el => observerForCerts.observe(el));
 
 
             if (certificatesData.length <= initiallyVisibleCount) {
@@ -290,17 +347,13 @@
             }
         }
         
-        if (toggleBtn) {
+        if (toggleBtn && certificateGrid) {
             toggleBtn.addEventListener('click', () => {
                 certificatesVisible = !certificatesVisible;
                 const allCertificateItems = certificateGrid.querySelectorAll('.certificate-item');
                 allCertificateItems.forEach((certCard, index) => {
                     if (index >= initiallyVisibleCount) {
-                        if (certificatesVisible) {
-                            certCard.style.display = 'block';
-                        } else {
-                             certCard.style.display = 'none';
-                        }
+                        certCard.style.display = certificatesVisible ? 'block' : 'none';
                     }
                 });
                 toggleBtn.textContent = certificatesVisible ? 'Show Less Certificates' : 'Show More Certificates';
@@ -316,7 +369,7 @@
             {
                 title: "Online Voting System",
                 description: "A web-based platform enabling secure and transparent online voting. Features include user registration, voter authentication, ballot creation, and automated vote tallying, built with a focus on integrity and ease of use.",
-                imageUrl: "https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", // Image of a hand clicking a vote button on a screen
+                imageUrl: "https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", 
                 tags: ["PHP", "HTML", "CSS", "JavaScript", "Bootstrap"], 
                 githubUrl: "https://github.com/Jeevasurya-Datascientist/Online-Voting-System", 
                 liveUrl: null
@@ -324,34 +377,33 @@
             {
                 title: "Airline Reservation System",
                 description: "A comprehensive system for managing flight bookings. Allows users to search for flights, view availability and pricing, select seats, and make reservations. Includes an admin panel for flight and booking management.",
-                imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", // Image of an airplane wing/sky or airport departure board
+                imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", 
                 tags: ["PHP", "HTML", "CSS", "JavaScript", "Bootstrap"],
-                githubUrl: "https://github.com/Jeevasurya-Datascientist/Airline-Reservation-System", // Replace with your specific repo
+                githubUrl: "https://github.com/Jeevasurya-Datascientist/Airline-Reservation-System", 
                 liveUrl: null
             },
             {
                 title: "Expense Tracker",
                 description: "A user-friendly application to help individuals monitor and manage their personal finances. Users can log income and expenses, categorize transactions, view spending patterns through charts, and set budgets.",
-                imageUrl: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", // Image of someone using a calculator/app, or charts
+                imageUrl: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", 
                 tags: ["PHP", "HTML", "CSS", "JavaScript", "Bootstrap"],
-                githubUrl: "https://github.com/Jeevasurya-Datascientist/Expense-Tracker", // Replace with your specific repo
+                githubUrl: "https://github.com/Jeevasurya-Datascientist/Expense-Tracker", 
                 liveUrl: null
             },
             {
                 title: "Employee Feedback Management System",
                 description: "A platform designed to streamline the collection and analysis of employee feedback. Enables employees to submit suggestions or concerns, and allows management to track, respond to, and report on feedback trends.",
-                imageUrl: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", // Image of people collaborating or a suggestion box concept
+                imageUrl: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60", 
                 tags: ["PHP", "HTML", "CSS", "JavaScript", "Bootstrap"],
-                githubUrl: "https://github.com/Jeevasurya-Datascientist/Employee-feedback-management-system", // Replace with your specific repo
+                githubUrl: "https://github.com/Jeevasurya-Datascientist/Employee-feedback-management-system", 
                 liveUrl: null
             }
-            // Add more project objects here if you have them
         ];
 
         const projectGrid = document.getElementById('project-grid');
 
         function displayProjects() {
-            if (!projectGrid) return;
+            if (!projectGrid || !animatedElements) return;
             projectGrid.innerHTML = ''; 
 
             if (projectsData.length === 0) {
@@ -384,15 +436,22 @@
                 `;
                 projectGrid.insertAdjacentHTML('beforeend', cardHTML);
             });
-
-            const newAnimatedElements = projectGrid.querySelectorAll('.fade-in');
-            newAnimatedElements.forEach(el => observer.observe(el));
+            
+            const newProjectAnimatedElements = projectGrid.querySelectorAll('.fade-in');
+             const observerForProjects = new IntersectionObserver((entries) => { 
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            newProjectAnimatedElements.forEach(el => observerForProjects.observe(el));
         }
         
         if (projectGrid) displayProjects();
         // --- END PROJECTS LOGIC ---
 
-
+        // --- CHART.JS SETUP ---
         const chartFont = { family: "'Inter', sans-serif", size: 11 };
         const chartLegendColor = '#4b5563'; 
         const chartGridColor = '#e5e7eb'; 
@@ -439,7 +498,7 @@
 
 
         const skillCtx = document.getElementById('skillFocusChart')?.getContext('2d');
-        if (skillCtx) {
+        if (skillCtx && typeof Chart !== 'undefined') {
             new Chart(skillCtx, {
                 type: 'doughnut',
                 data: {
@@ -456,7 +515,7 @@
         }
 
         const milestonesCtx = document.getElementById('learningMilestonesChart')?.getContext('2d');
-        if (milestonesCtx) {
+        if (milestonesCtx && typeof Chart !== 'undefined') {
             new Chart(milestonesCtx, {
                 type: 'line',
                 data: {
@@ -475,7 +534,7 @@
         }
 
         const techStackCtx = document.getElementById('projectTechStackChart')?.getContext('2d');
-        if (techStackCtx) {
+        if (techStackCtx && typeof Chart !== 'undefined') {
             new Chart(techStackCtx, {
                 type: 'bar',
                 data: {
@@ -496,7 +555,7 @@
         }
 
         const dsExplorationCtx = document.getElementById('dsTopicExplorationChart')?.getContext('2d');
-        if (dsExplorationCtx) {
+        if (dsExplorationCtx && typeof Chart !== 'undefined') {
             new Chart(dsExplorationCtx, {
                 type: 'polarArea',
                 data: {
@@ -511,10 +570,11 @@
                 options: { ...commonChartOptions(true, 'bottom'), scales: { r: { pointLabels: { font: chartFont, color: chartTicksColor }, grid: { color: chartGridColor }, ticks: { backdropColor: 'transparent', color: chartTicksColor, font: chartFont, z:1 } } } }
             });
         }
+        // --- END CHART.JS ---
         
         function handleFormSubmission(formElement, messageElementId) {
             const messageDiv = document.getElementById(messageElementId);
-            if (formElement) {
+            if (formElement && messageDiv) {
                 formElement.addEventListener('submit', function(e) {
                     e.preventDefault();
                     const formData = new FormData(formElement);
@@ -594,7 +654,6 @@
             mouseY = e.clientY;
 
             if (firstMove) {
-                // Initialize ring position to current mouse position to avoid jump
                 ringX = mouseX;
                 ringY = mouseY;
                 firstMove = false;
@@ -602,14 +661,12 @@
             
             updateCursorVisibility();
             
-            // Dot position updates immediately
             cursorDot.style.left = mouseX + 'px';
             cursorDot.style.top = mouseY + 'px';
         });
 
         const animateRing = () => {
-            // Ring position lags with easing/lerping
-            const easing = 0.18; // Adjust for more/less lag
+            const easing = 0.18; 
             ringX += (mouseX - ringX) * easing;
             ringY += (mouseY - ringY) * easing;
 
@@ -619,9 +676,8 @@
             requestAnimationFrame(animateRing);
         };
 
-        animateRing(); // Start the ring animation loop
+        animateRing();
 
-        // Define interactive elements that trigger cursor hover state
         const interactiveElementsList = document.querySelectorAll(
             'a, button, .btn, [role="button"], input, textarea, select, ' +
             '.navbar-brand, .nav-link, .skill-card, .certificate-card, .project-card, ' +
@@ -631,7 +687,7 @@
         interactiveElementsList.forEach(el => {
             el.addEventListener('mouseenter', () => {
                 cursorRing.classList.add('hovered');
-                cursorDot.classList.add('hovered'); // Optional: if dot also changes style on hover
+                cursorDot.classList.add('hovered');
             });
             el.addEventListener('mouseleave', () => {
                 cursorRing.classList.remove('hovered');
@@ -639,7 +695,6 @@
             });
         });
 
-        // Add click effect
         document.addEventListener('mousedown', () => {
             cursorRing.classList.add('clicked');
         });
@@ -647,14 +702,13 @@
             cursorRing.classList.remove('clicked');
         });
 
-        // Hide cursor when mouse leaves the window
         document.addEventListener('mouseout', (e) => {
-            if (!e.relatedTarget && !e.toElement) { // Check if truly leaving viewport
+            if (!e.relatedTarget && !e.toElement) {
                 if (cursorVisible) {
                     cursorDot.style.opacity = '0';
                     cursorRing.style.opacity = '0';
                     cursorVisible = false;
-                    firstMove = true; // Reset for re-entry
+                    firstMove = true; 
                 }
             }
         });
