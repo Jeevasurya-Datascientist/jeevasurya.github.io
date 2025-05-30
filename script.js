@@ -1,4 +1,3 @@
-
     document.addEventListener('DOMContentLoaded', function() {
         const preloader = document.getElementById('preloader');
         window.addEventListener('load', () => {
@@ -283,10 +282,10 @@
 
 
             if (certificatesData.length <= initiallyVisibleCount) {
-                toggleButtonContainer.style.display = 'none';
+                if (toggleButtonContainer) toggleButtonContainer.style.display = 'none';
             } else {
-                toggleButtonContainer.style.display = 'block';
-                toggleBtn.textContent = 'Show More Certificates';
+                if (toggleButtonContainer) toggleButtonContainer.style.display = 'block';
+                if (toggleBtn) toggleBtn.textContent = 'Show More Certificates';
                 certificatesVisible = false; 
             }
         }
@@ -309,7 +308,7 @@
         }
         
         updateStatsCards(); 
-        displayCertificates(); 
+        if (certificateGrid) displayCertificates(); 
         // --- END CERTIFICATES LOGIC ---
 
         // --- PROJECTS DATA AND LOGIC --
@@ -390,7 +389,7 @@
             newAnimatedElements.forEach(el => observer.observe(el));
         }
         
-        displayProjects();
+        if (projectGrid) displayProjects();
         // --- END PROJECTS LOGIC ---
 
 
@@ -559,7 +558,106 @@
             }
         }
 
-        handleFormSubmission(document.getElementById('contactForm'), 'formMessage');
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) handleFormSubmission(contactForm, 'formMessage');
 
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        const currentYearEl = document.getElementById('currentYear');
+        if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
+
+        // --- CUSTOM MOUSE CURSOR ---
+        const cursorDot = document.createElement('div');
+        cursorDot.classList.add('cursor-dot');
+        document.body.appendChild(cursorDot);
+
+        const cursorRing = document.createElement('div');
+        cursorRing.classList.add('cursor-ring');
+        document.body.appendChild(cursorRing);
+
+        let mouseX = 0;
+        let mouseY = 0;
+        let ringX = 0;
+        let ringY = 0;
+        
+        let cursorVisible = false;
+        let firstMove = true;
+
+        const updateCursorVisibility = () => {
+            if (!cursorVisible && mouseX !== 0 && mouseY !== 0) {
+                cursorDot.style.opacity = '1';
+                cursorRing.style.opacity = '1';
+                cursorVisible = true;
+            }
+        };
+        
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            if (firstMove) {
+                // Initialize ring position to current mouse position to avoid jump
+                ringX = mouseX;
+                ringY = mouseY;
+                firstMove = false;
+            }
+            
+            updateCursorVisibility();
+            
+            // Dot position updates immediately
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+        });
+
+        const animateRing = () => {
+            // Ring position lags with easing/lerping
+            const easing = 0.18; // Adjust for more/less lag
+            ringX += (mouseX - ringX) * easing;
+            ringY += (mouseY - ringY) * easing;
+
+            cursorRing.style.left = ringX + 'px';
+            cursorRing.style.top = ringY + 'px';
+
+            requestAnimationFrame(animateRing);
+        };
+
+        animateRing(); // Start the ring animation loop
+
+        // Define interactive elements that trigger cursor hover state
+        const interactiveElementsList = document.querySelectorAll(
+            'a, button, .btn, [role="button"], input, textarea, select, ' +
+            '.navbar-brand, .nav-link, .skill-card, .certificate-card, .project-card, ' +
+            '.social-icons a, #toggleCertificatesBtn, .tw-progress-bar, .form-control'
+        );
+
+        interactiveElementsList.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorRing.classList.add('hovered');
+                cursorDot.classList.add('hovered'); // Optional: if dot also changes style on hover
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorRing.classList.remove('hovered');
+                cursorDot.classList.remove('hovered');
+            });
+        });
+
+        // Add click effect
+        document.addEventListener('mousedown', () => {
+            cursorRing.classList.add('clicked');
+        });
+        document.addEventListener('mouseup', () => {
+            cursorRing.classList.remove('clicked');
+        });
+
+        // Hide cursor when mouse leaves the window
+        document.addEventListener('mouseout', (e) => {
+            if (!e.relatedTarget && !e.toElement) { // Check if truly leaving viewport
+                if (cursorVisible) {
+                    cursorDot.style.opacity = '0';
+                    cursorRing.style.opacity = '0';
+                    cursorVisible = false;
+                    firstMove = true; // Reset for re-entry
+                }
+            }
+        });
+         // --- END CUSTOM MOUSE CURSOR ---
+
     });
