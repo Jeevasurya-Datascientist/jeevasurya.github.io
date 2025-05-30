@@ -86,8 +86,10 @@
             font-weight: 800;
             display: flex; /* To align span and caret correctly */
             align-items: center; /* Vertically center text and caret */
-            /* Set a min-height based on h1's line-height to prevent layout shifts */
             min-height: 1.2em; 
+            /* ADDED FOR OVERFLOW FIX */
+            max-width: 100%;   /* Constrain to parent column's width */
+            overflow: hidden;   /* Hide text that overflows the h1's bounds */
         }
 
         #typewriter-text {
@@ -96,11 +98,12 @@
 
         .typewriter-caret {
             display: inline-block;
-            width: 2px; /* Adjust for thickness */
-            height: 0.9em; /* Slightly less than parent h1's font-size */
+            width: 2px; 
+            height: 0.9em; 
             background-color: var(--accent);
-            margin-left: 4px; /* Space between text and caret */
+            margin-left: 4px; 
             animation: blink-caret-new .75s step-end infinite;
+            flex-shrink: 0; /* ADDED: Prevents caret from shrinking */
         }
 
         @keyframes blink-caret-new {
@@ -306,7 +309,13 @@
         /* Responsive */
         @media (max-width: 768px) {
             .hero-section { min-height: auto; padding: 5rem 0 3rem 0; text-align: center; }
-            .typewriter h1 { font-size: 2.2rem; /* Make sure it's responsive */ flex-wrap: wrap; justify-content: center;} /* Allow wrap for very long text on small screens */
+            .typewriter h1 { 
+                font-size: 2.2rem; 
+                /* If text-align: center on parent, ensure h1 content also centers */
+                /* This justify-content might not be needed if the parent column handles centering */
+                /* Test to see if text is already centered due to parent's text-align: center */
+                /* justify-content: center; */ 
+            }
             .hero-section h2 { font-size: 1.3rem; }
             .profile-image-container { width: 50% !important; margin: 2rem auto 0 auto; }
             .hero-section .d-flex { justify-content: center; flex-direction: column; align-items: center; gap: 0.8rem !important; }
@@ -314,6 +323,13 @@
             .section-title h2 { font-size: 2rem; }
             .chart-container { height: 280px; }
         }
+        /* Further responsive adjustments for very small screens if needed for typewriter */
+        @media (max-width: 576px) {
+            .typewriter h1 {
+                font-size: 1.8rem; /* Even smaller for phones */
+            }
+        }
+
 
         /* --- CUSTOM MOUSE CURSOR STYLES --- */
         /* Hide default cursor for specific interactive elements for robustness */
